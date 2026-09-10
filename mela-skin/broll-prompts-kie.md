@@ -17,12 +17,24 @@
 | ✋ MAIN | Rien à attacher : tu choisis juste le phototype de la main (voir 0.3) |
 | — | Aucune pièce jointe |
 
-### Workflow en 2 étapes (pour tous les plans avec 📎 ou 👤)
+### Deux façons de produire ces plans
+
+**Méthode A — référence directe, en une étape.** C'est la bonne méthode si ton modèle accepte des **images de référence** sans les imposer comme première frame (Kling « elements », Seedance reference-to-video, Veo references). Tu colles le prompt complet, tu attaches les pièces jointes indiquées **en référence**, et tu génères la vidéo directement. Pas d'image de départ, pas de première frame, pas de dernière frame.
+
+C'est la méthode à préférer partout où elle est disponible : l'étiquette et le visage sont tenus par la référence, et le modèle reste libre de composer son mouvement au lieu d'être contraint de partir d'une image figée.
+
+Ce que tu attaches en référence, par plan : le 📎 et le 👤 en tête de chaque plan te le disent. Sur un plan qui porte les deux (RIT-02, RIT-05), attache les deux images.
+
+**Méthode B — image de départ, puis animation.** Le repli si ton modèle n'accepte qu'une première frame.
 
 1. **Image de départ** (Nano Banana) : colle uniquement les lignes `Scene` + `Light` + `Style` du prompt, et attache les pièces jointes indiquées.
-2. **Vidéo** (Seedance ou Kling, image-to-video) : mets l'image validée en première frame et colle **le prompt complet**. Si ton modèle accepte une image de référence en plus de la première frame, remets le 📎 SÉRUM : l'étiquette tiendra mieux.
+2. **Vidéo** (Seedance ou Kling, image-to-video) : mets l'image validée en première frame et colle **le prompt complet**. Si ton modèle accepte une image de référence *en plus* de la première frame, remets le 📎 SÉRUM : l'étiquette tiendra mieux.
 
-Les plans marqués « — » ou « ✋ MAIN » peuvent partir directement en text-to-video, mais l'étape image reste plus fiable.
+Plus long et plus cher, mais tu vois et valides l'image avant de payer l'animation.
+
+**Méthode C — sans aucune référence.** Si tu n'attaches rien du tout, prends les prompts de `broll-prompts-text-to-video.md` : ils sont réécrits pour tenir sans image, au prix de l'étiquette et de la constance des visages. À réserver aux plans qui n'ont de toute façon rien à attacher.
+
+Les plans marqués « — » ou « ✋ MAIN » n'ont aucune pièce jointe : ils partent directement en vidéo dans les trois méthodes.
 
 **Avant de lancer le batch** : génère un seul clip témoin (HOOK-05 ou RIT-02), regarde-le en entier, corrige le process. Ensuite seulement tu lances le reste.
 
