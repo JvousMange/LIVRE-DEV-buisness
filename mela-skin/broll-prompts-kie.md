@@ -6,6 +6,40 @@
 
 ## 0. Mode d'emploi
 
+### Réglages de l'interface kie.ai
+
+Ton modèle prend jusqu'à 10 images de référence, adressables une par une dans le prompt (`@image1`, `@image2`…). Tous les prompts de ce fichier sont écrits dans cette syntaxe.
+
+| Champ | Ce que tu mets |
+|---|---|
+| `first_frame_url` · `last_frame_url` | **Vides.** C'est ce qui laisse le modèle composer son mouvement. |
+| `prompt` | Le bloc complet du plan, tel quel. |
+| `reference_image_urls` | Les images du plan, **dans l'ordre** : File 1 = `@image1`, File 2 = `@image2`. L'ordre est ce qui fait tenir le prompt, ne l'inverse pas. |
+| `reference_video_urls` · `reference_audio_urls` | Vides. Sans usage pour du B-roll. |
+| `generate_audio` | **Off.** Tous les prompts disent `no music, no voice` : le laisser sur On fait fabriquer une bande-son que tu jetteras, et te la fait payer. Ton son se pose au montage. |
+| `return_last_frame` | Off. Utile seulement pour enchaîner deux clips bout à bout, ce que le pack ne fait jamais. |
+| `resolution` | 1080p sur les plans macro et produit, 720p suffit sur les transitions et les plans flous. |
+| `aspect_ratio` | **9:16 explicitement**, jamais `adaptive` : en adaptatif, le modèle reprend le ratio de ta référence et ton packshot te sortira un clip carré. |
+| `duration` | 3, 4 ou 5 s selon ce qu'indique le plan. Ne monte pas au-dessus. |
+| `output_format` | mp4. |
+
+Le piège du lot est `aspect_ratio`. Le second est `generate_audio`, qui est sur On par défaut.
+
+**Quelle image dans quel slot :**
+
+| Plans | File 1 (`@image1`) | File 2 (`@image2`) |
+|---|---|---|
+| HOOK-04, HOOK-05, PROD-01 à 05, TEX-01, TEX-02, RIT-06, RES-05, TRA-03 | sérum | — |
+| HOOK-01, HOOK-02, HOOK-03, HOOK-06, DOUL-ACNE, DOUL-MELA, DOUL-HPI, RIT-01, RIT-03, RES-01 à 04, MEC-04, TRA-02 | persona | — |
+| RIT-02, RIT-05 | persona | sérum |
+| RIT-04 | persona | SPF |
+| OFF-01, OFF-02 | sérum | pochette |
+| DOUL-TEINT, DOUL-GEN, TEX-03, TEX-04, TEX-05, MEC-01, MEC-02, MEC-03, OFF-03, TRA-01, TRA-04 | — | — |
+
+Les 11 plans de la dernière ligne n'ont aucune référence : tu laisses `reference_image_urls` vide, le prompt se suffit.
+
+**Puisque tu as 10 slots** : sur les plans produit, attache le packshot de face **et** une vue 3/4 du flacon en `@image1` et `@image2`, et écris `from @image1 and @image2` dans le prompt. Deux angles tiennent une étiquette bien mieux qu'un seul. Même logique pour une persona dont tu as plusieurs portraits.
+
 ### Légende des pièces jointes
 
 | Icône | Ce que tu attaches |
@@ -47,7 +81,7 @@ Les plans marqués « — » ou « ✋ MAIN » n'ont aucune pièce jointe : ils 
 **Description produit de secours** (si un modèle perd l'étiquette malgré la référence, ajoute cette ligne au prompt) :
 
 ```
-a slim cylindrical amber glass dropper bottle with a dark chocolate-brown screw dropper cap and a matte warm-brown wraparound label with pale cream lettering, exactly as in the reference image, 30ml
+a slim cylindrical amber glass dropper bottle with a dark chocolate-brown screw dropper cap and a matte warm-brown wraparound label with pale cream lettering, exactly as in @image1, 30ml
 ```
 
 Ne fais pas décrire le texte de l'étiquette mot à mot : le modèle le redessinerait de travers. C'est l'image de référence qui porte le texte, la description ne porte que la forme et les couleurs.
@@ -84,7 +118,7 @@ Le plan le plus rentable à tester en premier : il ne dépend d'aucune persona, 
 **Étape 1 — image de départ** (Nano Banana, 9:16, packshot en référence) :
 
 ```
-The MELA SKIN serum bottle from the reference image, identical shape, colors and label, standing on a cream stone bathroom counter, label facing the camera turned slightly at 20 degrees. Warm terracotta zellige tiles behind, a folded cream towel at the edge of the frame. Soft warm window light from the left, golden tone, gentle shadows, no cool light. Photorealistic, 50mm f/2, shallow depth of field, warm cinematic grade, subtle film grain, no extra text, vertical 9:16.
+The MELA SKIN serum bottle from @image1, identical shape, colors and label, standing on a cream stone bathroom counter, label facing the camera turned slightly at 20 degrees. Warm terracotta zellige tiles behind, a folded cream towel at the edge of the frame. Soft warm window light from the left, golden tone, gentle shadows, no cool light. Photorealistic, 50mm f/2, shallow depth of field, warm cinematic grade, subtle film grain, no extra text, vertical 9:16.
 ```
 
 Génère-en 3, garde celle où l'étiquette est la plus nette et la plus droite.
@@ -127,7 +161,7 @@ Pour un plan avec changement de tenue (serviette, bonnet, grossesse), fais l'ima
 👤 PERSONA A · 5 s
 
 ```
-Scene: Close-up of the woman from the reference image, same face and exact same skin tone and depth, standing at her bathroom sink with terracotta zellige tiles behind her. Her face wears an even layer of matte foundation matching her skin tone that hides her marks. She holds a white cotton pad against her left cheek.
+Scene: Close-up of the woman from @image1, same face and exact same skin tone and depth, standing at her bathroom sink with terracotta zellige tiles behind her. Her face wears an even layer of matte foundation matching her skin tone that hides her marks. She holds a white cotton pad against her left cheek.
 Action: In one slow continuous stroke she wipes the cotton pad across her cheek toward her ear, removing the foundation and revealing flat darker hyperpigmentation patches on the cheekbone; the cotton pad now shows a brown foundation stain.
 Camera: Fixed at face height, slight handheld micro-shake, very slow push-in.
 Light: Soft warm window light from the left, golden evening tone, gentle shadows, no cool or fluorescent light.
@@ -139,7 +173,7 @@ Audio: Soft rubbing sound of the cotton pad, no music, no voice.
 👤 PERSONA A · 4 s
 
 ```
-Scene: Tight close-up of the lower half of the face of the woman from the reference image, bare skin with a darker shadow of hyperpigmentation around the corners of her mouth. Her ring finger holds a small dab of creamy concealer near the corner of her lips.
+Scene: Tight close-up of the lower half of the face of the woman from @image1, bare skin with a darker shadow of hyperpigmentation around the corners of her mouth. Her ring finger holds a small dab of creamy concealer near the corner of her lips.
 Action: She taps the concealer onto the darker shadow with quick, slightly impatient little taps.
 Camera: Static mirror point of view, handheld with natural micro-shake.
 Light: Soft warm window light from the left, golden tone, no cool or fluorescent light.
@@ -151,7 +185,7 @@ Audio: Faint tapping sound, no music, no voice.
 👤 PERSONA (du mashup) · 5 s · image de départ avec serviette sur les cheveux
 
 ```
-Scene: A bathroom mirror fully fogged with condensation after a shower. Behind the fog, the blurred silhouette of the woman from the reference image, same skin tone, her hair wrapped in a cream towel, terracotta tiles softly visible.
+Scene: A bathroom mirror fully fogged with condensation after a shower. Behind the fog, the blurred silhouette of the woman from @image1, same skin tone, her hair wrapped in a cream towel, terracotta tiles softly visible.
 Action: Her palm wipes across the mirror in one wide horizontal stroke, revealing her clear reflection looking closely at her own cheek.
 Camera: Fixed just behind her shoulder, facing the mirror.
 Light: Warm dim bathroom light, steam in the air, glow from one bright window, no cool light.
@@ -163,7 +197,7 @@ Audio: Squeak of a palm on wet glass, no music, no voice.
 📎 SÉRUM · 5 s
 
 ```
-Scene: Extreme macro of the glass dropper of the MELA SKIN serum from the reference image, dark brown rubber bulb and clear glass tube, held vertically above a matte terracotta-colored surface. A single drop of lightweight translucent serum with a faint golden tint is forming at the tip.
+Scene: Extreme macro of the glass dropper of the MELA SKIN serum from @image1, dark brown rubber bulb and clear glass tube, held vertically above a matte terracotta-colored surface. A single drop of lightweight translucent serum with a faint golden tint is forming at the tip.
 Action: The drop detaches and falls, hits the surface and spreads into a small glossy circle.
 Camera: Static, ultra slow motion.
 Light: Warm golden light raking low across the surface from the right, catching a bright highlight on the drop.
@@ -175,7 +209,7 @@ Audio: One soft drip, no music.
 📎 SÉRUM · ✋ MAIN · 4 s · **clip témoin conseillé**
 
 ```
-Scene: The MELA SKIN serum bottle from the reference image, identical shape, colors and label, standing on a cream stone bathroom counter, label facing the camera turned slightly at 20 degrees. Warm terracotta zellige tiles behind, a folded cream towel at the edge of the frame.
+Scene: The MELA SKIN serum bottle from @image1, identical shape, colors and label, standing on a cream stone bathroom counter, label facing the camera turned slightly at 20 degrees. Warm terracotta zellige tiles behind, a folded cream towel at the edge of the frame.
 Action: Within the first half-second, a woman's hand with warm medium-brown skin (phototype V) and short natural nails enters quickly from the right and grabs the bottle in one decisive motion, lifting it out of frame.
 Camera: Static, at the height of the bottle.
 Light: Soft warm window light from the left, golden tone, gentle shadows, no cool light.
@@ -187,7 +221,7 @@ Audio: Light clink of glass on stone, no music.
 👤 PERSONA B · 4 s
 
 ```
-Scene: Selfie-camera framing of the woman from the reference image, same face and exact same skin tone, sitting near a window, bare face, flat dark post-acne marks visible on her chin and left cheek.
+Scene: Selfie-camera framing of the woman from @image1, same face and exact same skin tone, sitting near a window, bare face, flat dark post-acne marks visible on her chin and left cheek.
 Action: She slowly turns her face to the side toward the window, presenting her cheek to the light.
 Camera: Front-facing smartphone held at arm's length, natural handheld shake.
 Light: Bright warm daylight from the window raking across her skin, revealing real texture and the marks, no cool light.
@@ -203,7 +237,7 @@ Audio: Quiet room tone, no music, no voice.
 👤 PERSONA B · 4 s
 
 ```
-Scene: Tight close-up of the chin and jawline of the woman from the reference image, rich dark-brown skin with the exact same tone, flat dark post-acne marks where pimples have healed, one small healing spot.
+Scene: Tight close-up of the chin and jawline of the woman from @image1, rich dark-brown skin with the exact same tone, flat dark post-acne marks where pimples have healed, one small healing spot.
 Action: Her fingertip gently touches one dark mark on her chin and stays still.
 Camera: Very slow push-in, handheld micro-shake.
 Light: Soft warm daylight from the side, gentle shadows, no cool light.
@@ -215,7 +249,7 @@ Audio: Quiet room tone, no music, no voice.
 👤 PERSONA (idéalement C) · 5 s · image de départ en version enceinte
 
 ```
-Scene: The woman from the reference image, same face and skin tone, visibly pregnant at about seven months, wearing a cream ribbed dress, standing side-on to a bathroom mirror. Soft symmetrical brownish patches on both cheekbones and above her upper lip. One hand rests on her belly.
+Scene: The woman from @image1, same face and skin tone, visibly pregnant at about seven months, wearing a cream ribbed dress, standing side-on to a bathroom mirror. Soft symmetrical brownish patches on both cheekbones and above her upper lip. One hand rests on her belly.
 Action: She slowly raises her other hand and touches one cheekbone while looking at her reflection.
 Camera: Fixed over her shoulder, facing the mirror.
 Light: Soft warm morning window light, golden tone, no cool light.
@@ -227,7 +261,7 @@ Audio: Quiet room tone, no music, no voice.
 👤 PERSONA (du mashup) · 4 s
 
 ```
-Scene: Extreme close-up of the upper lip of the woman from the reference image, exact same skin tone, a slightly darker shadow of hyperpigmentation just above the lip. A pair of slanted metal tweezers is held close to the skin.
+Scene: Extreme close-up of the upper lip of the woman from @image1, exact same skin tone, a slightly darker shadow of hyperpigmentation just above the lip. A pair of slanted metal tweezers is held close to the skin.
 Action: The tweezers pluck a single fine hair at the edge of the upper lip and pull slowly away.
 Camera: Static macro, mirror point of view.
 Light: Soft warm window light, gentle shadows, no cool light.
@@ -267,7 +301,7 @@ Audio: Soft thud of the drawer closing, bottles rattling, no music.
 📎 SÉRUM · 5 s
 
 ```
-Scene: The MELA SKIN serum bottle from the reference image, identical shape, colors and label, standing on a warm terracotta plaster ledge, label facing the camera. A folded cream linen cloth on its left, a small sage-green ceramic dish on its right.
+Scene: The MELA SKIN serum bottle from @image1, identical shape, colors and label, standing on a warm terracotta plaster ledge, label facing the camera. A folded cream linen cloth on its left, a small sage-green ceramic dish on its right.
 Action: A beam of morning sunlight slowly slides across the ledge and passes over the bottle, making the amber glass glow.
 Camera: Static.
 Light: Soft morning sun through a window, dust particles floating in the beam, warm golden tone.
@@ -279,7 +313,7 @@ Audio: Soft ambient room tone, no music.
 📎 SÉRUM · 5 s
 
 ```
-Scene: The MELA SKIN serum bottle from the reference image, identical shape, colors and label, centered on a small round cream plinth against a seamless deep terracotta-brown backdrop.
+Scene: The MELA SKIN serum bottle from @image1, identical shape, colors and label, centered on a small round cream plinth against a seamless deep terracotta-brown backdrop.
 Action: The plinth rotates slowly by about 60 degrees, the bottle turning with it.
 Camera: Static, slightly below eye level.
 Light: Warm directional key light from the left, soft rim light outlining the amber glass, long soft shadow.
@@ -293,7 +327,7 @@ Pas de 360° complet : le modèle inventerait le dos de l'étiquette.
 📎 SÉRUM · 5 s
 
 ```
-Scene: The MELA SKIN serum bottle from the reference image, identical shape, colors and label, standing on a cream linen cloth on a wooden table.
+Scene: The MELA SKIN serum bottle from @image1, identical shape, colors and label, standing on a cream linen cloth on a wooden table.
 Action: Shadows of olive leaves move gently across the bottle and the cloth in a light breeze.
 Camera: Static.
 Light: Warm late-afternoon sun from the side, dappled light through leaves, golden tone.
@@ -305,7 +339,7 @@ Audio: Faint rustle of leaves, no music.
 📎 SÉRUM · 5 s
 
 ```
-Scene: The MELA SKIN serum bottle from the reference image, identical shape, colors and label, standing on a wet terracotta-colored river stone, tiny water droplets on the amber glass, a thin film of water on the stone.
+Scene: The MELA SKIN serum bottle from @image1, identical shape, colors and label, standing on a wet terracotta-colored river stone, tiny water droplets on the amber glass, a thin film of water on the stone.
 Action: A single water droplet rolls slowly down the side of the bottle.
 Camera: Very slow push-in.
 Light: Warm backlight making the amber glass and water droplets glow, soft fill from the front.
@@ -317,7 +351,7 @@ Audio: Soft water trickle, no music.
 📎 SÉRUM · 3 mains · 4 s
 
 ```
-Scene: Close-up of three women's hands gathered around the MELA SKIN serum bottle from the reference image, identical shape, colors and label, fingertips lightly touching the bottle held in the center: one hand with warm golden-tan skin (phototype IV), one with warm medium-brown skin (phototype V), one with rich dark-brown skin (phototype VI). Short natural nails. Plain terracotta background.
+Scene: Close-up of three women's hands gathered around the MELA SKIN serum bottle from @image1, identical shape, colors and label, fingertips lightly touching the bottle held in the center: one hand with warm golden-tan skin (phototype IV), one with warm medium-brown skin (phototype V), one with rich dark-brown skin (phototype VI). Short natural nails. Plain terracotta background.
 Action: The hands stay still and relaxed while the camera moves.
 Camera: Slow push-in toward the bottle.
 Light: Soft warm directional light, gentle shadows, no cool light.
@@ -335,7 +369,7 @@ Plan à risque pour les doigts : génère 3 images de départ et garde la plus p
 📎 SÉRUM · 4 s
 
 ```
-Scene: Extreme macro side view of the glass dropper from the MELA SKIN serum reference image, dark brown rubber bulb, dipped into the open neck of the amber glass bottle.
+Scene: Extreme macro side view of the glass dropper from @image1, dark brown rubber bulb, dipped into the open neck of the amber glass bottle.
 Action: The bulb is released and the lightweight translucent serum with a faint golden tint rises slowly up the clear glass tube.
 Camera: Static, side view.
 Light: Warm backlight making the serum glow golden inside the glass.
@@ -347,7 +381,7 @@ Audio: Faint suction sound, no music.
 📎 SÉRUM · 5 s
 
 ```
-Scene: Extreme macro of the tip of the glass dropper from the MELA SKIN serum reference image at the top of the frame, the amber bottle softly blurred in the background on a cream surface.
+Scene: Extreme macro of the tip of the glass dropper from @image1 at the top of the frame, the amber bottle softly blurred in the background on a cream surface.
 Action: A drop of lightweight translucent serum with a faint golden tint slowly swells at the tip, trembles, then falls out of frame.
 Camera: Static, ultra slow motion.
 Light: Warm golden backlight catching the drop.
@@ -399,7 +433,7 @@ Audio: No music.
 👤 PERSONA (du mashup) · 4 s
 
 ```
-Scene: Medium close-up of the woman from the reference image, same face and exact skin tone, leaning over the bathroom sink, her face covered in a soft white cleansing foam, terracotta zellige tiles behind her.
+Scene: Medium close-up of the woman from @image1, same face and exact skin tone, leaning over the bathroom sink, her face covered in a soft white cleansing foam, terracotta zellige tiles behind her.
 Action: She rinses her face with one splash of water from her cupped hands.
 Camera: Static, slightly side-on.
 Light: Soft warm window light from the left, golden tone, no cool light.
@@ -411,7 +445,7 @@ Audio: Water splash, running tap, no music, no voice.
 👤 PERSONA + 📎 SÉRUM · 4 s · **clip témoin conseillé**
 
 ```
-Scene: Close-up of the woman from the reference image, same face and exact skin tone, bare face after cleansing, holding the glass dropper of the MELA SKIN serum from the product reference (dark brown bulb, clear glass tube) just above her cheekbone.
+Scene: Close-up of the woman from @image1, same face and exact skin tone, bare face after cleansing, holding the glass dropper of the MELA SKIN serum from @image2 (dark brown bulb, clear glass tube) just above her cheekbone.
 Action: She squeezes the bulb gently and deposits a few small drops of lightweight translucent serum along her cheekbone.
 Camera: Static, slight upward tilt, mirror point of view.
 Light: Soft warm window light from the left, golden tone, no cool light.
@@ -423,7 +457,7 @@ Audio: Quiet room tone, no music, no voice.
 👤 PERSONA (du mashup) · 4 s
 
 ```
-Scene: Close-up of the woman from the reference image, same face and exact skin tone, eyes half-closed, fingertips of both hands resting on her cheeks where the serum was applied.
+Scene: Close-up of the woman from @image1, same face and exact skin tone, eyes half-closed, fingertips of both hands resting on her cheeks where the serum was applied.
 Action: Her fingertips gently pat the serum into her cheeks with a light, rhythmic tapping motion.
 Camera: Slow orbit of a few degrees to the right.
 Light: Soft warm window light, healthy natural sheen on the skin, no cool light.
@@ -435,7 +469,7 @@ Audio: Soft tapping sound, no music, no voice.
 👤 PERSONA + 📎 SPF · 4 s
 
 ```
-Scene: Close-up of the hands of the woman from the reference image, same skin tone, holding the MELA SKIN SPF 50+ sunscreen tube from the product reference, identical dark chocolate-brown tube, flip cap and label, above the bathroom sink. Her face is softly out of focus in the background.
+Scene: Close-up of the hands of the woman from @image1, same skin tone, holding the MELA SKIN SPF 50+ sunscreen tube from @image2, identical dark chocolate-brown tube, flip cap and label, above the bathroom sink. Her face is softly out of focus in the background.
 Action: She squeezes a line of white sunscreen along her index and middle finger.
 Camera: Static, close on the hands.
 Light: Bright warm morning daylight from the window, no cool light.
@@ -447,7 +481,7 @@ Audio: Soft squeeze sound, no music, no voice.
 👤 PERSONA (idéalement B) + 📎 SÉRUM · 5 s · image de départ avec bonnet
 
 ```
-Scene: Medium close-up of the woman from the reference image, same face and exact skin tone, wearing a black satin bonnet over her hair and a sage-green t-shirt, sitting on the edge of her bed in the evening, holding the MELA SKIN serum bottle from the product reference, identical shape, colors and label.
+Scene: Medium close-up of the woman from @image1, same face and exact skin tone, wearing a black satin bonnet over her hair and a sage-green t-shirt, sitting on the edge of her bed in the evening, holding the MELA SKIN serum bottle from @image2, identical shape, colors and label.
 Action: She unscrews the dropper and lifts the glass pipette out of the bottle.
 Camera: Static, eye level, handheld micro-shake.
 Light: Warm bedside lamp only, amber tone, dark cosy surroundings, no cool light.
@@ -459,7 +493,7 @@ Audio: Soft unscrewing sound, no music, no voice.
 📎 SÉRUM · 5 s
 
 ```
-Scene: The MELA SKIN serum bottle from the reference image, identical shape, colors and label, on a cream stone bathroom counter next to a sage-green ceramic cup of black coffee, a folded cream towel behind.
+Scene: The MELA SKIN serum bottle from @image1, identical shape, colors and label, on a cream stone bathroom counter next to a sage-green ceramic cup of black coffee, a folded cream towel behind.
 Action: Steam rises slowly from the coffee while the morning light gradually brightens.
 Camera: Static.
 Light: Soft warm morning window light, golden tone.
@@ -477,7 +511,7 @@ Audio: Faint morning ambience, no music.
 👤 PERSONA · 4 s
 
 ```
-Scene: Close-up of the cheek of the woman from the reference image, bare face, skin exactly as in the reference image with the same tone, texture and marks, no retouching.
+Scene: Close-up of the cheek of the woman from @image1, bare face, skin exactly as in @image1 with the same tone, texture and marks, no retouching.
 Action: She turns her face very slightly toward the window.
 Camera: Slow push-in on her cheek.
 Light: Natural warm daylight raking across the skin, revealing real texture, no cool light.
@@ -489,7 +523,7 @@ Audio: Quiet room tone, no music, no voice.
 👤 PERSONA A · 4 s
 
 ```
-Scene: The woman from the reference image, same face and exact skin tone, bare face, dressed for work in a cream blouse, standing at her bathroom sink in the morning, holding a plain unbranded foundation bottle, a drawer open below.
+Scene: The woman from @image1, same face and exact skin tone, bare face, dressed for work in a cream blouse, standing at her bathroom sink in the morning, holding a plain unbranded foundation bottle, a drawer open below.
 Action: She places the foundation bottle into the drawer and slides the drawer shut.
 Camera: Static medium shot, slightly side-on.
 Light: Soft warm morning window light, golden tone, no cool light.
@@ -501,7 +535,7 @@ Audio: Drawer closing, no music, no voice.
 👤 PERSONA · 4 s
 
 ```
-Scene: Close-up of the woman from the reference image, same face and exact skin tone, looking at herself in the bathroom mirror, skin exactly as in the reference image.
+Scene: Close-up of the woman from @image1, same face and exact skin tone, looking at herself in the bathroom mirror, skin exactly as in @image1.
 Action: Her hand glides slowly along her cheek and a small natural smile appears.
 Camera: Static, over-the-shoulder mirror framing.
 Light: Soft warm window light, golden tone, no cool light.
@@ -513,7 +547,7 @@ Audio: Quiet room tone, no music, no voice.
 👤 PERSONA · 5 s · image de départ en extérieur
 
 ```
-Scene: The woman from the reference image, same face and exact skin tone, bare face, sitting on a sunny terrace with terracotta pots and a cream wall behind her, wearing a cream linen shirt.
+Scene: The woman from @image1, same face and exact skin tone, bare face, sitting on a sunny terrace with terracotta pots and a cream wall behind her, wearing a cream linen shirt.
 Action: She tilts her face up toward the sun with her eyes closed, relaxed.
 Camera: Slow push-in from a medium close-up.
 Light: Warm late-afternoon sun, golden tone, soft natural shadows.
@@ -525,7 +559,7 @@ Audio: Soft outdoor ambience, distant birds, no music.
 📎 SÉRUM · ✋ MAIN · 4 s
 
 ```
-Scene: Three empty MELA SKIN serum bottles from the reference image, identical shape, colors and label, lined up on a light oak bathroom shelf against terracotta tiles, an empty space at the end of the row.
+Scene: Three empty MELA SKIN serum bottles from @image1, identical shape, colors and label, lined up on a light oak bathroom shelf against terracotta tiles, an empty space at the end of the row.
 Action: A hand with warm medium-brown skin (phototype V) sets a fourth, full bottle down in the empty space at the end of the row.
 Camera: Static, eye level with the shelf.
 Light: Soft warm window light, golden tone, no cool light.
@@ -541,7 +575,7 @@ Audio: Soft clink of glass on wood, no music.
 📎 SÉRUM + 📎 POCHETTE · ✋ MAIN · 5 s
 
 ```
-Scene: Top-down view of an open kraft shipping box on a cream linen bedsheet, cream tissue paper inside partly covering the MELA SKIN serum bottle and the MELA SKIN pouch from the reference images, identical shapes, colors and labels.
+Scene: Top-down view of an open kraft shipping box on a cream linen bedsheet, cream tissue paper inside partly covering the MELA SKIN serum bottle from @image1 and the MELA SKIN pouch from @image2, identical shapes, colors and labels.
 Action: Two hands with warm medium-brown skin (phototype V) fold back the tissue paper, revealing the bottle and the pouch.
 Camera: Static, top-down.
 Light: Soft warm morning light from a window, gentle shadows.
@@ -553,7 +587,7 @@ Audio: Crinkle of tissue paper, no music.
 📎 SÉRUM + 📎 POCHETTE · 5 s
 
 ```
-Scene: Three identical MELA SKIN serum bottles from the reference image standing side by side on a terracotta surface, the MELA SKIN pouch from the reference leaning against them, identical shapes, colors and labels.
+Scene: Three identical MELA SKIN serum bottles from @image1 standing side by side on a terracotta surface, the MELA SKIN pouch from @image2 leaning against them, identical shapes, colors and labels.
 Action: The arrangement stays still while the camera moves.
 Camera: Slow orbit of about 30 degrees around the arrangement.
 Light: Warm directional light from the left creating soft long shadows, glowing amber glass.
@@ -625,7 +659,7 @@ Si le rendu fait trop « IA bizarre », fais ce plan en motion design sur Canva,
 👤 PERSONA C · 4 s
 
 ```
-Scene: Close-up of the woman from the reference image, same face and exact skin tone, near a window, a harsh bright sunbeam falling across her cheekbone and the brownish patches on it.
+Scene: Close-up of the woman from @image1, same face and exact skin tone, near a window, a harsh bright sunbeam falling across her cheekbone and the brownish patches on it.
 Action: She squints slightly and raises her hand to shade her face.
 Camera: Static, close-up.
 Light: Hard warm direct sunlight through the window, strong contrast.
@@ -655,7 +689,7 @@ Audio: Soft whoosh, no music.
 👤 PERSONA · 3 s
 
 ```
-Scene: Close-up of the woman from the reference image, same face and exact skin tone, in her bathroom, holding a cream towel.
+Scene: Close-up of the woman from @image1, same face and exact skin tone, in her bathroom, holding a cream towel.
 Action: The cream towel passes quickly in front of her face from right to left, covering the whole frame for a moment.
 Camera: Static.
 Light: Soft warm window light, golden tone.
@@ -668,7 +702,7 @@ Audio: Soft fabric whoosh, no music.
 
 ```
 Scene: Seamless deep terracotta-brown backdrop.
-Action: A hand with warm medium-brown skin (phototype V) carries the MELA SKIN serum bottle from the reference image quickly across the frame from left to right.
+Action: A hand with warm medium-brown skin (phototype V) carries the MELA SKIN serum bottle from @image1 quickly across the frame from left to right.
 Camera: Static.
 Light: Warm directional light, glowing amber glass.
 Style: Photorealistic, strong motion blur, identical bottle shape and colors, no extra text, vertical 9:16, 3 seconds.
