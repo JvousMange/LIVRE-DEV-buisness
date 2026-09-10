@@ -47,15 +47,15 @@ Ne fais jamais décrire le texte de l'étiquette mot à mot : le modèle le rede
 
 Elles ne seront pas les mêmes d'un clip à l'autre, et c'est assumé. Trois profils tournent dans le pack, chacun rattaché à une douleur :
 
-- **P5 — taches et fond de teint** : `a woman aged about 36 with warm medium-brown skin, phototype V, natural skin texture with visible pores, a darker shadow of hyperpigmentation around her mouth and faint darker patches on both cheekbones, dark hair pulled back in a low bun, small gold hoop earrings, cream ribbed tank top, no makeup`
-- **P6 — marques post-acné** : `a woman aged about 24 with rich dark-brown skin, phototype VI, natural skin texture with visible pores, several flat dark post-acne marks on her chin, jawline and left cheek, short natural coily hair, small silver studs, oversized sage-green t-shirt, no makeup`
-- **P4 — mélasma** : `a woman aged about 30 with warm golden-tan skin, phototype IV, natural skin texture with visible pores, soft symmetrical brownish patches on both cheekbones and faintly above her upper lip, long dark wavy hair worn loose, cream linen shirt, no makeup`
+- **P5 — taches et fond de teint** : `a Black woman of Caribbean descent aged about 36 with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, a soft diffuse area of darker pigmentation around her mouth and faint darker patches on both cheekbones, dark hair pulled back in a low bun, small gold hoop earrings, cream ribbed tank top, no makeup`
+- **P6 — marques post-acné** : `a Black woman of West African descent aged about 24 with very deep espresso-brown skin, deeply melanated, natural skin texture with visible pores, several soft-edged darker post-acne marks with blurred edges on her chin, jawline and left cheek, short natural coily hair, small silver studs, oversized sage-green t-shirt, no makeup`
+- **P4 — mélasma** : `a woman of North African descent aged about 30 with warm brown skin, clearly darker than olive, natural skin texture with visible pores, soft symmetrical brownish patches with blurred edges on both cheekbones and faintly above her upper lip, long dark wavy hair worn loose, cream linen shirt, no makeup`
 
 Ces descriptions sont déjà écrites dans chaque prompt, tu n'as rien à assembler. Si tu veux changer le phototype d'un plan, remplace le bloc par un autre — la seule règle est de garder le même profil à l'intérieur d'un même mashup, sinon le montage raconte trois histoires.
 
 ### Mains
 
-Les prompts sans visage sont écrits en phototype V. Pour changer, remplace `warm medium-brown skin (phototype V)` par `warm golden-tan skin (phototype IV)` ou `rich dark-brown skin (phototype VI)`.
+Les prompts sans visage sont écrits en phototype V. Pour changer, remplace `deep brown deeply melanated skin (phototype V)` par `warm brown skin clearly darker than olive (phototype IV)` ou `very deep espresso-brown skin, deeply melanated (phototype VI)`.
 
 ### Texture du sérum
 
@@ -64,10 +64,40 @@ Tous les prompts utilisent `lightweight translucent serum with a faint golden ti
 ### Negative prompt (à chaque génération)
 
 ```
-text, letters, words, logo, brand name, subtitles, watermark, badge, sticker, price tag, extra fingers, six fingers, deformed hands, fused fingers, plastic skin, airbrushed skin, skin lightening, lighter skin tone, grey or ashy cast, cool blue light, fluorescent light, clinical white lab, morphing face, warping label, rotating bottle, extra bottles, distorted logo, floating objects
+text, letters, words, logo, brand name, subtitles, watermark, badge, sticker, price tag, extra fingers, six fingers, deformed hands, fused fingers, plastic skin, airbrushed skin, skin lightening, lighter skin tone, grey or ashy cast, cool blue light, fluorescent light, clinical white lab, morphing face, warping label, rotating bottle, extra bottles, distorted logo, floating objects, light skin, olive skin, tanned white woman, freckles, professional model, beauty commercial, studio lighting, retouched skin, colour grading, perfectly centered framing, solid outlined dark spot
 ```
 
 `morphing face`, `warping label` et `rotating bottle` visent les trois façons dont un clip se dégrade en cours de route.
+
+### Si la peau sort trop claire
+
+C'est l'échec le plus fréquent, et il a trois causes qui s'additionnent.
+
+**`phototype V` ne veut rien dire pour le modèle.** C'est un terme de dermatologie, pas un mot de description visuelle. Il faut nommer la couleur en clair (`deep brown`, `espresso-brown`) **et** l'origine (`a Black woman of Caribbean descent`). Les prompts du pack le font désormais ; le mot `phototype` n'est plus qu'une béquille pour toi.
+
+**Le prior des modèles tire vers la peau claire** dès qu'on dit « skincare », « beauty » ou « serum ». Il faut donc sur-corriger : si tu vises un V, décris un V franc, jamais un « medium-brown » qui redescendra en hâle. `deeply melanated` et `clearly dark` sont les deux formules qui tiennent le mieux.
+
+**Le décor terracotta joue contre toi.** Peau et mur tombent dans la même famille de tons chauds et le modèle réduit l'écart. Deux parades : ajouter `her skin is clearly darker than the terracotta tiles behind her` au prompt, ou basculer le décor sur `cream tiles` / `white plaster wall` sur les plans où la carnation est le sujet.
+
+Ajoute enfin `light skin, olive skin, tanned white woman, freckles` au negative prompt — c'est déjà fait dans celui du pack.
+
+### Si ça fait pub et pas vidéo de téléphone
+
+`authentic smartphone video look` perd toujours contre `photorealistic, 50mm f/2, cinematic grade` placé dans la même ligne. Un modèle qui lit les deux choisit la pub.
+
+Les plans visage du pack ont donc changé de ligne `Style` : plus de focale, plus de `cinematic`, plus de `photorealistic`. À la place, ce qui produit vraiment de l'amateur :
+
+```
+Amateur front-camera phone video, handheld, slightly grainy, no professional lighting, no color grading, natural skin texture with visible pores and small real imperfections
+```
+
+Si c'est encore trop léché, empile dans cette ordre : `slightly off-center framing` · `uneven indoor lighting` · `visible handheld shake` · `slight motion blur`. Et surveille le regard : un regard caméra fixe fait mannequin, un regard qui se pose ailleurs fait vraie personne.
+
+### Si les taches ressemblent à des salissures
+
+Une tache décrite comme `dark patches` sort en pastille brune détourée, qui se lit comme de la boue et pas comme de la pigmentation. Les prompts disent maintenant `soft-edged`, `blurred edges`, `blending gradually into the surrounding skin`, `never a solid outlined spot`.
+
+Le piège spécifique de HOOK-01 : demander une révélation complète en un seul geste force le modèle à peindre un avant et un après très contrastés, donc une tache caricaturale. Si ça persiste, remplace `removing the foundation and revealing` par `partly removing the foundation, the skin underneath looking slightly more uneven in tone`. Tu perds en spectaculaire, tu gagnes en crédibilité — et sur ce hook, la crédibilité est l'argument.
 
 ---
 
@@ -76,33 +106,33 @@ text, letters, words, logo, brand name, subtitles, watermark, badge, sticker, pr
 ### HOOK-01 · Le coton qui révèle les taches · 4 s
 
 ```
-Scene: Close-up of a woman aged about 36 with warm medium-brown skin, phototype V, natural skin texture with visible pores, dark hair pulled back in a low bun, small gold hoop earrings, cream ribbed tank top, standing at a bathroom sink with warm terracotta zellige tiles behind her. Her face wears an even layer of matte foundation matching her skin tone. She holds a white cotton pad against her left cheek.
-Action: In one slow continuous stroke she wipes the cotton pad across her cheek toward her ear, removing the foundation and revealing flat darker hyperpigmentation patches on the cheekbone; the cotton pad now shows a brown foundation stain.
+Scene: Close-up of a Black woman of Caribbean descent aged about 36 with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, dark hair pulled back in a low bun, small gold hoop earrings, cream ribbed tank top, standing at a bathroom sink with warm terracotta zellige tiles behind her. Her face wears an even layer of matte foundation matching her skin tone. She holds a white cotton pad against her left cheek.
+Action: In one slow continuous stroke she wipes the cotton pad across her cheek toward her ear, removing the foundation and revealing soft-edged uneven patches of darker pigmentation on the cheekbone, blending gradually into the surrounding skin, never a solid outlined spot; the cotton pad now shows a brown foundation stain.
 Camera: Fixed at face height, slight handheld micro-shake, very slow push-in.
 Light: Soft warm window light from the left, golden evening tone, gentle shadows, no cool or fluorescent light.
-Style: Photorealistic, natural skin texture with visible pores, authentic smartphone video look, no text, vertical 9:16, 4 seconds.
+Style: Amateur front-camera phone video, handheld, slightly grainy, no professional lighting, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 4 seconds.
 Audio: Soft rubbing sound of the cotton pad, no music, no voice.
 ```
 
 ### HOOK-02 · Correcteur agacé · 4 s
 
 ```
-Scene: Tight close-up of the lower half of the face of a woman with warm medium-brown skin, phototype V, natural skin texture with visible pores, bare skin with a darker shadow of hyperpigmentation around the corners of her mouth. Her ring finger holds a small dab of creamy concealer near the corner of her lips.
+Scene: Tight close-up of the lower half of the face of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, bare skin with a soft diffuse area of darker pigmentation around the corners of her mouth. Her ring finger holds a small dab of creamy concealer near the corner of her lips.
 Action: She taps the concealer onto the darker shadow with quick, slightly impatient little taps.
 Camera: Static mirror point of view, handheld with natural micro-shake.
 Light: Soft warm window light from the left, golden tone, no cool or fluorescent light.
-Style: Photorealistic, natural skin texture with visible pores, authentic smartphone video look, no text, vertical 9:16, 4 seconds.
+Style: Amateur front-camera phone video, handheld, slightly grainy, no professional lighting, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 4 seconds.
 Audio: Faint tapping sound, no music, no voice.
 ```
 
 ### HOOK-03 · Miroir embué · 5 s
 
 ```
-Scene: A bathroom mirror fully fogged with condensation after a shower. Behind the fog, the blurred silhouette of a woman with warm medium-brown skin, phototype V, her hair wrapped in a cream towel, warm terracotta tiles softly visible around her.
+Scene: A bathroom mirror fully fogged with condensation after a shower. Behind the fog, the blurred silhouette of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, her hair wrapped in a cream towel, warm terracotta tiles softly visible around her.
 Action: Her palm wipes across the mirror in one wide horizontal stroke, revealing her clear reflection looking closely at her own cheek.
 Camera: Fixed just behind her shoulder, facing the mirror.
 Light: Warm dim bathroom light, steam in the air, glow from one bright window, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, cinematic, no text, vertical 9:16, 5 seconds.
+Style: Amateur phone video, handheld, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 5 seconds.
 Audio: Squeak of a palm on wet glass, no music, no voice.
 ```
 
@@ -121,7 +151,7 @@ Audio: One soft drip, no music.
 
 ```
 Scene: The MELA SKIN serum bottle from @image1, identical shape, colors and label, standing on a cream stone bathroom counter, label facing the camera. Warm terracotta zellige tiles behind, a folded cream towel at the edge of the frame.
-Action: Within the first half-second, a woman's hand with warm medium-brown skin (phototype V) and short natural nails enters quickly from the right, closes around the bottle and lifts it straight up out of frame, the label staying toward the camera.
+Action: Within the first half-second, a woman's hand with deep brown deeply melanated skin (phototype V) and short natural nails enters quickly from the right, closes around the bottle and lifts it straight up out of frame, the label staying toward the camera.
 Camera: Static, at the height of the bottle.
 Light: Soft warm window light from the left, golden tone, gentle shadows, no cool light.
 Style: Photorealistic, 50mm f/2, shallow depth of field, warm cinematic grade, subtle film grain, no extra text, vertical 9:16, 4 seconds.
@@ -133,11 +163,11 @@ Levée verticale, sans rotation du poignet : c'est ce qui garde l'étiquette de 
 ### HOOK-06 · La joue tournée vers la fenêtre · 4 s
 
 ```
-Scene: Selfie-camera framing of a woman aged about 24 with rich dark-brown skin, phototype VI, natural skin texture with visible pores, several flat dark post-acne marks on her chin and left cheek, short natural coily hair, oversized sage-green t-shirt, bare face, sitting near a window.
+Scene: Selfie-camera framing of a Black woman of West African descent aged about 24 with very deep espresso-brown skin, deeply melanated, natural skin texture with visible pores, several soft-edged darker post-acne marks with blurred edges on her chin and left cheek, short natural coily hair, oversized sage-green t-shirt, bare face, sitting near a window.
 Action: She slowly turns her face to the side toward the window, presenting her cheek to the light.
 Camera: Front-facing smartphone held at arm's length, natural handheld shake.
 Light: Bright warm daylight from the window raking across her skin, revealing real texture and the marks, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, authentic smartphone selfie video, no text, vertical 9:16, 4 seconds.
+Style: Amateur front-camera selfie video, handheld with visible shake, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 4 seconds.
 Audio: Quiet room tone, no music, no voice.
 ```
 
@@ -148,29 +178,29 @@ Audio: Quiet room tone, no music, no voice.
 ### DOUL-ACNE · La marque qui reste · 4 s
 
 ```
-Scene: Tight close-up of the chin and jawline of a woman with rich dark-brown skin, phototype VI, natural skin texture with visible pores, flat dark post-acne marks where pimples have healed, one small healing spot.
+Scene: Tight close-up of the chin and jawline of a Black woman of West African descent with very deep espresso-brown skin, deeply melanated, natural skin texture with visible pores, soft-edged darker post-acne marks with blurred edges where pimples have healed, one small healing spot.
 Action: Her fingertip gently touches one dark mark on her chin and stays still.
 Camera: Very slow push-in, handheld micro-shake.
 Light: Soft warm daylight from the side, gentle shadows, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, documentary beauty look, no text, vertical 9:16, 4 seconds.
+Style: Amateur phone video, handheld, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 4 seconds.
 Audio: Quiet room tone, no music, no voice.
 ```
 
 ### DOUL-MELA · Mélasma de grossesse · 5 s
 
 ```
-Scene: A woman aged about 30 with warm golden-tan skin, phototype IV, natural skin texture with visible pores, soft symmetrical brownish patches on both cheekbones and faintly above her upper lip, long dark wavy hair worn loose, visibly pregnant at about seven months, wearing a cream ribbed dress, standing side-on to a bathroom mirror. One hand rests on her belly.
+Scene: A woman aged about 30 with warm golden-tan skin, phototype IV, natural skin texture with visible pores, soft symmetrical brownish patches with blurred edges on both cheekbones and faintly above her upper lip, long dark wavy hair worn loose, visibly pregnant at about seven months, wearing a cream ribbed dress, standing side-on to a bathroom mirror. One hand rests on her belly.
 Action: She slowly raises her other hand and touches one cheekbone while looking at her reflection.
 Camera: Fixed over her shoulder, facing the mirror.
 Light: Soft warm morning window light, golden tone, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, intimate and calm, no text, vertical 9:16, 5 seconds.
+Style: Amateur phone video, handheld, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, intimate and calm, no text, vertical 9:16, 5 seconds.
 Audio: Quiet room tone, no music, no voice.
 ```
 
 ### DOUL-HPI · L'ombre après l'épilation · 4 s
 
 ```
-Scene: Extreme close-up of the upper lip of a woman with warm medium-brown skin, phototype V, natural skin texture with visible pores, a slightly darker shadow of hyperpigmentation just above the lip. A pair of slanted metal tweezers is held close to the skin.
+Scene: Extreme close-up of the upper lip of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, a slightly darker shadow of hyperpigmentation just above the lip. A pair of slanted metal tweezers is held close to the skin.
 Action: The tweezers pluck a single fine hair at the edge of the upper lip and pull slowly away.
 Camera: Static macro, mirror point of view.
 Light: Soft warm window light, gentle shadows, no cool light.
@@ -181,7 +211,7 @@ Audio: Tiny pluck sound, no music, no voice.
 ### DOUL-TEINT · Aucune teinte ne va · 4 s
 
 ```
-Scene: Top-down close-up of the back of a woman's hand with warm medium-brown skin (phototype V) resting on a cream stone bathroom counter. Three streaks of liquid foundation side by side on the back of the hand: one too light and ashy, one too pink, one too orange. Three plain unbranded foundation bottles blurred at the edge of the frame.
+Scene: Top-down close-up of the back of a woman's hand with deep brown deeply melanated skin (phototype V) resting on a cream stone bathroom counter. Three streaks of liquid foundation side by side on the back of the hand: one too light and ashy, one too pink, one too orange. Three plain unbranded foundation bottles blurred at the edge of the frame.
 Action: She slowly turns her hand toward the light, the three mismatched swatches catching the light.
 Camera: Static, top-down.
 Light: Soft warm window light from above left, no cool light.
@@ -193,7 +223,7 @@ Audio: No music, no voice.
 
 ```
 Scene: Top-down view of an open bathroom drawer filled with about eight half-used skincare bottles and tubes in plain white and clear unbranded packaging, no logos, no text.
-Action: A hand with warm medium-brown skin (phototype V) pushes the drawer shut in one firm motion.
+Action: A hand with deep brown deeply melanated skin (phototype V) pushes the drawer shut in one firm motion.
 Camera: Static, top-down.
 Light: Soft warm natural light, gentle shadows, no cool light.
 Style: Photorealistic, 35mm, warm cinematic grade, no text, vertical 9:16, 4 seconds.
@@ -255,7 +285,7 @@ Audio: Soft water trickle, no music.
 ### PROD-05 · Trois carnations, un flacon · 4 s · `@image1`
 
 ```
-Scene: Close-up of three women's hands gathered around the MELA SKIN serum bottle from @image1, identical shape, colors and label, held upright in the center with the label facing the camera, fingertips lightly touching it: one hand with warm golden-tan skin (phototype IV), one with warm medium-brown skin (phototype V), one with rich dark-brown skin (phototype VI). Short natural nails, five fingers on each hand.
+Scene: Close-up of three women's hands gathered around the MELA SKIN serum bottle from @image1, identical shape, colors and label, held upright in the center with the label facing the camera, fingertips lightly touching it: one hand with warm brown skin clearly darker than olive (phototype IV), one with deep brown deeply melanated skin (phototype V), one with very deep espresso-brown skin, deeply melanated (phototype VI). Short natural nails, five fingers on each hand.
 Action: The hands stay still and relaxed while the camera moves.
 Camera: Slow push-in toward the bottle, straight on.
 Light: Soft warm directional light, gentle shadows, no cool light.
@@ -296,7 +326,7 @@ Audio: Single soft drip, no music.
 ### TEX-03 · Étiré entre les doigts · 4 s
 
 ```
-Scene: Extreme close-up of the thumb and index finger of a woman's hand with warm medium-brown skin (phototype V), short natural nails, a small amount of lightweight translucent serum with a faint golden tint pressed between them, plain terracotta background.
+Scene: Extreme close-up of the thumb and index finger of a woman's hand with deep brown deeply melanated skin (phototype V), short natural nails, a small amount of lightweight translucent serum with a faint golden tint pressed between them, plain terracotta background.
 Action: The fingers slowly separate, stretching the serum into a thin glossy film that thins out and breaks.
 Camera: Static macro.
 Light: Warm backlight highlighting the glossy serum, soft fill.
@@ -307,7 +337,7 @@ Audio: Faint tacky sound, no music.
 ### TEX-04 · Absorbé sans trace blanche · 5 s
 
 ```
-Scene: Top-down macro of the back of a woman's hand with rich dark-brown skin (phototype VI), short natural nails, a small pool of lightweight translucent serum with a faint golden tint on the back of the hand, cream linen underneath.
+Scene: Top-down macro of the back of a woman's hand with very deep espresso-brown skin, deeply melanated (phototype VI), short natural nails, a small pool of lightweight translucent serum with a faint golden tint on the back of the hand, cream linen underneath.
 Action: Two fingertips of the other hand spread the serum in small circles until it is fully absorbed, leaving the skin with a soft natural sheen and no white or grey residue.
 Camera: Static, top-down.
 Light: Soft warm daylight from the side revealing skin texture, no cool light.
@@ -335,22 +365,22 @@ Ton protocole : nettoyer, 3-4 gouttes en tapotant, SPF le matin.
 ### RIT-01 · Nettoyage doux · 4 s
 
 ```
-Scene: Medium close-up of a woman with warm medium-brown skin, phototype V, natural skin texture with visible pores, dark hair pulled back, leaning over a bathroom sink, her face covered in soft white cleansing foam, warm terracotta zellige tiles behind her.
+Scene: Medium close-up of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, dark hair pulled back, leaning over a bathroom sink, her face covered in soft white cleansing foam, warm terracotta zellige tiles behind her.
 Action: She rinses her face with one splash of water from her cupped hands.
 Camera: Static, slightly side-on.
 Light: Soft warm window light from the left, golden tone, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, authentic smartphone video look, no text, vertical 9:16, 4 seconds.
+Style: Amateur front-camera phone video, handheld, slightly grainy, no professional lighting, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 4 seconds.
 Audio: Water splash, running tap, no music, no voice.
 ```
 
 ### RIT-02 · Les gouttes sur la pommette · 4 s · `@image1`
 
 ```
-Scene: Close-up of a woman with warm medium-brown skin, phototype V, natural skin texture with visible pores, bare face after cleansing, faint darker patches on the cheekbone, holding the glass dropper of the MELA SKIN serum from @image1, dark chocolate-brown bulb and clear glass tube, just above her cheekbone.
+Scene: Close-up of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, bare face after cleansing, faint darker patches on the cheekbone, holding the glass dropper of the MELA SKIN serum from @image1, dark chocolate-brown bulb and clear glass tube, just above her cheekbone.
 Action: She squeezes the bulb gently and deposits a few small drops of lightweight translucent serum with a faint golden tint along her cheekbone.
 Camera: Static, slight upward tilt, mirror point of view.
 Light: Soft warm window light from the left, golden tone, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, authentic smartphone video look, no text, vertical 9:16, 4 seconds.
+Style: Amateur front-camera phone video, handheld, slightly grainy, no professional lighting, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 4 seconds.
 Audio: Quiet room tone, no music, no voice.
 ```
 
@@ -359,18 +389,18 @@ Seule la pipette vient de la référence, pas le flacon entier : c'est plus sûr
 ### RIT-03 · Les tapotements · 4 s
 
 ```
-Scene: Close-up of a woman with warm medium-brown skin, phototype V, natural skin texture with visible pores, eyes half-closed, fingertips of both hands resting on her cheeks where the serum was applied.
+Scene: Close-up of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, eyes half-closed, fingertips of both hands resting on her cheeks where the serum was applied.
 Action: Her fingertips gently pat the serum into her cheeks with a light, rhythmic tapping motion.
 Camera: Slow orbit of a few degrees to the right.
 Light: Soft warm window light, healthy natural sheen on the skin, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, calm intimate morning atmosphere, no text, vertical 9:16, 4 seconds.
+Style: Amateur phone video, handheld, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, calm intimate morning atmosphere, no text, vertical 9:16, 4 seconds.
 Audio: Soft tapping sound, no music, no voice.
 ```
 
 ### RIT-04 · Le SPF du matin · 4 s
 
 ```
-Scene: Close-up of the hands of a woman with warm medium-brown skin, phototype V, holding a dark chocolate-brown sunscreen tube with a flip cap and a plain matte label, above a bathroom sink. Her face is softly out of focus in the background.
+Scene: Close-up of the hands of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, holding a dark chocolate-brown sunscreen tube with a flip cap and a plain matte label, above a bathroom sink. Her face is softly out of focus in the background.
 Action: She squeezes a line of white sunscreen along her index and middle finger.
 Camera: Static, close on the hands.
 Light: Bright warm morning daylight from the window, no cool light.
@@ -383,11 +413,11 @@ Le tube SPF est décrit, pas référencé — tu n'as pas de packshot pour lui. 
 ### RIT-05 · Version soir, bonnet en satin · 5 s · `@image1`
 
 ```
-Scene: Medium close-up of a woman aged about 24 with rich dark-brown skin, phototype VI, natural skin texture with visible pores, flat dark post-acne marks on her chin, wearing a black satin bonnet over her hair and a sage-green t-shirt, sitting on the edge of her bed in the evening, holding the MELA SKIN serum bottle from @image1, identical shape, colors and label, label facing the camera.
+Scene: Medium close-up of a Black woman of West African descent aged about 24 with very deep espresso-brown skin, deeply melanated, natural skin texture with visible pores, soft-edged darker post-acne marks with blurred edges on her chin, wearing a black satin bonnet over her hair and a sage-green t-shirt, sitting on the edge of her bed in the evening, holding the MELA SKIN serum bottle from @image1, identical shape, colors and label, label facing the camera.
 Action: She unscrews the dropper and lifts the glass pipette straight up out of the bottle, the bottle staying upright and still in her other hand.
 Camera: Static, eye level, handheld micro-shake.
 Light: Warm bedside lamp only, amber tone, dark cosy surroundings, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, authentic smartphone video look, no extra text, vertical 9:16, 5 seconds.
+Style: Amateur front-camera phone video, handheld, slightly grainy, no professional lighting, no color grading, natural skin texture with visible pores and small real imperfections, no extra text, vertical 9:16, 5 seconds.
 Audio: Soft unscrewing sound, no music, no voice.
 ```
 
@@ -411,11 +441,11 @@ Audio: Faint morning ambience, no music.
 ### RES-01 · Peau nue en lumière naturelle · 4 s
 
 ```
-Scene: Close-up of the cheek of a woman with warm medium-brown skin, phototype V, bare face, natural skin texture with visible pores, faint darker patches still visible on the cheekbone, no retouching.
+Scene: Close-up of the cheek of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, bare face, natural skin texture with visible pores, faint darker patches still visible on the cheekbone, no retouching.
 Action: She turns her face very slightly toward the window.
 Camera: Slow push-in on her cheek.
 Light: Natural warm daylight raking across the skin, revealing real texture, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, 85mm f/2, documentary beauty film, no text, vertical 9:16, 4 seconds.
+Style: Amateur phone video, handheld, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 4 seconds.
 Audio: Quiet room tone, no music, no voice.
 ```
 
@@ -426,18 +456,18 @@ Scene: A woman with warm medium-brown skin, phototype V, natural skin texture wi
 Action: She places the foundation bottle into the drawer and slides the drawer shut.
 Camera: Static medium shot, slightly side-on.
 Light: Soft warm morning window light, golden tone, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, authentic smartphone video look, no logos, no text, vertical 9:16, 4 seconds.
+Style: Amateur front-camera phone video, handheld, slightly grainy, no professional lighting, no color grading, natural skin texture with visible pores and small real imperfections, no logos, no text, vertical 9:16, 4 seconds.
 Audio: Drawer closing, no music, no voice.
 ```
 
 ### RES-03 · La main sur la joue · 4 s
 
 ```
-Scene: Close-up of a woman with warm medium-brown skin, phototype V, natural skin texture with visible pores, faint darker patches on the cheekbone, looking at herself in the bathroom mirror.
+Scene: Close-up of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, faint darker patches on the cheekbone, looking at herself in the bathroom mirror.
 Action: Her hand glides slowly along her cheek and a small natural smile appears.
 Camera: Static, over-the-shoulder mirror framing.
 Light: Soft warm window light, golden tone, no cool light.
-Style: Photorealistic, natural skin texture with visible pores, intimate and calm, no text, vertical 9:16, 4 seconds.
+Style: Amateur phone video, handheld, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, intimate and calm, no text, vertical 9:16, 4 seconds.
 Audio: Quiet room tone, no music, no voice.
 ```
 
@@ -448,7 +478,7 @@ Scene: A woman aged about 30 with warm golden-tan skin, phototype IV, natural sk
 Action: She tilts her face up toward the sun with her eyes closed, relaxed.
 Camera: Slow push-in from a medium close-up.
 Light: Warm late-afternoon sun, golden tone, soft natural shadows.
-Style: Photorealistic, natural skin texture with visible pores, 85mm f/2, warm cinematic grade, no text, vertical 9:16, 5 seconds.
+Style: Amateur phone video, handheld, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 5 seconds.
 Audio: Soft outdoor ambience, distant birds, no music.
 ```
 
@@ -456,7 +486,7 @@ Audio: Soft outdoor ambience, distant birds, no music.
 
 ```
 Scene: Four identical MELA SKIN serum bottles from @image1, identical shape, colors and label, all labels facing the camera: three empty ones lined up on a light oak bathroom shelf against warm terracotta tiles, and an empty space at the end of the row.
-Action: A hand with warm medium-brown skin (phototype V) sets a fourth, full bottle down in the empty space at the end of the row, the label facing the camera.
+Action: A hand with deep brown deeply melanated skin (phototype V) sets a fourth, full bottle down in the empty space at the end of the row, the label facing the camera.
 Camera: Static, eye level with the shelf.
 Light: Soft warm window light, golden tone, no cool light.
 Style: Photorealistic, 50mm f/2, warm matte film tones, no extra text, vertical 9:16, 4 seconds.
@@ -473,7 +503,7 @@ Quatre exemplaires depuis une seule référence : `identical` et `all labels fac
 
 ```
 Scene: Top-down view of an open kraft shipping box on a cream linen bedsheet, cream tissue paper inside partly covering the MELA SKIN serum bottle from @image1, identical shape, colors and label, lying on its side with the label facing up, next to a small cream cotton canvas zip pouch with a dark brown zipper pull and a small embroidered circular emblem in terracotta thread.
-Action: Two hands with warm medium-brown skin (phototype V), five fingers each, fold back the tissue paper, revealing the bottle and the pouch.
+Action: Two hands with deep brown deeply melanated skin (phototype V), five fingers each, fold back the tissue paper, revealing the bottle and the pouch.
 Camera: Static, top-down.
 Light: Soft warm morning light from a window, gentle shadows.
 Style: Photorealistic, 35mm, warm matte film tones, no extra text, vertical 9:16, 5 seconds.
@@ -498,7 +528,7 @@ Plan réécrit : l'orbite de 30° est remplacée par un travelling avant. Une or
 ### OFF-03 · L'e-book sur le téléphone (fond vert) · 5 s
 
 ```
-Scene: A hand with warm medium-brown skin (phototype V), five fingers, holding a smartphone vertically above a cream linen bedsheet, the phone screen a flat uniform bright green for compositing.
+Scene: A hand with deep brown deeply melanated skin (phototype V), five fingers, holding a smartphone vertically above a cream linen bedsheet, the phone screen a flat uniform bright green for compositing.
 Action: The thumb makes two slow upward scrolling swipes on the screen.
 Camera: Static, slightly over-the-shoulder point of view.
 Light: Soft warm natural light, no reflections on the screen.
@@ -552,11 +582,11 @@ Si le rendu fait trop « IA bizarre », fais ce plan en motion design sur Canva 
 ### MEC-04 · Le soleil sur la joue · 4 s
 
 ```
-Scene: Close-up of a woman aged about 30 with warm golden-tan skin, phototype IV, natural skin texture with visible pores, soft brownish patches on her cheekbone, near a window, a harsh bright sunbeam falling across her cheekbone and the patches on it.
+Scene: Close-up of a woman of North African descent aged about 30 with warm brown skin, clearly darker than olive, natural skin texture with visible pores, soft brownish patches on her cheekbone, near a window, a harsh bright sunbeam falling across her cheekbone and the patches on it.
 Action: She squints slightly and raises her hand to shade her face.
 Camera: Static, close-up.
 Light: Hard warm direct sunlight through the window, strong contrast.
-Style: Photorealistic, natural skin texture with visible pores, cinematic, no text, vertical 9:16, 4 seconds.
+Style: Amateur phone video, handheld, slightly grainy, no color grading, natural skin texture with visible pores and small real imperfections, no text, vertical 9:16, 4 seconds.
 Audio: Quiet room tone, no music, no voice.
 ```
 
@@ -570,7 +600,7 @@ Raccorde directement sur RIT-04.
 
 ```
 Scene: A warm bathroom with terracotta zellige tiles softly out of focus.
-Action: A hand with warm medium-brown skin (phototype V) moves quickly toward the camera and covers the lens completely, the frame ending in dark brown.
+Action: A hand with deep brown deeply melanated skin (phototype V) moves quickly toward the camera and covers the lens completely, the frame ending in dark brown.
 Camera: Static.
 Light: Soft warm window light, no cool light.
 Style: Photorealistic, 35mm, motion blur on the hand, no text, vertical 9:16, 3 seconds.
@@ -580,7 +610,7 @@ Audio: Soft whoosh, no music.
 ### TRA-02 · Serviette devant le visage · 3 s
 
 ```
-Scene: Close-up of a woman with warm medium-brown skin, phototype V, natural skin texture with visible pores, in a warm bathroom, holding a cream towel.
+Scene: Close-up of a Black woman of Caribbean descent with deep brown skin, deeply melanated, clearly dark, natural skin texture with visible pores, in a warm bathroom, holding a cream towel.
 Action: The cream towel passes quickly in front of her face from right to left, covering the whole frame for a moment.
 Camera: Static.
 Light: Soft warm window light, golden tone.
@@ -592,7 +622,7 @@ Audio: Soft fabric whoosh, no music.
 
 ```
 Scene: Seamless deep terracotta-brown backdrop.
-Action: A hand with warm medium-brown skin (phototype V) carries the MELA SKIN serum bottle from @image1, identical shape and colors, quickly across the frame from left to right, the label kept toward the camera.
+Action: A hand with deep brown deeply melanated skin (phototype V) carries the MELA SKIN serum bottle from @image1, identical shape and colors, quickly across the frame from left to right, the label kept toward the camera.
 Camera: Static.
 Light: Warm directional light, glowing amber glass.
 Style: Photorealistic, strong motion blur, no extra text, vertical 9:16, 3 seconds.
