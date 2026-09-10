@@ -30,6 +30,15 @@ Les plans marqués « — » ou « ✋ MAIN » peuvent partir directement en tex
 
 - Retire le badge « 100 % remboursé 90 jours » du packshot (recadrage ou gomme). Sinon le modèle le recopie dans la scène.
 - Fond uni, flacon entier, étiquette de face. Si tu as une vue 3/4, attache les deux.
+- **Packshot de référence retenu** : flacon compte-gouttes en verre ambré, capuchon-pipette brun foncé, étiquette brune enveloppante en lettres crème, 30 ml, sur fond beige. Il ne porte aucun badge : utilisable tel quel, rien à retoucher.
+
+**Description produit de secours** (si un modèle perd l'étiquette malgré la référence, ajoute cette ligne au prompt) :
+
+```
+a slim cylindrical amber glass dropper bottle with a dark chocolate-brown screw dropper cap and a matte warm-brown wraparound label with pale cream lettering, exactly as in the reference image, 30ml
+```
+
+Ne fais pas décrire le texte de l'étiquette mot à mot : le modèle le redessinerait de travers. C'est l'image de référence qui porte le texte, la description ne porte que la forme et les couleurs.
 
 ### 0.2 Texture du sérum
 
@@ -55,6 +64,22 @@ Product photo of a small rectangular zip pouch in cream cotton canvas, a small e
 ```
 text, letters, subtitles, watermark, badge, sticker, price tag, extra fingers, deformed hands, fused fingers, plastic skin, airbrushed skin, skin lightening, lighter skin tone, grey or ashy cast, cool blue light, fluorescent light, clinical white lab, changing label, extra bottles, distorted logo
 ```
+
+### 0.6 Clip témoin — prêt à coller (HOOK-05)
+
+Le plan le plus rentable à tester en premier : il ne dépend d'aucune persona, seulement du packshot et d'une main. S'il tient, le reste du batch tient.
+
+**Étape 1 — image de départ** (Nano Banana, 9:16, packshot en référence) :
+
+```
+The MELA SKIN serum bottle from the reference image, identical shape, colors and label, standing on a cream stone bathroom counter, label facing the camera turned slightly at 20 degrees. Warm terracotta zellige tiles behind, a folded cream towel at the edge of the frame. Soft warm window light from the left, golden tone, gentle shadows, no cool light. Photorealistic, 50mm f/2, shallow depth of field, warm cinematic grade, subtle film grain, no extra text, vertical 9:16.
+```
+
+Génère-en 3, garde celle où l'étiquette est la plus nette et la plus droite.
+
+**Étape 2 — vidéo** (Seedance ou Kling, image-to-video, l'image validée en première frame) : colle le prompt complet de HOOK-05 en section 2.
+
+**Ce que tu regardes sur le clip témoin**, dans cet ordre : l'étiquette n'a ni glissé ni muté pendant le mouvement · la main entre bien dans la première demi-seconde · les doigts sont au bon compte · la lumière est restée chaude. Si l'étiquette lâche au moment où la main saisit le flacon, ce n'est pas le prompt qu'il faut enrichir, c'est le mouvement qu'il faut ralentir : remplace `grabs the bottle in one decisive motion` par `closes around the bottle and lifts it slowly`.
 
 ---
 
