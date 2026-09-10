@@ -69,6 +69,23 @@ text, letters, words, logo, brand name, subtitles, watermark, badge, sticker, pr
 
 `morphing face`, `warping label` et `rotating bottle` visent les trois façons dont un clip se dégrade en cours de route.
 
+### Quel modèle pour quel groupe de plans
+
+Aucun modèle ne règle à lui seul le problème de carnation : le biais vers la peau claire est documenté sur toute la génération d'images et de vidéos, pas sur un outil en particulier. Le choix du modèle joue sur l'obéissance au prompt, pas sur le prior. Répartition qui tient :
+
+| Groupe | Modèle | Pourquoi |
+|---|---|---|
+| Les 16 plans `@image1` | **Seedance 2.0** | le meilleur en image-to-video et en fidélité à une référence : c'est ce qui tient ton étiquette |
+| Les 27 plans visage et mains | **Kling 3.0** | le meilleur en obéissance au prompt et en mouvement humain, donc en carnation et en rendu amateur |
+
+**N'engage rien sur Sora 2** : le modèle est déprécié depuis avril 2026 et son API ferme le 24 septembre 2026.
+
+### Le levier de carnation le plus efficace : le contexte, pas l'adjectif
+
+Les travaux sur le biais de carnation montrent que **les éléments contextuels du prompt pèsent plus lourd que le descripteur de couleur lui-même** : un prompt mentionnant des cheveux tressés produit une peau plus foncée même quand le seul adjectif présent dit « pâle », et un décor de neige ou de nuit fait remonter la peau claire.
+
+Traduction pour toi : au lieu d'empiler les adjectifs de couleur, ajoute des éléments qui co-occurrent avec les peaux foncées dans les données d'entraînement. Cheveux crépus naturels, tresses, bonnet en satin, foulard, créoles dorées sur peau profonde. Le pack en contient déjà (bonnet satin sur RIT-05, cheveux crépus courts sur les plans P6) — c'est à renforcer partout où la carnation résiste, avant de toucher aux adjectifs.
+
 ### Si la peau sort trop claire
 
 C'est l'échec le plus fréquent, et il a trois causes qui s'additionnent.
