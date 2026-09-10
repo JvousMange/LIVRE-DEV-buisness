@@ -690,3 +690,26 @@ Audio: Curtain rings sliding, no music.
 Tu rejettes le clip si : le visage a changé, l'étiquette a bougé ou muté, la peau sort plus claire que sur la référence, une main est déformée, la lumière a viré au froid, ou du texte parasite est apparu.
 
 Nommage : `MELA_BROLL_[CODE]_[P4|P5|P6]_V1` (ex. `MELA_BROLL_TEX-04_P6_V2`).
+
+---
+
+## 13. Ordre de passage (run manuel)
+
+Les 43 plans se rangent en 4 groupes, du moins cher au plus cher. Tu ne passes au groupe suivant qu'une fois le précédent propre.
+
+| # | Groupe | Plans | Ce que tu attaches |
+|---|---|---|---|
+| 0 | **Clip témoin** | HOOK-05 | packshot |
+| 1 | Sans référence | 11 plans | rien (text-to-video direct possible) |
+| 2 | Produit seul | 13 plans | packshot |
+| 3 | Personas | 3 images maîtresses, puis 18 plans | persona (+ packshot sur RIT-02, RIT-05 ; SPF sur RIT-04) |
+
+**Groupe 0 — le témoin.** Section 0.6, prêt à coller. Tu le regardes en entier avant toute autre dépense. Tant qu'il n'est pas bon, tu ne lances rien d'autre : ce qui casse ici cassera sur les 42 autres.
+
+**Groupe 1 — les 11 plans sans référence.** DOUL-TEINT, DOUL-GEN, TEX-03, TEX-04, TEX-05, MEC-01, MEC-02, MEC-03, OFF-03, TRA-01, TRA-04. Aucune image à attacher, le prompt complet suffit. C'est le groupe le plus fiable : à faire en premier après le témoin pour te constituer un fond de banque utilisable tout de suite.
+
+**Groupe 2 — les 13 plans produit restants.** HOOK-04, PROD-01 à 05, TEX-01, TEX-02, RIT-06, RES-05, OFF-01, OFF-02, TRA-03. Même méthode que le témoin : image de départ avec le packshot, puis animation. PROD-05 (trois mains) et OFF-01 (deux mains) sont les deux plans à doigts : 3 images de départ chacun, tu gardes la plus propre.
+
+**Groupe 3 — les personas.** D'abord les 3 images maîtresses (section 1), 3 à 4 candidates chacune, tu en figes **une** par persona et tu ne la changes plus. Ensuite les 18 plans qui en dépendent. Quatre d'entre eux changent la tenue — HOOK-03 (serviette), DOUL-MELA (enceinte), RIT-05 (bonnet), RES-04 (extérieur) : le changement se fait à l'image de départ, avec la maîtresse attachée, jamais dans la vidéo.
+
+**Règle de dépense sur tout le run** : une image ratée se rejette pour presque rien, une vidéo ratée se paie plein tarif. Tu ne montes jamais une image en vidéo tant qu'elle n'a pas passé la grille de la section 12.
