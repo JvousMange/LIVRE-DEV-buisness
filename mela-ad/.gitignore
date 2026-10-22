@@ -3,3 +3,6 @@ tmp
 out/mela-skin-ad-v2-*.mp4
 voice-tests/_w
 __pycache__
+# Local secrets written by `elevenlabs onboard`
+/.env.local
+.env.local
