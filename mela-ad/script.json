@@ -1,0 +1,40 @@
+{
+ "beats": [
+  {"id":"hook","sentences":[
+    {"cap":"Tes boutons partent, mais tu as toujours des marques noires qui gâchent tout ?","say":"Tes boutons partent, mais tu as toujours des marques noires qui gâchent tout ?"},
+    {"cap":"Alors ta peau fabrique trop de pigment.","say":"Alors ta peau fabrique trop de pigment."}]},
+  {"id":"intro","sentences":[{"cap":"Cinq signes que tes taches sont de l'hyperpigmentation.","say":"Cinq, signes que tes taches sont de l'hyperpigmentation."}]},
+  {"id":"s1","sentences":[{"cap":"Un : elles restent des mois après la disparition du bouton.","say":"Un, elles restent des mois après la disparition du bouton."}]},
+  {"id":"s2","sentences":[{"cap":"Deux : elles sont brunes ou violacées, plus foncées que le reste de ta peau.","say":"Deux, elles sont brunes ou violacées, plus foncées que le reste de ta peau."}]},
+  {"id":"s3","sentences":[{"cap":"Trois : tu en as pas seulement sur le visage, mais aussi après le rasage, l'épilation, les frottements.","say":"Trois, tu en as pas seulement sur le visage, mais aussi après le rasage, l'épilation, les frottements."}]},
+  {"id":"s4","sentences":[{"cap":"Quatre : depuis que tu gommes ta peau ou que tu testes des produits au hasard, c'est encore pire.","say":"Quatre, depuis que tu gommes ta peau ou que tu testes des produits au hasard, c'est encore pire."}]},
+  {"id":"s5","sentences":[
+    {"cap":"Et cinq : aucun gommage ni crème éclat ne change quoi que ce soit.","say":"Et cinq, aucun gommage ni crème éclat ne change quoi que ce soit."},
+    {"cap":"Normal : la plupart des routines sont pensées pour des peaux claires.","say":"Normal, la plupart des routines sont pensées pour des peaux claires."}]},
+  {"id":"bascule","sentences":[
+    {"cap":"Ça te parle ?","say":"Ça te parle ?"},
+    {"cap":"Alors le problème n'est pas sur ta peau, mais en dessous.","say":"Alors le problème n'est pas sur ta peau, mais en dessous."},
+    {"cap":"Et c'est là que tu peux agir.","say":"Et c'est là que tu peux agir."}]},
+  {"id":"meca","sentences":[
+    {"cap":"Le but n'est pas d'éclaircir ta peau.","say":"Le but n'est pas d'éclaircir ta peau."},
+    {"cap":"Tout vient de la mélanine que ta peau fabrique en trop après une inflammation, à cause d'une enzyme : la tyrosinase.","say":"Tout vient de la mélanine que ta peau fabrique en trop après une inflammation, à cause d'une enzyme, la tirozinase."}]},
+  {"id":"a1","sentences":[
+    {"cap":"L'acide azélaïque, à 10 %, freine cette production de mélanine.","say":"L'acide azélaïque, à dix pour cent, freine cette production de mélanine."},
+    {"cap":"L'alpha-arbutine bloque l'enzyme.","say":"L'alpha-arbutine bloque l'enzyme."}]},
+  {"id":"a2","sentences":[{"cap":"Ajoute l'acide tranexamique, et tu agis aussi sur les taches tenaces, celles qui reviennent.","say":"Ajoute l'acide tranéxamique, et tu agis aussi sur les taches tenaces, celles qui reviennent."}]},
+  {"id":"a3","sentences":[
+    {"cap":"Et la niacinamide, à 5 %, renforce ta barrière cutanée pour limiter le retour des taches.","say":"Et la niacinamide, à cinq pour cent, renforce ta barrière cutanée pour limiter le retour des taches."},
+    {"cap":"La plupart des soins n'en contiennent que quelques-uns.","say":"La plupart des soins n'en contiennent que quelques-euns."}]},
+  {"id":"conso","sentences":[
+    {"cap":"Il existe plusieurs façons de cibler une tache.","say":"Il existe plusieurs façons de cibler une tache."},
+    {"cap":"Mais tu n'as pas besoin de dix flacons différents : le Sérum Anti-Taches MELA SKIN les réunit tous.","say":"Mais tu n'as pas besoin de dix flacons différents, le Sérum Anti-Taches, Méla Skine, les réunit tous."}]},
+  {"id":"preuve","sentences":[{"cap":"94 % de celles qui l'ont testé le recommandent.","say":"Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent."}]},
+  {"id":"garantie","sentences":[
+    {"cap":"Toujours sceptique ?","say":"Toujours sceptique ?"},
+    {"cap":"Très bien.","say":"Très bien."},
+    {"cap":"Voilà pourquoi tu as une garantie satisfait ou remboursé de quatre-vingt-dix jours.","say":"Voilà pourquoi tu as une garantie satisfait ou remboursé de quatre-vingt-dix jours."},
+    {"cap":"Si tu n'es pas convaincue, tu ne paies rien.","say":"Si tu n'es pas convaincue, tu ne paies rien."},
+    {"cap":"Pas de souci.","say":"Pas de souci."}]},
+  {"id":"offre","sentences":[{"cap":"Cette semaine, pour 2 flacons achetés, tu en reçois 1 offert.","say":"Cette semaine, pour deux flacons achetés, tu en reçois un offert."}]}
+ ]
+}
