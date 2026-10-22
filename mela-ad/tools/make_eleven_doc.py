@@ -6,7 +6,7 @@ D = {  # (id, phrase) -> (tag v3, intention)
  ("hook",1):("","Révélation calme, la voix redescend. Léger sourire de celle qui sait."),
  ("intro",0):("[excited]","Annonce énergique. « Cinq » net, « hyperpigmentation » détaché."),
  ("s1",0):("","« Un, » bien marqué. Constat, rythme régulier. Accent sur « des mois »."),
- ("s2",0):("","« Deux, » net. Accent sur « violacées » puis « plus foncées »."),
+ ("s2",0):("","« Deux, » net. Accent sur « noires » puis « plus foncées »."),
  ("s3",0):("","« Trois, » net. Énumération qui accélère : « le rasage, l'épilation, les frottements »."),
  ("s4",0):("[sighs]","« Quatre, » net. « c'est encore pire » : soupir, la voix retombe."),
  ("s5",0):("[exasperated]","Lassitude : « aucun gommage ni crème éclat ne change quoi que ce soit »."),
@@ -35,7 +35,7 @@ out = ["# Voix off ElevenLabs — MELA SKIN\n",
 "## Réglages conseillés",
 "- **Modèle** : *Eleven v3* si tu l'as (il comprend les balises d'émotion entre crochets), sinon *Multilingual v2* (ignore alors les balises `[ ]`).",
 "- **Voix** : dans la bibliothèque, filtre *Français*, voix féminine, usage *conversationnel / réseaux sociaux*. Teste 3 voix sur le premier bloc, garde celle qui sonne comme une amie qui parle, pas une speakerine.",
-"- **Stabilité** : 30 à 40 % (plus bas = plus d'intention). **Similarité** : 70 à 80 %. **Style** : 25 à 45 % (v2). **Speaker boost** : activé. **Vitesse** : 1,0 à 1,05.",
+"- **Stabilité** : 30 à 40 % (plus bas = plus d'intention). **Similarité** : 70 à 80 %. **Style** : 25 à 45 % (v2). **Speaker boost** : activé. **Vitesse : 1,00** (pas 1,20 : c'est ce qui rendait la voix trop rapide).",
 "- **Génère bloc par bloc** (16 blocs ci-dessous), 2 à 3 prises par bloc, garde la meilleure. C'est plus long mais c'est ce qui donne de l'intention.",
 "- Les nombres sont écrits en lettres, et la marque s'écrit « Méla Skine » : ne les change pas.\n",
 "## Comment me les envoyer",
@@ -53,4 +53,5 @@ out.append("## Version sans balises (Multilingual v2)\n```")
 for b in sc["beats"]: out.append(" ".join(s["say"] for s in b["sentences"]))
 out.append("```\n")
 open("VOIX_ELEVENLABS.md", "w").write("\n".join(out))
+open("voix_elevenlabs_UN_SEUL_BLOC.txt", "w").write("\n\n".join(" ".join(((D[(b["id"], si)][0] + " ") if D[(b["id"], si)][0] else "") + s_["say"] for si, s_ in enumerate(b["sentences"])) for b in sc["beats"]) + "\n")
 print("ok")

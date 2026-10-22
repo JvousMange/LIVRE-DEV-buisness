@@ -3,9 +3,9 @@
   {"id":"hook","sentences":[
     {"cap":"Tes boutons partent, mais tu as toujours des marques noires qui gâchent tout ?","say":"Tes boutons partent, mais tu as toujours des marques noires qui gâchent tout ?"},
     {"cap":"Alors ta peau fabrique trop de pigment.","say":"Alors ta peau fabrique trop de pigment."}]},
-  {"id":"intro","sentences":[{"cap":"Cinq signes que tes taches sont de l'hyperpigmentation.","say":"Cinq, signes que tes taches sont de l'hyperpigmentation."}]},
+  {"id":"intro","sentences":[{"cap":"Cinq signes que tes taches sont de l'hyperpigmentation.","say":"Cinq signes que tes taches sont de l'hyperpigmentation."}]},
   {"id":"s1","sentences":[{"cap":"Un : elles restent des mois après la disparition du bouton.","say":"Un, elles restent des mois après la disparition du bouton."}]},
-  {"id":"s2","sentences":[{"cap":"Deux : elles sont brunes ou violacées, plus foncées que le reste de ta peau.","say":"Deux, elles sont brunes ou violacées, plus foncées que le reste de ta peau."}]},
+  {"id":"s2","sentences":[{"cap":"Deux : elles sont brunes ou noires, plus foncées que le reste de ta peau.","say":"Deux, elles sont brunes ou noires, plus foncées que le reste de ta peau."}]},
   {"id":"s3","sentences":[{"cap":"Trois : tu en as pas seulement sur le visage, mais aussi après le rasage, l'épilation, les frottements.","say":"Trois, tu en as pas seulement sur le visage, mais aussi après le rasage, l'épilation, les frottements."}]},
   {"id":"s4","sentences":[{"cap":"Quatre : depuis que tu gommes ta peau ou que tu testes des produits au hasard, c'est encore pire.","say":"Quatre, depuis que tu gommes ta peau ou que tu testes des produits au hasard, c'est encore pire."}]},
   {"id":"s5","sentences":[

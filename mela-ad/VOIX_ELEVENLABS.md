@@ -3,7 +3,7 @@
 ## Réglages conseillés
 - **Modèle** : *Eleven v3* si tu l'as (il comprend les balises d'émotion entre crochets), sinon *Multilingual v2* (ignore alors les balises `[ ]`).
 - **Voix** : dans la bibliothèque, filtre *Français*, voix féminine, usage *conversationnel / réseaux sociaux*. Teste 3 voix sur le premier bloc, garde celle qui sonne comme une amie qui parle, pas une speakerine.
-- **Stabilité** : 30 à 40 % (plus bas = plus d'intention). **Similarité** : 70 à 80 %. **Style** : 25 à 45 % (v2). **Speaker boost** : activé. **Vitesse** : 1,0 à 1,05.
+- **Stabilité** : 30 à 40 % (plus bas = plus d'intention). **Similarité** : 70 à 80 %. **Style** : 25 à 45 % (v2). **Speaker boost** : activé. **Vitesse : 1,00** (pas 1,20 : c'est ce qui rendait la voix trop rapide).
 - **Génère bloc par bloc** (16 blocs ci-dessous), 2 à 3 prises par bloc, garde la meilleure. C'est plus long mais c'est ce qui donne de l'intention.
 - Les nombres sont écrits en lettres, et la marque s'écrit « Méla Skine » : ne les change pas.
 
@@ -24,7 +24,7 @@ Joins ici **soit un seul fichier** avec toute la voix off, **soit 16 fichiers** 
 - *Intention* : Annonce énergique. « Cinq » net, « hyperpigmentation » détaché.
 
 ```
-[excited] Cinq, signes que tes taches sont de l'hyperpigmentation.
+[excited] Cinq signes que tes taches sont de l'hyperpigmentation.
 ```
 
 ### 03 · s1
@@ -35,10 +35,10 @@ Un, elles restent des mois après la disparition du bouton.
 ```
 
 ### 04 · s2
-- *Intention* : « Deux, » net. Accent sur « violacées » puis « plus foncées ».
+- *Intention* : « Deux, » net. Accent sur « noires » puis « plus foncées ».
 
 ```
-Deux, elles sont brunes ou violacées, plus foncées que le reste de ta peau.
+Deux, elles sont brunes ou noires, plus foncées que le reste de ta peau.
 ```
 
 ### 05 · s3
@@ -139,9 +139,9 @@ Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent.
 ## Version sans balises (Multilingual v2)
 ```
 Tes boutons partent, mais tu as toujours des marques noires qui gâchent tout ? Alors ta peau fabrique trop de pigment.
-Cinq, signes que tes taches sont de l'hyperpigmentation.
+Cinq signes que tes taches sont de l'hyperpigmentation.
 Un, elles restent des mois après la disparition du bouton.
-Deux, elles sont brunes ou violacées, plus foncées que le reste de ta peau.
+Deux, elles sont brunes ou noires, plus foncées que le reste de ta peau.
 Trois, tu en as pas seulement sur le visage, mais aussi après le rasage, l'épilation, les frottements.
 Quatre, depuis que tu gommes ta peau ou que tu testes des produits au hasard, c'est encore pire.
 Et cinq, aucun gommage ni crème éclat ne change quoi que ce soit. Normal, la plupart des routines sont pensées pour des peaux claires.

@@ -3,7 +3,7 @@ const NS = "http://www.w3.org/2000/svg";
 const C = {
   kraft: "#C89E70", dark: "#301509", terra: "#8C4A32", terraD: "#6E3624", cream: "#FFF7C9", sage: "#6B8F71", sageD: "#4F7156",
   skin: "#9A6340", skinD: "#7E4D31", skinL: "#B0764B", mark: "#3A1F10", red: "#C8402A", hair: "#1D130E",
-  paper: "#EBD7B0", paperD: "#D8BE8E", cardboard: "#B98A5C", grey: "#A8A08F", greyD: "#7C7466", blue: "#4F6F8C", plum: "#4A2535"
+  paper: "#EBD7B0", paperD: "#D8BE8E", cardboard: "#B98A5C", grey: "#A8A08F", greyD: "#7C7466", blue: "#4F6F8C", plum: "#4A2535", ink: "#17100F"
 };
 const H = {};
 H.clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
