@@ -47,17 +47,33 @@ H.applyAll = list => {
 H.pts = (pts, seed = 1, jit = 3) => { const r = H.rng(seed); return pts.map(([x, y]) => [x + (r() - .5) * 2 * jit, y + (r() - .5) * 2 * jit]); };
 H.d = pts => "M" + pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join("L") + "Z";
 const edge = { stroke: "#fff", "stroke-opacity": ".22", "stroke-width": "2.2", "stroke-linejoin": "round" };
-H.poly = (parent, pts, fill, o = {}) => H.el("path", Object.assign({ d: H.d(H.pts(pts, o.seed || 3, o.jit === undefined ? 2.2 : o.jit)), fill, filter: o.sh === false ? "none" : `url(#${o.sh || "sh"})` }, edge, o.attr || {}), parent);
+H.shade = (hex, k) => { const m = /^#([0-9a-f]{6})$/i.exec(hex); if (!m) return null; const n = parseInt(m[1], 16); const f = v => Math.max(0, Math.min(255, Math.round(v * k))); return "#" + [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(f).map(v => v.toString(16).padStart(2, "0")).join(""); };
+/* pièce de papier : ombre portée + tranche de carton (épaisseur) + face supérieure */
+H.paper = (parent, d, fill, o = {}) => {
+  const sh = o.sh === false ? null : (o.sh || "sh"); const th = o.th !== undefined ? o.th : (sh === "sh2" ? 9 : sh === "sh1" ? 3 : sh ? 6 : 0);
+  const g = H.el("g", sh ? { filter: `url(#${sh})` } : {}, parent);
+  const dk = H.shade(fill, .66);
+  if (th && dk) H.el("path", { d, fill: dk, transform: `translate(0,${th})`, "stroke-linejoin": "round", stroke: dk, "stroke-width": 2 }, g);
+  const top = H.el("path", Object.assign({ d, fill }, edge, o.attr || {}), g);
+  if (o.corr) H.el("path", { d, fill: "url(#corr)", "pointer-events": "none" }, g);
+  return top;
+};
+H.poly = (parent, pts, fill, o = {}) => H.paper(parent, H.d(H.pts(pts, o.seed || 3, o.jit === undefined ? 2.2 : o.jit)), fill, o);
 H.blob = (parent, cx, cy, rx, ry, fill, o = {}) => {
   const n = o.n || 24, r = H.rng(o.seed || 5), pts = [];
   for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, k = 1 + (r() - .5) * (o.jit === undefined ? .035 : o.jit); pts.push([cx + Math.cos(a) * rx * k, cy + Math.sin(a) * ry * k]); }
-  return H.el("path", Object.assign({ d: H.d(pts), fill, filter: o.sh === false ? "none" : `url(#${o.sh || "sh"})` }, edge, o.attr || {}), parent);
+  return H.paper(parent, H.d(pts), fill, o);
 };
 H.rrect = (parent, x, y, w, h, fill, o = {}) => {
   const rr = o.r === undefined ? 14 : o.r, k = rr * .55, pts = [[x + rr, y], [x + w - rr, y], [x + w - k, y + k], [x + w, y + rr], [x + w, y + h - rr], [x + w - k, y + h - k], [x + w - rr, y + h], [x + rr, y + h], [x + k, y + h - k], [x, y + h - rr], [x, y + rr], [x + k, y + k]];
   return H.poly(parent, pts, fill, o);
 };
-H.circ = (parent, cx, cy, r, fill, o = {}) => H.el("circle", Object.assign({ cx, cy, r, fill, filter: o.sh === false ? "none" : `url(#${o.sh || "sh1"})` }, edge, o.attr || {}), parent);
+H.circ = (parent, cx, cy, r, fill, o = {}) => {
+  const sh = o.sh === false ? null : (o.sh || "sh1"); const th = o.th !== undefined ? o.th : (sh === "sh2" ? 9 : sh === "sh1" ? 3 : sh ? 6 : 0);
+  const g = H.el("g", sh ? { filter: `url(#${sh})` } : {}, parent); const dk = H.shade(fill, .66);
+  if (th && dk) H.el("circle", { cx, cy: cy + th, r, fill: dk }, g);
+  return H.el("circle", Object.assign({ cx, cy, r, fill }, edge, o.attr || {}), g);
+};
 H.txt = (parent, str, x, y, size, fill, o = {}) => {
   const t = H.el("text", { x, y, "font-size": size, fill, "font-weight": o.w || 800, "text-anchor": o.anchor || "middle", "letter-spacing": o.ls || 0 }, parent);
   const lines = String(str).split("\n");
@@ -94,3 +110,7 @@ H.bottle = (parent, sc = 1) => {
   H.txt(s, "SÉRUM ANTI-TACHES", 0, 62, 12.5, C.terra, { ls: 1.2, w: 700 });
   return g;
 };
+
+/* parallaxe : 3 plans (fond / milieu / avant) qui bougent à des vitesses différentes */
+H.layers = (g) => { const L = { bg: H.grp(g, 0, 0, { j: 0 }), mid: H.grp(g, 0, 0, { j: 0 }), fg: H.grp(g, 0, 0, { j: 0 }) }; L.bg._par = .45; L.mid._par = 1; L.fg._par = 1.7; return L; };
+H.look = (L, x, y, z) => { for (const k of ["bg", "mid", "fg"]) { const l = L[k], f = l._par, sz = 1 + (z - 1) * f; H.set(l, { x: 540 * (1 - sz) - x * f * sz, y: 960 * (1 - sz) - y * f * sz, sx: sz, sy: sz }); } };
