@@ -1,5 +1,5 @@
 """Bruitages papier + nappe pizz synthétisés (numpy) mixés avec la voix -> mix.wav (48 kHz stéréo)."""
-import json, sys, wave
+import json, sys, wave, os
 import numpy as np
 SR = 48000
 sfxj = json.load(open(sys.argv[1])); voice_path = sys.argv[2]; out = sys.argv[3]
@@ -55,7 +55,8 @@ voice = np.zeros(N, np.float32); voice[:len(v)] = v[:N]
 def ma(x, k):
     c = np.cumsum(np.insert(x, 0, 0)); y = (c[k:] - c[:-k]) / k; return np.concatenate([np.full(k // 2, y[0]), y, np.full(k - k // 2 - 1, y[-1])])[:len(x)]
 m = np.clip((ma(np.abs(voice), int(.03 * SR)) - .008) / .03, 0, 1); m = ma(m, int(.18 * SR)); m = np.clip(m * 1.6, 0, 1)
-mix = voice * .92 + sfx * (1 - .45 * m) + music * (1 - .65 * m)
+MUSIC = os.environ.get('MUSIC', 'off') == 'on'
+mix = voice * .92 + sfx * (1 - .45 * m) + (music * (1 - .65 * m) if MUSIC else 0)
 mix = np.tanh(mix * 1.1) / np.tanh(1.1)
 mix = mix / max(np.abs(mix).max(), 1e-6) * .93
 st = np.stack([mix, mix], 1)
