@@ -2,3 +2,4 @@ node_modules
 tmp
 out/mela-skin-ad-v2-*.mp4
 voice-tests/_w
+__pycache__
