@@ -16,7 +16,7 @@ const trans = H.el("g", {}, stage); stage.insertBefore(trans, document.getElemen
 const sheet = H.el("g", {}, trans); { const r = H.rrect(sheet, -1100, -1700, 2200, 3400, "#EBD7B0", { r: 0, sh: "sh2", th: 16, jit: 0 }); }
 /* sous-titres */
 const caps = document.getElementById("caps"), capG = H.el("g", {}, caps);
-const capT = H.txt(capG, "", 540, 1300, 108, C.cream, { stroke: C.dark, sw: 26 }); capT.setAttribute("filter", "url(#sh1)");
+const capT = H.txt(capG, "", 540, 1300, 108, "#FFFFFF", { stroke: "#5a3418", sw: 20 }); capT.setAttribute("filter", "url(#sh1)");
 const words = []; TL.beats.forEach(b => b.sentences.forEach(s => s.words.forEach((w, i) => words.push({ w: w.w.replace(/,$/, ""), start: w.start, end: i === s.words.length - 1 ? s.end + .22 : s.words[i + 1].start }))));
 function renderAt(t) {
   const step = Math.floor(t * FPS_LOGIC + 1e-4); H.STEP = step; const ts = step / FPS_LOGIC;
@@ -42,6 +42,6 @@ function renderAt(t) {
   return ts;
 }
 window.renderAt = renderAt;
-window.sfxList = () => { const out = []; plan.forEach((sc, i) => { (sc.def.sfx || []).forEach(([f, ty]) => out.push({ t: +(sc.start + f * (sc.end - sc.start)).toFixed(3), type: ty })); if (sc.swipe && i > 0) out.push({ t: +(sc.start).toFixed(3), type: "whoosh" }); }); return out; };
+window.sfxList = () => { const out = []; plan.forEach((sc, i) => { (sc.def.sfx || []).forEach(([f, ty, o]) => out.push({ t: +(sc.start + f * (sc.end - sc.start)).toFixed(3), type: ty, opt: o === undefined ? null : o })); if (sc.swipe && i > 0) out.push({ t: +(sc.start).toFixed(3), type: "whoosh" }); }); return out; };
 window.PLAN = plan.map(({ id, start, end }) => ({ id, start, end }));
 window.READY = document.fonts.ready.then(() => true);

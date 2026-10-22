@@ -13,8 +13,10 @@ script_path = next((a.split("=", 1)[1] for a in sys.argv[3:] if a.startswith("--
 SR = 48000
 os.makedirs(out, exist_ok=True)
 
+TEMPO = float(os.environ.get("VOICE_TEMPO", "1.0"))  # < 1 : voix plus lente (hauteur conservée)
 def load(path):
-    r = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True, check=True)
+    af = [] if abs(TEMPO - 1) < 1e-3 else ["-af", f"rubberband=tempo={TEMPO}:formant=preserved"]
+    r = subprocess.run(["ffmpeg", "-v", "error", "-i", path] + af + ["-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True, check=True)
     return np.frombuffer(r.stdout, np.float32).copy()
 
 if os.path.isdir(inp):

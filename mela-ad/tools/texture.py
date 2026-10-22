@@ -15,11 +15,11 @@ fib = np.asarray(Image.fromarray(np.clip(fib, 0, 255).astype("uint8")).resize((W
 base += (fib - 128) * 0.20
 grain = rng.normal(0, 5, (H, W)).astype(np.float32)
 tone = base + grain
-col = np.array([200, 158, 112], np.float32)  # kraft chaud
+col = np.array([218, 178, 130], np.float32)  # kraft clair et chaud
 img = np.stack([col[i] + tone * (0.95 if i == 0 else 0.9 if i == 1 else 0.85) for i in range(3)], -1)
 # vignette légère
 yy, xx = np.mgrid[0:H, 0:W]
-v = 1 - 0.20 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2) / 2
+v = 1 - 0.09 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2) / 2
 img = img * v[..., None]
 Image.fromarray(np.clip(img, 0, 255).astype("uint8")).save("web/kraft.jpg", quality=92)
 # grain overlay (RGBA, multiply-like via alpha) : fines fibres sombres/claires

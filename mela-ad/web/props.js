@@ -2,13 +2,22 @@
 const { E, lerp, seg, clamp } = H;
 const P = {}, BG = {};
 
-/* ---------- fonds ---------- */
-BG.terra = g => { H.rrect(g, -60, -60, 1200, 2040, C.terra, { r: 0, sh: false, jit: 0 }); H.rrect(g, -60, 1180, 1200, 800, C.terraD, { r: 0, sh: false, jit: 1 }); };
-BG.wall = (g, col = "#DCBE92", floor = "#6A4228", fy = 1000) => { H.rrect(g, -60, -60, 1200, fy + 60, col, { r: 0, sh: false, jit: 0 }); H.rrect(g, -60, fy, 1200, 1000, floor, { r: 0, sh: "sh2", jit: 1 }); };
-BG.tiles = (g, col = "#8FA58A", line = "#7A9276") => { H.rrect(g, -60, -60, 1200, 2040, col, { r: 0, sh: false, jit: 0 }); for (let i = 0; i < 14; i++) H.el("path", { d: `M${i * 100 - 40},0 V1920`, stroke: line, "stroke-width": 3 }, g); for (let j = 0; j < 20; j++) H.el("path", { d: `M0,${j * 100} H1080`, stroke: line, "stroke-width": 3 }, g); };
-BG.sage = g => H.rrect(g, -60, -60, 1200, 2040, "#6B8F71", { r: 0, sh: false, jit: 0 });
-BG.cream = g => H.rrect(g, -60, -60, 1200, 2040, "#EBD7B0", { r: 0, sh: false, jit: 0 });
-BG.dark = g => H.rrect(g, -60, -60, 1200, 2040, "#3A2415", { r: 0, sh: false, jit: 0 });
+/* ---------- fonds (kraft clair, feuilles superposées façon carton) ---------- */
+const TONES = { kraft: "#DDBD92", cream: "#F0E0BC", terra: "#D58F68", sage: "#A9C4A4", peach: "#EBC3A8", blue: "#AEC5CF" };
+BG.decor = (g, seed = 1) => { const r = H.rng(seed); for (let i = 0; i < 6; i++) { const left = r() < .5, x = left ? -10 + r() * 90 : 1000 + r() * 90, y = 120 + r() * 1000, k = Math.floor(r() * 3), d = H.grp(g, x, y, { j: .5 }); d._b.r = (r() - .5) * 60;
+  if (k === 0) H.rrect(d, -46, -16, 92, 32, "rgba(245,232,190,.85)", { r: 4, sh: "sh1", th: 1 }); else if (k === 1) H.circ(d, 0, 0, 16 + r() * 14, H.shade("#DDBD92", .85), { sh: "sh1" }); else H.poly(d, [[-30, -20], [30, -26], [34, 22], [-26, 24]], H.shade("#DDBD92", .78), { sh: "sh1", jit: 4, seed: i }); } };
+BG.kraft = (g, tone = "kraft", o = {}) => { const c = TONES[tone] || tone, y = o.y || 1190, r = H.rng(7), pts = [];
+  H.rrect(g, -60, -60, 1200, 2040, c, { r: 0, sh: false, jit: 0 });
+  for (let i = 0; i <= 14; i++) pts.push([-60 + i * 86, y + (r() - .5) * 24]); pts.push([1140, 1980], [-60, 1980]);
+  H.paper(g, H.d(pts), H.shade(c, .93), { sh: "sh", th: 12 });
+  H.rrect(g, -60, y + 40, 1200, 60, H.shade(c, .84), { r: 0, sh: "sh1", corr: true, jit: 1, th: 4 });
+  BG.decor(g, o.seed || 3); };
+BG.terra = g => BG.kraft(g, "terra", { seed: 5 });
+BG.sage = g => BG.kraft(g, "sage", { seed: 6 });
+BG.cream = g => BG.kraft(g, "cream", { seed: 7 });
+BG.dark = g => { BG.kraft(g, "kraft", { seed: 8 }); H.blob(g, 540, 780, 560, 660, "#F5E9C9", { seed: 4, sh: "sh2", th: 12 }); };
+BG.wall = (g, col = "#E8D3AD", floor, fy = 1000) => { H.rrect(g, -60, -60, 1200, fy + 60, col, { r: 0, sh: false, jit: 0 }); H.rrect(g, -60, fy, 1200, 1000, H.shade(col, .84), { r: 0, sh: "sh2", jit: 1, th: 10, corr: true }); };
+BG.tiles = (g, col = "#B3CCAE", line = "#9DB898") => { H.rrect(g, -60, -60, 1200, 2040, col, { r: 0, sh: false, jit: 0 }); for (let i = 0; i < 14; i++) H.el("path", { d: `M${i * 100 - 40},0 V1920`, stroke: line, "stroke-width": 3 }, g); for (let j = 0; j < 20; j++) H.el("path", { d: `M0,${j * 100} H1080`, stroke: line, "stroke-width": 3 }, g); };
 
 /* ---------- peau, marques ---------- */
 P.mark = (parent, x, y, r, col = C.mark, seed = 1) => { const m = H.grp(parent, x, y, { j: .6 }); H.blob(m, 0, 0, r, r * (.82 + (seed % 3) / 12), col, { n: 11, jit: .22, seed, sh: "sh1" }); return m; };
@@ -104,3 +113,12 @@ P.factory = (parent) => {
   return f;
 };
 P.pelletsRender = (f, t, speed, amount, ox = 160, oy = 885) => { f.pellets.forEach((q, i) => { const ph = (t * speed * .35 + i / f.pellets.length) % 1; H.set(q, { x: ox + ph * 760, y: oy - (1 - ph) * 4, s: amount > i / f.pellets.length ? 1 : 0, o: amount > i / f.pellets.length ? 1 : 0 }); }); };
+
+/* ---------- icônes d'origine des actifs (illustratif, façon Cloudless) ---------- */
+P.ico = {
+  wheat: parent => { const g = H.grp(parent, 0, 0, { j: .6 }); H.el("path", { d: "M0,70 C6,20 -6,-30 0,-80", stroke: "#8A6A2A", "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, g); for (let i = 0; i < 5; i++) for (const d of [-1, 1]) { const q = H.grp(g, d * 17, 40 - i * 29, { j: .3 }); q._b.r = d * 32; H.blob(q, 0, 0, 10, 22, "#E0A93C", { seed: i * 3 + (d > 0 ? 1 : 0), jit: .05, sh: "sh1", th: 2 }); } const t = H.grp(g, 0, -92, { j: .3 }); H.blob(t, 0, 0, 10, 24, "#E0A93C", { seed: 4, sh: "sh1", th: 2 }); return g; },
+  berry: parent => { const g = H.grp(parent, 0, 0, { j: .6 }); for (const [x, y, r] of [[-30, 10, -50], [32, 4, 52], [0, -26, 0]]) { const l = H.grp(g, x, y, { j: .3 }); l._b.r = r; H.blob(l, 0, -22, 22, 50, "#6B9A5C", { seed: x + 5, jit: .04, sh: "sh1", th: 2 }); } for (const [x, y] of [[-14, 38], [14, 44], [0, 18]]) H.circ(g, x, y, 17, "#D9432E", { sh: "sh1", th: 3 }); return g; },
+  capsule: parent => { const g = H.grp(parent, 0, 0, { j: .6 }); g._b.r = -32; H.rrect(g, -62, -28, 62, 56, "#F6EDD0", { r: 28, seed: 3, th: 5 }); H.rrect(g, 0, -28, 62, 56, "#C26A45", { r: 28, seed: 4, th: 5 }); return g; },
+  b3: parent => { const g = H.grp(parent, 0, 0, { j: .6 }); H.poly(g, Array.from({ length: 6 }, (_, i) => [Math.cos(i / 6 * 6.283 + .52) * 62, Math.sin(i / 6 * 6.283 + .52) * 62]), "#6B8F71", { seed: 3, jit: 1, th: 6 }); H.txt(g, "B3", 0, 22, 62, "#F6EDD0", { font: "Anton, sans-serif", w: 400 }); return g; },
+  orange: parent => { const g = H.grp(parent, 0, 0, { j: .6 }); H.circ(g, 0, 0, 56, "#EE9A2E", { sh: "sh1", th: 6 }); H.circ(g, 0, 0, 44, "#FFD58A", { sh: false, th: 0 }); for (let i = 0; i < 8; i++) { const a = i / 8 * 6.283; H.el("path", { d: `M0,0 L${Math.cos(a) * 44},${Math.sin(a) * 44}`, stroke: "#EE9A2E", "stroke-width": 4 }, g); } return g; }
+};

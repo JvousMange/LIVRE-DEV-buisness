@@ -76,22 +76,32 @@ H.circ = (parent, cx, cy, r, fill, o = {}) => {
 };
 H.txt = (parent, str, x, y, size, fill, o = {}) => {
   const t = H.el("text", { x, y, "font-size": size, fill, "font-weight": o.w || 800, "text-anchor": o.anchor || "middle", "letter-spacing": o.ls || 0 }, parent);
+  if (o.font) t.setAttribute("font-family", o.font);
   const lines = String(str).split("\n");
   lines.forEach((ln, i) => { const ts = H.el("tspan", { x, dy: i === 0 ? 0 : size * (o.lh || 1.1) }, t); ts.textContent = ln; });
   if (o.stroke) { t.setAttribute("stroke", o.stroke); t.setAttribute("stroke-width", o.sw || 6); t.setAttribute("paint-order", "stroke"); t.setAttribute("stroke-linejoin", "round"); }
   return t;
 };
 H.gear = (cx, cy, rIn, rOut, teeth) => { const pts = []; for (let i = 0; i < teeth; i++) { const a = i / teeth * Math.PI * 2, w = Math.PI * 2 / teeth; for (const [da, rr] of [[0, rIn], [w * .18, rOut], [w * .5, rOut], [w * .68, rIn]]) pts.push([cx + Math.cos(a + da) * rr, cy + Math.sin(a + da) * rr]); } return pts; };
+H.torn = (parent, x, y, w, h, fill, o = {}) => {
+  const r = H.rng(o.seed || 3), pts = [], n = Math.max(8, Math.round(w / 34));
+  for (let i = 0; i <= n; i++) pts.push([x + w * i / n, y + (r() - .5) * 15]);
+  pts.push([x + w + (r() - .5) * 8, y + h / 2]);
+  for (let i = n; i >= 0; i--) pts.push([x + w * i / n, y + h + (r() - .5) * 15]);
+  pts.push([x + (r() - .5) * 8, y + h / 2]);
+  return H.paper(parent, H.d(pts), fill, o);
+};
 H.star = (cx, cy, r1, r2, n) => { const pts = []; for (let i = 0; i < n * 2; i++) { const a = i / (n * 2) * Math.PI * 2 - Math.PI / 2, rr = i % 2 ? r1 : r2; pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr]); } return pts; };
 
 /* ---------- pancarte (tag étiquette) ---------- */
 H.tag = (parent, text, w = 420, h = 190, o = {}) => {
   const g = H.grp(parent);
-  H.el("path", { d: `M0,0 L0,-150`, stroke: "#3b2412", "stroke-width": 4, fill: "none" }, g);
+  H.el("path", { d: `M0,0 L0,-150`, stroke: "#5a3a1e", "stroke-width": 4, fill: "none" }, g);
   const body = H.grp(g, 0, 0, { j: .5 });
-  H.poly(body, [[-w / 2, 0], [w / 2, 4], [w / 2 - 6, h], [-w / 2 + 4, h - 4]], o.fill || C.cream, { seed: o.seed || 9, jit: 4, attr: { stroke: "#fff", "stroke-opacity": ".4" } });
-  H.circ(body, 0, 22, 9, C.kraft, { sh: false });
-  H.txt(body, text, 0, h * .5 + (o.dy || 0), o.size || 44, C.dark, { lh: 1.15, ls: .5 });
+  H.torn(body, -w / 2, 0, w, h, o.fill || "#F6EDD0", { seed: o.seed || 9, th: 9 });
+  H.circ(body, 0, 24, 10, C.kraft, { sh: false });
+  const size = (o.size || 44) * 1.22, lines = String(text).split("\n").length;
+  H.txt(body, text, 0, h * .5 + size * .36 - (lines - 1) * size * 1.02 / 2 + 6 + (o.dy || 0), size, "#3a2010", { font: "Anton, sans-serif", lh: 1.02, ls: 1.2, w: 400 });
   g._body = body; return g;
 };
 
