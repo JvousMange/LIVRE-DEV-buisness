@@ -13,5 +13,5 @@ python3 -I tools/audio.py $W/sfx.json $W/voice.wav $W/mix.wav
 FR=$W/frames; mkdir -p $FR; node tools/render.mjs --out=$FR --workers=4 2>&1 | tail -1
 ffmpeg -v error -y -framerate 12 -i $FR/%05d.jpg -i $W/mix.wav -vf "fps=24,format=yuv420p" \
   -c:v libx264 -preset slow -crf 17 -profile:v high -pix_fmt yuv420p -color_primaries bt709 -color_trc bt709 -colorspace bt709 \
-  -af "loudnorm=I=-16:TP=-2.5:LRA=11,alimiter=limit=0.89" -c:a aac -b:a 192k -ar 48000 -shortest -movflags +faststart out/mela-skin-ad-v2-$NAME.mp4
+  -af "loudnorm=I=-16:TP=-3.5:LRA=11" -c:a aac -b:a 256k -ar 48000 -shortest -movflags +faststart out/mela-skin-ad-v2-$NAME.mp4
 echo "OK -> out/mela-skin-ad-v2-$NAME.mp4"
