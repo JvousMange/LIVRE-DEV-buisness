@@ -76,7 +76,7 @@ H.circ = (parent, cx, cy, r, fill, o = {}) => {
 };
 H.txt = (parent, str, x, y, size, fill, o = {}) => {
   const t = H.el("text", { x, y, "font-size": size, fill, "font-weight": o.w || 800, "text-anchor": o.anchor || "middle", "letter-spacing": o.ls || 0 }, parent);
-  if (o.font) t.setAttribute("font-family", o.font);
+  if (o.font) t.style.fontFamily = o.font;
   const lines = String(str).split("\n");
   lines.forEach((ln, i) => { const ts = H.el("tspan", { x, dy: i === 0 ? 0 : size * (o.lh || 1.1) }, t); ts.textContent = ln; });
   if (o.stroke) { t.setAttribute("stroke", o.stroke); t.setAttribute("stroke-width", o.sw || 6); t.setAttribute("paint-order", "stroke"); t.setAttribute("stroke-linejoin", "round"); }

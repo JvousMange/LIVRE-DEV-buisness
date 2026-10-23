@@ -47,7 +47,7 @@ K4.mal = (p, r = 46, col = Q.blue) => { const g = H.grp(p, 0, 0, { j: .8 }); H.c
 /* torse ouvert : buste + trou déchiré + cadran + gyrophare */
 K4.chest = (p, cx, y) => {
   const g = H.grp(p, 0, 0, { j: 0 });
-  H.rrect(g, -60, y + 1000, 1200, 700, K3.CLOTH, { r: 0, sh: false, jit: 0 }); g.b = K4.face(g, cx, y, 1.4, { spots: 7, hair: 'bob' }); const hy = y + 700;
+  H.rrect(g, -60, y + 1000, 1200, 700, K3.CLOTH, { r: 0, sh: false, jit: 0 }); g.b = K4.face(g, cx, y, 1.4, { spots: 0, hair: 'bob' }); S.patches && S.patches(g.b, .8); const hy = y + 700;
   const tear = []; for (let i = 0; i < 18; i++) { const a = i / 18 * 6.283, rr = 215 + (i % 2 ? 34 : -6); tear.push([cx + Math.cos(a) * rr, hy + Math.sin(a) * rr * .92]); }
   H.poly(g, tear, "#2A211D", { jit: 3, seed: 5, th: 7 }); H.circ(g, cx, hy, 192, "#EFE6D2", { sh: "sh1", th: 4 });
   g.dial = K4.dial(g, cx, hy, 150);
