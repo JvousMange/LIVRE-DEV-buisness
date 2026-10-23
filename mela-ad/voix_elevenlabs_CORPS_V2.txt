@@ -1,0 +1,93 @@
+=====================================================================
+MELA SKIN — CORPS DE PUB V2 — À COLLER DANS ELEVENLABS
+=====================================================================
+Réglages : modèle Eleven v3 (balises [ ] comprises) · voix Marion
+Stabilité 30 % · Similarité 75 % · Vitesse 1,00
+Le HOOK est généré à part (il change). Ici : le corps figé, du début à la fin.
+Les nombres sont en lettres et la marque s'écrit « Méla Skine » : ne pas modifier.
+Laisse les lignes vides : elles font respirer la voix.
+
+=== OPTION 1 : UN SEUL BLOC (copie tout ce qui est entre les deux lignes) ===
+---------------------------------------------------------------------
+[excited] Cinq raisons qui font que ton hyperpigmentation ne part pas.
+
+Un, tu traites la surface de ta peau. [curious] Mais la tache se fabrique en dessous, là où ta peau produit la mélanine.
+
+Deux, tu gommes, tu frottes, tu testes des produits agressifs. [sighs] Ta peau s'irrite, et elle fabrique encore plus de pigment.
+
+Trois, la plupart des soins sont pensés pour des peaux claires. [exasperated] Sur une peau mate ou noire, ils irritent, ou ils ne font rien.
+
+Quatre, tu caches ou tu éclaircis, mais tu ne freines pas la production. [curious] Un fond de teint ou un citron ne touchent pas à ce qui fabrique la tache.
+
+Et cinq, soleil, rasage, frottements, ta peau n'est pas protégée du retour. [sighs] Chaque agression peut relancer la tache.
+
+[optimistic] Il te faut un soin qui agit là où la tache se fabrique, et qui respecte ta peau.
+
+[excited] Le Sérum Anti-Taches, Méla Skine, est pensé pour les peaux mates à noires.
+
+L'acide azélaïque, à dix pour cent, freine la production de mélanine. L'alpha-arbutine bloque l'enzyme, la tirozinase.
+
+L'acide tranéxamique agit sur les taches tenaces, celles qui reviennent.
+
+Et la niacinamide, à cinq pour cent, renforce ta barrière pour limiter leur retour.
+
+Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent.
+
+[excited] Cette semaine, pour deux flacons achetés, tu en reçois un offert.
+
+[playfully] Toujours sceptique ? Très bien. Tu as une garantie satisfait ou remboursé de quatre-vingt-dix jours. Si tu n'es pas convaincue, tu ne paies rien. [relaxed] Pas de souci.
+
+[excited] Clique sur le bouton ci-dessous et commande ton Sérum Anti-Taches, Méla Skine.
+---------------------------------------------------------------------
+
+=== OPTION 2 : BLOC PAR BLOC (plus d'intention, 2 à 3 prises chacun) ===
+
+01 · intro
+[excited] Cinq raisons qui font que ton hyperpigmentation ne part pas.
+
+02 · raison 1
+Un, tu traites la surface de ta peau. [curious] Mais la tache se fabrique en dessous, là où ta peau produit la mélanine.
+
+03 · raison 2
+Deux, tu gommes, tu frottes, tu testes des produits agressifs. [sighs] Ta peau s'irrite, et elle fabrique encore plus de pigment.
+
+04 · raison 3
+Trois, la plupart des soins sont pensés pour des peaux claires. [exasperated] Sur une peau mate ou noire, ils irritent, ou ils ne font rien.
+
+05 · raison 4
+Quatre, tu caches ou tu éclaircis, mais tu ne freines pas la production. [curious] Un fond de teint ou un citron ne touchent pas à ce qui fabrique la tache.
+
+06 · raison 5
+Et cinq, soleil, rasage, frottements, ta peau n'est pas protégée du retour. [sighs] Chaque agression peut relancer la tache.
+
+07 · solution (bascule)
+[optimistic] Il te faut un soin qui agit là où la tache se fabrique, et qui respecte ta peau.
+
+08 · solution (produit)
+[excited] Le Sérum Anti-Taches, Méla Skine, est pensé pour les peaux mates à noires.
+
+09 · actifs 1
+L'acide azélaïque, à dix pour cent, freine la production de mélanine. L'alpha-arbutine bloque l'enzyme, la tirozinase.
+
+10 · actifs 2
+L'acide tranéxamique agit sur les taches tenaces, celles qui reviennent.
+
+11 · actifs 3
+Et la niacinamide, à cinq pour cent, renforce ta barrière pour limiter leur retour.
+
+12 · trust
+Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent.
+
+13 · offre
+[excited] Cette semaine, pour deux flacons achetés, tu en reçois un offert.
+
+14 · réassurance
+[playfully] Toujours sceptique ? Très bien. Tu as une garantie satisfait ou remboursé de quatre-vingt-dix jours. Si tu n'es pas convaincue, tu ne paies rien. [relaxed] Pas de souci.
+
+15 · cta
+[excited] Clique sur le bouton ci-dessous et commande ton Sérum Anti-Taches, Méla Skine.
+
+=====================================================================
+Remarque : « là où la tache se fabrique » remplace « en profondeur »
+tant qu'aucun test ne justifie ce dernier mot.
+=====================================================================
