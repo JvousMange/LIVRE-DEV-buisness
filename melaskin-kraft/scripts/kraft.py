@@ -263,6 +263,21 @@ class Cv:
         self.im = self.im.crop((int(x0), int(y0), int(x0 + cw), int(y0 + ch))).resize((W, H), Image.BICUBIC)
         self.d = ImageDraw.Draw(self.im)
 
+    def camera(self, z, fx, fy, rot=0.0, sx=0.0, sy=0.0):
+        if z <= 1.001 and abs(rot) < .01 and not sx and not sy:
+            return
+        a = math.radians(rot)
+        ca, sa = math.cos(a) / z, math.sin(a) / z
+        # sortie (x,y) -> source : centre (fx+sx, fy+sy) + R * (out - centre_ecran)
+        cx, cy = fx + sx, fy + sy
+        c_ = ca
+        s_ = sa
+        e = cx - (W / 2) * c_ + (H / 2) * s_
+        f = cy - (W / 2) * s_ - (H / 2) * c_
+        self.im = self.im.transform((W, H), Image.AFFINE, (c_, -s_, e, s_, c_, f), resample=Image.BICUBIC,
+                                    fillcolor=(190, 148, 98, 255))
+        self.d = ImageDraw.Draw(self.im)
+
     def blur(self, r):
         self.im = self.im.filter(ImageFilter.GaussianBlur(r))
         self.d = ImageDraw.Draw(self.im)
