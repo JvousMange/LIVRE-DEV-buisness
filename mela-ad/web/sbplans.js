@@ -133,4 +133,4 @@ P("30a", "Clique sur le bouton ci-dessous et commande ton Sérum Anti-Taches.", 
 window.SBLIST = SB.map(s => s.id);
 window.drawSB = (id, end) => { const root = document.getElementById("scenes"); root.innerHTML = ""; H.cur = []; const reg = H.cur, g = H.grp(root, 0, 0, { j: 0 }); SB.find(s => s.id === id).f(g, end); H.STEP = 0; H.applyAll(reg); H.cur = null; };
 window.SBVO = Object.fromEntries(SB.map(s => [s.id, s.vo]));
-window._res(true);
+if (!window.SB_VIDEO) window._res(true);
