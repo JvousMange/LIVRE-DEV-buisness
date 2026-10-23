@@ -1,160 +1,136 @@
-# MELA SKIN : storyboard par idée (refonte complète)
+# MELA SKIN : storyboard par idée (v2)
 
-Principe : **1 idée = 1 scène** (une métaphore claire), découpée en **plans** sur les mots-clés.
-Pour chaque plan : *départ → arrivée* = ce que fait l'animation.
-Personnages : femmes de face ou de 3/4, peau mate, visage sans traits, taches **noires**, plusieurs coiffures (afro, chignon, tresses, carré).
-Le numéro de chaque raison est intégré dans la scène (pas d'écran de transition).
+**Règle :** ce qui se voit dans la vraie vie est montré **tel quel** (le geste réel, l'objet réel, le lieu réel). Les images (cadran, cadenas, moteur…) sont réservées à **ce qui est invisible** : ce qui se passe sous la peau.
+- **Réel visible** → scène de vie : salle de bain, miroir, magasin, plage, rasage, maquillage.
+- **Invisible** → coupe de peau illustrée (couches, mélanocytes, grains de mélanine), avec au besoin un repère simple (cadran, flèche, cadenas).
+
+Personnages : femmes de face ou de 3/4, peau mate, visage sans traits, taches **noires**, plusieurs coiffures. Le numéro de chaque raison apparaît dans la scène (pas d'écran de transition).
 
 ---
 
-## 1. Accroche : « Cinq raisons qui font que ton hyperpigmentation ne part pas » (0 – 3,7 s)
-**Métaphore :** la tache qui résiste au coton.
-- **1a « Cinq raisons »** : 5 étiquettes numérotées tombent sur leur ficelle → elles se balancent en rangée.
-- **1b « ton hyperpigmentation »** : visage de 3/4, peau nette → les taches noires apparaissent une à une.
-- **1c « ne part pas »** : une main frotte un coton sur la joue → le coton s'écarte *propre*, les taches sont toujours là.
+## 1. Accroche (0 – 3,7 s) · réel
+- **1a « Cinq raisons »** : femme de 3/4 devant le miroir de la salle de bain, panneau « 5 RAISONS » suspendu.
+- **1b « ton hyperpigmentation »** : gros plan visage → les taches noires sur les joues et le front.
+- **1c « ne part pas »** : elle frotte avec un coton → le coton s'écarte, les taches sont toujours là.
 
-## 2. R1 : « tu essaies de faire partir tes taches à la surface, alors qu'elles se fabriquent sous ta peau » (3,7 – 8,7 s)
-**Métaphore : la mauvaise herbe.** On coupe le haut, la racine reste.
-- **2a « Un… à la surface »** : une tache noire en forme de petite plante sur un sol de peau, des ciseaux arrivent → ils coupent le haut, la tige repousse aussitôt. Le chiffre « 1 » est gravé sur le manche des ciseaux.
-- **2b « …sous ta peau »** : la caméra descend à travers les couches de peau → on découvre une longue racine et, au bout, une petite usine qui fabrique le pigment.
+## 2. R1 : surface / dessous (3,7 – 8,7 s) · réel → invisible
+- **2a « Un, tu essaies de faire partir tes taches à la surface »** : elle applique une crème sur une tache, du bout du doigt → la tache ne bouge pas. Un « 1 » sur le tube.
+- **2b « alors qu'elles se fabriquent sous ta peau »** : la caméra passe sous la peau → coupe : la crème reste sur le dessus, les mélanocytes fabriquent les grains noirs plus bas.
 
-## 3. R2 : « tu les caches, fond de teint, maquillage, mais tu ne les fais pas vraiment partir » (8,7 – 13,8 s)
-**Métaphore :** le maquillage, c'est un pansement qui s'enlève le soir.
-- **3a « Deux, tu les caches »** : visage de face (afro), une éponge tamponne → chaque tache est recouverte. Le « 2 » est sur le flacon de fond de teint.
-- **3b « fond de teint, maquillage »** : gros plan, un pinceau passe sur la joue → teint uniforme.
-- **3c « mais tu ne les fais pas partir »** : le soir (lune dans la fenêtre), une lingette démaquille → les taches réapparaissent sous la lingette.
+## 3. R2 : cacher (8,7 – 13,8 s) · réel
+- **3a « Deux, tu les caches »** : visage de face, elle tamponne du fond de teint à l'éponge → les taches disparaissent. Un « 2 » sur le flacon.
+- **3b « fond de teint, maquillage »** : gros plan pinceau, poudre, flacon et poudrier sur le lavabo.
+- **3c « mais tu ne les fais pas partir »** : le soir, elle se démaquille au coton → les taches réapparaissent.
 
-## 4. R3 : « la plupart des soins sont pensés pour des peaux claires » (13,8 – 17,2 s)
-**Métaphore :** le rayon de magasin où personne ne te ressemble.
-- **4a « Trois, la plupart des soins »** : rayon de magasin, un spot balaie l'étagère → tous les produits ont une étiquette avec un visage clair. Le « 3 » est le numéro du rayon.
-- **4b « pensés pour des peaux claires »** : une main prend un pot et pose sa pastille de teinte contre sa joue → la pastille claire jure avec la peau mate.
+## 4. R3 : soins pour peaux claires (13,8 – 17,2 s) · réel
+- **4a « Trois, la plupart des soins »** : rayon de magasin, la femme passe devant. Un « 3 » sur l'étiquette du rayon.
+- **4b « pensés pour des peaux claires »** : gros plan sur les packagings → visuels de peaux claires, nuances claires uniquement.
 
-## 5. R3 bis : « Sur une peau mate ou noire, ils agressent, ou ils ne font rien » (17,2 – 21 s)
-**Métaphore :** la balance des deux échecs.
-- **5a « Sur une peau mate ou noire »** : le pot est appliqué sur la joue.
-- **5b « ils agressent »** : la joue chauffe → rougeur, petits éclats rouges, une goutte de sueur en papier.
-- **5c « ou ils ne font rien »** : une horloge tourne vite au-dessus → taches identiques, un « ? » apparaît.
+## 5. R3 bis : agressent ou rien (17,2 – 21 s) · réel
+- **5a « Sur une peau mate ou noire »** : chez elle, elle applique le soin sur sa joue.
+- **5b « ils agressent »** : joue rougie et irritée, elle grimace (tête en arrière, main sur la joue).
+- **5c « ou ils ne font rien »** : semaines plus tard, même miroir, mêmes taches (calendrier du mur qui a tourné).
 
-## 6. R4 : « depuis que tu fais des gommages ou que tu testes des produits au hasard, c'est encore pire » (21 – 26,4 s)
-**Métaphores :** le papier de verre, puis la pince de fête foraine.
-- **6a « Quatre, gommages »** : une feuille de papier de verre frotte une pastille de peau → les taches foncent. Le « 4 » est imprimé au dos de la feuille.
-- **6b « produits au hasard »** : une machine à pince (fête foraine) remplie de produits → la pince attrape un pot au hasard et le lâche.
-- **6c « c'est encore pire »** : visage de 3/4 → les taches grossissent, une flèche rouge monte.
+## 6. R4 : gommages et produits au hasard (21 – 26,4 s) · réel
+- **6a « Quatre, gommages »** : elle frotte son visage avec un gommage à grains. Un « 4 » sur le pot.
+- **6b « produits au hasard »** : son étagère de salle de bain se remplit de produits différents, elle en essaie un, puis un autre, puis un autre.
+- **6c « c'est encore pire »** : au miroir → les taches plus foncées et plus nombreuses.
 
-## 7. R5 : « soleil, rasage, frottements, rien ne protège du retour des taches » (26,4 – 31,8 s)
-**Métaphore :** le parapluie troué.
-- **7a « Et cinq, soleil »** (coupe rapide) : rayons de soleil sur la joue → une tache fonce. Le « 5 » est sur le soleil.
-- **7b « rasage »** (coupe rapide) : un rasoir glisse sur une aisselle ou un mollet → petits points noirs.
-- **7c « frottements »** (coupe rapide) : une bandoulière frotte l'épaule → une tache apparaît.
-- **7d « rien ne protège du retour des taches »** : un parapluie au-dessus de la peau, plein de trous → soleil, rasoir et sangle passent à travers, les taches reviennent.
+## 7. R5 : soleil, rasage, frottements (26,4 – 31,8 s) · réel
+- **7a « Et cinq, soleil »** (coupe rapide) : dehors, le soleil tape sur son visage. Un « 5 » sur un panneau de rue.
+- **7b « rasage »** (coupe rapide) : rasoir sur l'aisselle → petits points noirs.
+- **7c « frottements »** (coupe rapide) : l'intérieur des cuisses qui frotte en marchant (jean) → zone foncée.
+- **7d « rien ne protège du retour des taches »** : de retour au miroir → la tache qu'elle avait presque effacée est revenue.
 
-## 8. « Le problème ne vient pas de toi, ni de ta peau, mais d'en dessous » (31,8 – 35,5 s)
-**Métaphore :** la trappe dans le sol.
-- **8a « ne vient pas de toi »** : une flèche rouge accusatrice pointe la femme → elle se retourne vers le bas, la femme sourit (✓).
-- **8b « ni de ta peau »** : pastille de peau → ✓ vert.
-- **8c « mais d'en dessous »** : une trappe s'ouvre dans le sol de peau → on aperçoit l'usine (raccord avec la racine de 2b).
+## 8. Ce n'est pas toi, c'est dessous (31,8 – 35,5 s) · réel → invisible
+- **8a « ne vient pas de toi, ni de ta peau »** : elle de face, calme ; un ✓ vert à côté d'elle.
+- **8b « mais d'en dessous »** : la caméra plonge sous la joue → coupe de peau.
 
-## 9. « Et c'est là que tu peux agir » (35,5 – 37,4 s)
-- **9a** : une cible tombe sur l'usine → elle se verrouille, ✓.
+## 9. « Et c'est là que tu peux agir » (35,5 – 37,4 s) · invisible
+- **9a** : dans la coupe, un cercle vert entoure la zone des mélanocytes.
 
-## 10. « Voilà ce qui se passe. Ta peau fabrique de la mélanine : c'est ce qui lui donne sa couleur » (37,4 – 42 s)
-**Métaphore :** les ouvrières du pigment.
-- **10a « Voilà ce qui se passe »** : une loupe plonge dans la joue → on entre dans la peau.
-- **10b « fabrique de la mélanine »** : des petites cellules ouvrières (les mélanocytes, avec des bras) remplissent des sacs de pigment brun.
-- **10c « sa couleur »** : le pigment est versé sur une palette de peintre → la palette donne toutes les nuances de peau.
+## 10. Mélanine = couleur (37,4 – 42 s) · invisible
+- **10a « Voilà ce qui se passe »** : coupe de peau, calme.
+- **10b « ta peau fabrique de la mélanine »** : les mélanocytes (cellules à bras) produisent des grains noirs qu'ils passent aux cellules au-dessus.
+- **10c « sa couleur »** : on ressort sur plusieurs visages de femmes aux teintes différentes, côte à côte.
 
-## 11. « Quand elle est agressée, par un bouton, un rasage, le soleil ou les hormones, elle en fabrique trop, à cet endroit précis » (42 – 49 s)
-**Métaphore :** le bouton d'alarme de l'usine.
-- **11a « Quand elle est agressée »** : dans la peau, un gyrophare s'allume, les ouvrières paniquent.
-- **11b–e « bouton / rasage / soleil / hormones »** (4 coupes rapides, une par mot) : chaque objet appuie sur le gros bouton rouge d'alarme.
-- **11f « elle en fabrique trop »** : les sacs de pigment s'empilent et débordent.
-- **11g « à cet endroit précis »** : on ressort sur le visage → la pile correspond à UNE tache, entourée en pointillés.
+## 11. Agression → trop de mélanine (42 – 49 s) · réel + invisible
+- **11a « Quand elle est agressée »** : coupe, un éclair rouge frappe la surface.
+- **11b–e « un bouton, un rasage, le soleil, les hormones »** (4 coupes rapides, réelles) : un bouton sur la joue / le rasoir / le soleil sur le visage / le calendrier des règles ou une femme enceinte.
+- **11f « elle en fabrique trop »** : coupe → le mélanocyte s'emballe, les grains noirs s'accumulent.
+- **11g « à cet endroit précis »** : retour au visage → une seule tache, entourée.
 
-## 12. « Cette mélanine reste coincée sous la peau » (49 – 51,7 s)
-**Métaphore :** la cave fermée.
-- **12a** : les sacs sont stockés sous un plafond (la surface) → une grille se ferme, un cadenas claque.
+## 12. « Cette mélanine reste coincée sous la peau » (49 – 51,7 s) · invisible
+- **12a** : coupe → les grains restent bloqués dans les couches profondes, un petit cadenas.
 
-## 13. « Et sur une peau mate ou noire, elle réagit souvent plus fort » (51,7 – 55 s)
-**Métaphore :** le volume.
-- **13a « peau mate ou noire »** : deux enceintes en carton, une claire, une foncée, et le même petit soleil devant chacune.
-- **13b « réagit plus fort »** : petite onde pour la claire → onde énorme pour la foncée, l'aiguille de volume dans le rouge.
+## 13. « Sur une peau mate ou noire, elle réagit souvent plus fort » (51,7 – 55 s) · invisible
+- **13a** : deux coupes côte à côte, claire et foncée, même agression (éclair) → beaucoup plus de grains côté peau foncée.
 
-## 14. « C'est pour ça que la tache reste des mois, et qu'un produit de surface n'y change rien » (55 – 59,3 s)
-- **14a « reste des mois »** : visage de 3/4, des pages de calendrier s'envolent devant elle → la tache ne bouge pas.
-- **14b « un produit de surface »** : vue en coupe, un rouleau de peinture passe sur la surface → la cave cadenassée en dessous reste pleine.
+## 14. Ça dure des mois, la surface n'y change rien (55 – 59,3 s) · réel + invisible
+- **14a « la tache reste des mois »** : au miroir, le calendrier du mur tourne ses pages → la tache reste.
+- **14b « un produit de surface n'y change rien »** : coupe → la crème reste en haut, les grains en bas ne bougent pas.
 
-## 15. « Le but n'est donc pas d'éclaircir ta peau » (59,3 – 61,6 s)
-**Métaphore :** le curseur de teinte.
-- **15a** : un curseur foncé → clair, une main le pousse vers le clair → une croix rouge bloque le curseur, qui revient à sa teinte d'origine.
+## 15. « Le but n'est donc pas d'éclaircir ta peau » (59,3 – 61,6 s) · réel
+- **15a** : un pot de crème éclaircissante « blanchissante » sur l'étagère → elle le repousse, croix rouge.
 
-## 16. « C'est de réguler ta production de mélanine, pour qu'à chaque agression, ta peau n'en fabrique plus trop et ne te gâche plus le teint tous les jours » (61,6 – 68,8 s)
-**Métaphore :** le thermostat.
-- **16a « réguler ta production »** : un thermostat sur le mur de l'usine, une main tourne du rouge → vert.
-- **16b « à chaque agression »** : le soleil appuie sur le bouton d'alarme → petit bip, gyrophare à peine allumé.
-- **16c « n'en fabrique plus trop »** : les ouvrières ne remplissent qu'un petit sac.
-- **16d « tous les jours »** : visage de 3/4, teint uniforme, une frise de 7 jours se coche en vert.
+## 16. Réguler (61,6 – 68,8 s) · invisible → réel
+- **16a « réguler ta production de mélanine »** : coupe → un petit cadran à côté du mélanocyte passe du rouge au vert, il ralentit.
+- **16b « à chaque agression, n'en fabrique plus trop »** : l'éclair revient → le mélanocyte produit à peine quelques grains.
+- **16c « ne te gâche plus le teint tous les jours »** : elle au miroir le matin, teint uniforme.
 
-## 17. « Imagine que tu puisses enfin faire partir ces taches » (68,8 – 71,9 s)
-- **17a** : bulle de rêve au-dessus de sa tête → dans la bulle, son reflet sans taches. Les taches de son vrai visage s'effacent une à une.
+## 17. « Imagine que tu puisses enfin faire partir ces taches » (68,8 – 71,9 s) · réel
+- **17a** : elle de 3/4 au miroir → les taches s'effacent doucement, elle se sourit (tête qui se relève).
 
-## 18. « Pas avec un produit qui brûle, pas avec un gommage magique, mais avec une solution qui freine la fabrication de pigment, à la source » (71,9 – 79 s)
-- **18a « produit qui brûle »** : un pot en flammes → croix rouge.
-- **18b « gommage magique »** : une baguette magique plantée dans un pot de gommage, des étoiles → croix rouge.
-- **18c « qui freine la fabrication »** : une pédale de frein écrase → les engrenages de l'usine ralentissent.
-- **18d « à la source »** : un tuyau qui sort de l'usine, une vanne rouge se ferme → plus une goutte.
+## 18. Pas brûler, pas gommer, freiner à la source (71,9 – 79 s) · réel → invisible
+- **18a « pas avec un produit qui brûle »** : peeling acide appliqué → joue rouge et qui pèle, croix rouge.
+- **18b « pas avec un gommage magique »** : pot de gommage « miracle » → croix rouge.
+- **18c « une solution qui freine la fabrication de pigment, à la source »** : coupe → une goutte de sérum descend jusqu'au mélanocyte, qui ralentit.
 
-## 19. « Pour ça, il y a quatre actifs dont tu as besoin » (79 – 81,8 s)
-- **19a** : 4 tiroirs d'apothicaire s'ouvrent un par un → blé, baies, gélule, hexagone.
+## 19. « quatre actifs dont tu as besoin » (79 – 81,8 s)
+- **19a** : 4 flacons-ingrédients alignés → ils entrent un par un dans la coupe de peau.
 
-## 20. Acide azélaïque 10 % : « freine la production de mélanine » (81,8 – 85,7 s)
-- **20a** : panneau « ACIDE AZÉLAÏQUE 10 % » + épis de blé.
-- **20b « freine la production »** : tapis roulant de sacs de pigment → il ralentit, les sacs s'espacent.
+## 20. Acide azélaïque 10 % : freine la production (81,8 – 85,7 s) · invisible
+- **20a** : panneau « ACIDE AZÉLAÏQUE 10 % » (origine : céréales, épis de blé).
+- **20b** : coupe → les gouttes atteignent le mélanocyte, la production de grains ralentit.
 
-## 21. Alpha-arbutine : « bloque la tirozinase, l'enzyme qui lance cette fabrication » (85,7 – 90,4 s)
-**Métaphore :** la clé de contact.
-- **21a** : panneau « ALPHA-ARBUTINE » + feuilles de busserole.
-- **21b « l'enzyme qui lance »** : la tirozinase est une clé de contact qui démarre l'usine (vroum, fumée).
-- **21c « bloque »** : un capuchon se pose sur la serrure → la clé ne tourne plus, l'usine s'éteint.
+## 21. Alpha-arbutine : bloque la tirozinase (85,7 – 90,4 s) · invisible
+- **21a** : panneau « ALPHA-ARBUTINE » (busserole, feuilles).
+- **21b** : coupe zoomée → l'enzyme (tirozinase) relie les briques qui forment la mélanine ; l'arbutine se fixe dessus → la chaîne s'arrête.
 
-## 22. Acide tranéxamique : « agit sur les taches tenaces, celles qui ne partent jamais vraiment » (90,4 – 95 s)
-**Métaphore :** la tache clouée.
+## 22. Acide tranéxamique : taches tenaces (90,4 – 95 s) · invisible
 - **22a** : panneau « ACIDE TRANÉXAMIQUE ».
-- **22b « taches tenaces »** : une tache noire clouée sur la peau avec 4 clous.
-- **22c « celles qui ne partent jamais »** : une pince arrache les clous un à un → la tache s'envole.
+- **22b** : coupe → une tache profonde (grains plus bas) ; l'actif agit dessus → les grains diminuent.
 
-## 23. Niacinamide 5 % : « renforce ta barrière cutanée, pour que ta peau réagisse moins, et que les taches reviennent moins » (95 – 102 s)
+## 23. Niacinamide 5 % : barrière (95 – 102 s) · invisible → réel
 - **23a** : panneau « NIACINAMIDE 5 % ».
-- **23b « renforce ta barrière »** : des briques se posent en mur au-dessus de la peau.
-- **23c « réagisse moins »** : le soleil et le rasoir rebondissent sur le mur.
-- **23d « reviennent moins »** : rappel de la scène 7 : le parapluie n'a plus de trous → rien ne passe.
+- **23b « renforce ta barrière cutanée »** : coupe → la couche supérieure s'épaissit, les cellules se serrent comme un mur.
+- **23c « réagisse moins »** : l'éclair rebondit sur la surface.
+- **23d « reviennent moins »** : elle au soleil → pas de nouvelle tache.
 
-## 24. « Il existe plusieurs produits capables de faire partir tes taches. Mais tu n'as pas besoin de dix flacons différents, ni d'un produit hors de prix » (102 – 109 s)
-- **24a « plusieurs produits »** : un rayon bien rempli.
-- **24b « dix flacons »** : une étagère de salle de bain se remplit de 10 flacons → elle plie et craque.
-- **24c « hors de prix »** : une étiquette de prix dont le ticket se déroule jusqu'au sol.
+## 24. Pas besoin de 10 produits (102 – 109 s) · réel
+- **24a « plusieurs produits »** : rayon de magasin rempli.
+- **24b « dix flacons différents »** : son étagère de salle de bain débordante de flacons.
+- **24c « hors de prix »** : ticket de caisse long, total élevé.
 
-## 25. « Le Sérum Anti-Taches, Méla Skin, réunit tous les actifs dont tu as besoin en un seul flacon » (109 – 114,5 s)
-- **25a « Le Sérum Anti-Taches »** : bandes de papier déchirées → le flacon MELA apparaît, centré, avec du feuillage.
-- **25b « réunit tous les actifs »** : les 4 icônes des actifs volent et entrent dans le flacon.
-- **25c « en un seul flacon »** : l'étagère pleine de la scène 24 se vide → il ne reste que MELA.
+## 25. MELA tout-en-un (109 – 114,5 s) · produit
+- **25a** : le vrai flacon MELA, centré.
+- **25b « réunit tous les actifs »** : les 4 noms d'actifs se posent autour du flacon.
+- **25c « en un seul flacon »** : l'étagère débordante de 24b → il ne reste que MELA.
 
-## 26. « 94 % de celles qui l'ont testé le recommandent à leur entourage » (114,5 – 118,5 s)
-- **26a « 94 % »** : grille de 100 visages de femmes → 94 s'allument.
-- **26b « le recommandent »** : des bulles de dialogue sautent d'un visage à l'autre.
+## 26. 94 % (114,5 – 118,5 s) · réel
+- **26a** : grille de 100 visages de femmes, 94 colorés.
+- **26b « recommandent à leur entourage »** : deux amies, l'une montre le flacon à l'autre.
 
-## 27. « Et cette semaine, pour deux flacons achetés, tu en reçois un offert » (118,5 – 122,3 s)
-- **27a « deux flacons achetés »** : deux flacons tombent dans un panier.
-- **27b « un offert »** : un troisième arrive avec un nœud cadeau et l'étiquette « OFFERT ».
+## 27. Offre (118,5 – 122,3 s) · réel
+- **27a** : colis ouvert : 2 flacons + 1 flacon avec étiquette « OFFERT ».
 
-## 28. « Toujours sceptique ? Très bien… garantie satisfait ou remboursé de 90 jours » (122,3 – 129 s)
-- **28a « Toujours sceptique ? »** : visage de 3/4, tête penchée, un « ? » au-dessus.
-- **28b « Très bien »** : un pouce levé en papier.
-- **28c « garantie… 90 jours »** : un tampon s'abat → certificat « GARANTIE 90 JOURS ».
+## 28. Garantie (122,3 – 129 s) · réel
+- **28a « Toujours sceptique ? »** : elle, bras croisés, tête penchée.
+- **28b « garantie satisfait ou remboursé de 90 jours »** : tampon « GARANTIE 90 JOURS ».
 
-## 29. « Si tu as encore des taches au bout de trois mois, on te rembourse » (129 – 132,9 s)
-- **29a « au bout de trois mois »** : 3 pages de calendrier tournent.
-- **29b « on te rembourse »** : billets et pièces reviennent dans le porte-monnaie.
+## 29. Remboursement (129 – 132,9 s) · réel
+- **29a « si tu as encore des taches au bout de trois mois »** : calendrier : 3 mois cochés.
+- **29b « on te rembourse »** : téléphone avec notification « Remboursement effectué ».
 
-## 30. CTA : « Clique sur le bouton ci-dessous et commande ton Sérum Anti-Taches, Méla Skin » (132,9 s – fin)
-- **30a « Clique »** : un doigt appuie sur un gros bouton « COMMANDER » → le bouton s'enfonce.
-- **30b « commande ton sérum »** : le flacon MELA centré, la flèche vers le bas.
+## 30. CTA (132,9 s – fin)
+- **30a** : un doigt appuie sur le bouton « COMMANDER » d'un téléphone → le flacon MELA.
