@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"DM Sans";font-weight:700;src:url(fonts/dm-sans-latin-700-normal.woff2)}
+@font-face{font-family:"DM Sans";font-weight:800;src:url(fonts/dm-sans-latin-800-normal.woff2)}
+@font-face{font-family:"Marker";font-weight:400;src:url(fonts/permanent-marker-latin-400-normal.woff2)}
+html,body{margin:0;background:#000;overflow:hidden}
+#stage{display:block;width:1080px;height:1920px}
+</style></head>
+<body>
+<svg id="stage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+ <defs id="defs"></defs>
+ <image href="wb/board.jpg" x="0" y="0" width="1080" height="1920" preserveAspectRatio="xMidYMid slice"/>
+ <g id="ink"></g>
+ <g id="handg"><image id="hand" href="wb/hand_ext.png" x="0" y="0" width="1768" height="2876"/></g>
+ <g id="caps"></g>
+</svg>
+<script src="timeline_v3.js"></script>
+<script>window.READY=new Promise(r=>{window._res=r});Promise.all([document.fonts.load("100px Marker"),document.fonts.load("700 40px 'DM Sans'")]).then(()=>{const s=document.createElement("script");s.src="wb.js";document.body.appendChild(s)});</script>
+</body></html>

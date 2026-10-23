@@ -94,7 +94,8 @@ for k, ev in enumerate(sfxj["sfx"]):
         w = np.linspace(-.7, .7, len(x)) * (1 if r.random() < .5 else -1); gl, gr = np.sqrt((1 - w) / 2), np.sqrt((1 + w) / 2)
     else: gl, gr = np.sqrt((1 - pan) / 2), np.sqrt((1 + pan) / 2)
     i = int(max(ev["t"] - .01, 0) * SR); m = min(len(x), N - i)
-    sfx[i:i + m, 0] += x[:m] * gl; sfx[i:i + m, 1] += x[:m] * gr
+    gl_, gr_ = (gl[:m], gr[:m]) if hasattr(gl, '__len__') else (gl, gr)
+    sfx[i:i + m, 0] += x[:m] * gl_; sfx[i:i + m, 1] += x[:m] * gr_
 
 # ---------- voix + ducking ----------
 w = wave.open(voice_path); v = np.frombuffer(w.readframes(w.getnframes()), "<i2").astype(np.float32) / 32768; assert w.getframerate() == SR
