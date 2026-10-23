@@ -109,7 +109,7 @@ MUSIC_DB = float(os.environ.get("MUSIC_DB", "-33"))
 bed = 0
 if MUSIC_DB > -90:
     sys.path.insert(0, os.path.dirname(__file__)); import music
-    mus = music.make(total, SR, reverb, os.environ.get('MUSIC_STYLE', 'ambient'))                         # stéréo (N0,2), niveau RMS normalisé à 0 dBFS
+    mus = music.make(total, SR, reverb, os.environ.get('MUSIC_STYLE', 'acoustic'), sfxj.get('plan'))                         # stéréo (N0,2), niveau RMS normalisé à 0 dBFS
     g = 10 ** (MUSIC_DB / 20); bed = np.zeros((N, 2), np.float32); n0 = min(N, len(mus))
     bed[:n0] = mus[:n0] * g * (1 - .4 * m[:n0])[:, None]     # la musique s'efface quand la voix parle
 mix = np.stack([voice * .92, voice * .92], 1) + sfx * (1 - .5 * m)[:, None] + bed
