@@ -26,3 +26,6 @@ S.factory = (g, o = {}) => { const x = o.x ?? 540, y = o.y ?? 1080, s = o.s ?? 1
 S.mech = (g, o = {}) => { const y = S.inside(g, { spot: o.spot === undefined ? 1 : o.spot }); const F = S.factory(g, Object.assign({ x: 540, y: 1180, s: .95, reach: 620 }, o)); return F; };
 /* découpe en 2 : en haut la scène réelle (fournie), en bas l'usine */
 S.split = (g, top, o = {}) => { const T = H.grp(g, 0, 0, { j: 0 }); S.clip(T, "M-60,-60H1140V820H-60Z"); top(T); H.torn(g, -100, 790, 1280, 60, "#F1E6CC", { seed: 7, th: 6 }); const B = H.grp(g, 0, 0, { j: 0 }); S.clip(B, "M-60,850H1140V2000H-60Z"); H.rrect(B, -60, 850, 1200, 1200, "#C98A76", { r: 0, sh: false, jit: 0 }); return S.factory(B, Object.assign({ x: 540, y: 1420, s: .72, reach: 500 }, o)); };
+
+/* flamme = agression */
+S.flame = (g, x, y, s = 1) => { const f = H.grp(g, x, y, { j: .5 }), q = H.grp(f, 0, 0, { j: 0 }); H.set(q, { s }); H.poly(q, [[0, -190], [60, -90], [86, 0], [50, 70], [-50, 70], [-86, 0], [-50, -100], [-24, -40]], "#E0782B", { jit: 2, seed: 4, th: 6 }); H.poly(q, [[0, -90], [34, -10], [20, 50], [-20, 50], [-34, -10]], "#F5C65A", { jit: 1, sh: false, th: 0 }); H.poly(q, [[0, -20], [14, 20], [-14, 20]], "#FBF0C8", { jit: 0, sh: false, th: 0 }); return f; };

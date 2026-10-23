@@ -54,7 +54,7 @@ P("10b", "Ta peau fabrique de la mélanine…", (g, e) => { S.mech(g, { smoke: e
 P("10c", "…c'est ce qui lui donne sa couleur.", (g, e) => { S.plain(g); const tones = ["#D9A67E", "#B98258", "#A06A44", "#7C4A30", "#4B2B1E"], hair = ["afro", "bun", "bob", "braids", "afro"], cl = [Q.green, "#C8392B", K3.CLOTH, Q.blue, "#E2B13C"]; if (!e) K4.face(g, 540, 760, 1.6, { skin: tones[2], hair: "bob", cloth: cl[2] }); else [[260, 520], [540, 520], [820, 520], [400, 1060], [680, 1060]].forEach(([x, y], i) => K4.face(g, x, y, .62, { skin: tones[i], hair: hair[i], cloth: cl[i] })); });
 
 /* 11 · agression */
-P("11a", "Quand elle est agressée…", (g, e) => { S.mech(g, { smoke: 3, belt: 3, alarm: e, dial: e ? 60 : -60, pressed: e }); if (e) S.bolt(g, 860, 600, 1.0, 20); });
+P("11a", "Quand elle est agressée…", (g, e) => { S.mech(g, { smoke: 3, belt: 3, alarm: e, dial: e ? 60 : -60, pressed: e }); if (e) S.flame(g, 190, 640, 1.3); });
 P("11b", "…par un bouton…", (g, e) => { S.split(g, T => { S.plain(T); const f = K4.face(T, 540, 260, 2.4, { hair: "bob", turn: .4 }); S.patches(f, .2); if (e) { const pm = K.pimple(f.hd, 28); H.set(pm, { x: 80, y: 60 }); } }, { alarm: e, pressed: e, smoke: e ? 6 : 1, dial: e ? 60 : -60 }); });
 P("11c", "…un rasage…", (g, e) => { S.split(g, T => { S.plain(T, "#D8C29C"); const l = H.grp(T, 540, 420, { j: 0 }); l._b.r = -70; H.rrect(l, -170, -800, 340, 1600, S.SK, { r: 0, jit: 0, th: 10 }); if (e) S.freckles(l, -100, -200, 200, 360, 22, 6, 6); const rz = K.razor(T, 1.4); H.set(rz, { x: e ? 760 : 300, y: e ? 470 : 360, r: 10 }); }, { alarm: e, pressed: e, smoke: e ? 6 : 1, dial: e ? 60 : -60 }); });
 P("11d", "…le soleil…", (g, e) => { S.split(g, T => { S.street(T); const su = K3.sunBig(T, 110); H.set(su, { x: 860, y: 200 }); const f = K4.face(T, 440, 520, 1.5, { hair: "braids", turn: .5, tilt: -12 }); S.patches(f, e ? .5 : .1); }, { alarm: e, pressed: e, smoke: e ? 6 : 1, dial: e ? 60 : -60 }); });
@@ -77,7 +77,7 @@ P("15a", "Le but n'est donc pas d'éclaircir ta peau.", (g, e) => { S.board(g, "
 
 /* 16 · réguler */
 P("16a", "C'est de réguler ta production de mélanine…", (g, e) => { S.mech(g, { smoke: e ? 2 : 14, belt: e ? 2 : 12, dial: e ? -68 : 72, slow: e, spot: e ? .4 : 1.4 }); });
-P("16b", "…pour qu'à chaque agression, ta peau n'en fabrique plus trop…", (g, e) => { S.mech(g, { smoke: 2, belt: 2, dial: e ? -40 : -68, pressed: e, spot: .4 }); S.bolt(g, 860, e ? 560 : 360, 1.0, 20); if (e) S.check(g, 200, 500, 90); });
+P("16b", "…pour qu'à chaque agression, ta peau n'en fabrique plus trop…", (g, e) => { S.mech(g, { smoke: 2, belt: 2, dial: e ? -40 : -68, pressed: e, spot: .4 }); S.flame(g, 190, e ? 640 : 520, 1.1); if (e) S.check(g, 880, 500, 90); });
 P("16c", "…et ne te gâche plus le teint tous les jours.", (g, e) => { S.plain(g, "#E9D8B8"); const f = K4.face(g, 540, 620, 2.4, { hair: "braids", turn: .3 }); S.patches(f, e ? 0 : .5); if (e) for (let i = 0; i < 7; i++) { H.rrect(g, 110 + i * 125, 1500, 100, 100, "#F7EFD6", { r: 10, jit: 0, th: 6 }); S.check(g, 160 + i * 125, 1560, 34); } });
 
 /* 17 · imagine */
@@ -99,7 +99,7 @@ P("22b", "…agit sur les taches tenaces, celles qui ne partent jamais vraiment.
 P("23a", "Et la niacinamide, à cinq pour cent…", (g, e) => { S.inside(g, { spot: 0.6, y: 820 }); S.dropper(g, 540, e ? 660 : 520, 1.1, 0, e ? 2 : 1); bottleM(g, 900, 1600, .7); if (e) S.tag(g, "NIACINAMIDE\n5 %", 540, 1250, 80, { string: false }); });
 const bricks = (g, y) => { for (let r = 0; r < 2; r++) for (let i = 0; i < 8; i++) H.rrect(g, -60 + i * 150 + (r % 2) * 75, y - 70 - r * 60, 140, 54, "#D9A482", { r: 6, jit: 0, th: 6 }); };
 P("23b", "…renforce ta barrière cutanée…", (g, e) => { const y = S.inside(g, { spot: .4 }); S.factory(g, { x: 540, y: 1240, s: .8, smoke: 2, belt: 2 }); if (e) for (let r = 0; r < 2; r++) for (let i = 0; i < 8; i++) H.rrect(g, -60 + i * 150 + (r % 2) * 75, y - 60 - r * 58, 140, 52, "#D9A482", { r: 6, jit: 0, th: 6 }); else for (let i = 0; i < 3; i++) S.serumDrop(g, 340 + i * 200, y - 160, 1.0); });
-P("23c", "…pour que ta peau réagisse moins…", (g, e) => { const y = S.inside(g, { spot: .4 }); for (let r = 0; r < 2; r++) for (let i = 0; i < 8; i++) H.rrect(g, -60 + i * 150 + (r % 2) * 75, y - 60 - r * 58, 140, 52, "#D9A482", { r: 6, jit: 0, th: 6 }); S.factory(g, { x: 540, y: 1240, s: .8, smoke: 2, belt: 2, dial: -60 }); S.bolt(g, e ? 820 : 540, e ? 40 : 60, 1.0, e ? 40 : 0); });
+P("23c", "…pour que ta peau réagisse moins…", (g, e) => { const y = S.inside(g, { spot: .4 }); for (let r = 0; r < 2; r++) for (let i = 0; i < 8; i++) H.rrect(g, -60 + i * 150 + (r % 2) * 75, y - 60 - r * 58, 140, 52, "#D9A482", { r: 6, jit: 0, th: 6 }); S.factory(g, { x: 540, y: 1240, s: .8, smoke: 2, belt: 2, dial: -60 }); const fl = S.flame(g, e ? 190 : 400, e ? 40 : 120, 1.0); if (e) H.set(fl, { r: -30 }); });
 P("23d", "…et que les taches reviennent moins.", (g, e) => { S.street(g); const su = K3.sunBig(g, 120); H.set(su, { x: 820, y: 240 }); S.body(g, 480, 1900, .78, { hair: "afro", turn: .4 }); if (e) S.check(g, 200, 500, 100); });
 
 /* 24 · trop de produits */
