@@ -1,0 +1,17 @@
+{
+ "bridge": {"cap": "Alors ta peau fabrique trop de pigment.", "say": "Alors ta peau fabrique trop de pigment."},
+ "hooks": [
+  {"id":"A","nom":"post-acne","audience":"Femmes avec des marques après boutons (déclencheur n°1)","angle":"Douleur : le bouton part, la marque reste",
+   "sentences":[{"cap":"Tes boutons partent, mais tu as toujours des marques noires qui gâchent tout ?","say":"Tes boutons partent, mais tu as toujours des marques noires qui gâchent tout ?","tag":"[curious]"}]},
+  {"id":"B","nom":"grossesse-melasma","audience":"Femmes avec masque de grossesse / mélasma (déclencheur n°2)","angle":"Identification : les taches apparues après la grossesse",
+   "sentences":[{"cap":"Depuis ta grossesse, ce masque foncé sur tes joues ne part pas ?","say":"Depuis ta grossesse, ce masque foncé sur tes joues ne part pas ?","tag":"[curious]"}]},
+  {"id":"C","nom":"rasage-epilation","audience":"Femmes avec marques après rasage / épilation (déclencheur n°3)","angle":"Identification : marques plus foncées que la peau après rasage",
+   "sentences":[{"cap":"Après le rasage ou l'épilation, tes marques sont plus foncées que ta peau ?","say":"Après le rasage ou l'épilation, tes marques sont plus foncées que ta peau ?","tag":"[curious]"}]},
+  {"id":"D","nom":"fond-de-teint","audience":"Femmes au teint non uniforme qui se maquillent pour cacher (déclencheur n°4)","angle":"Frustration : fond de teint juste pour les taches",
+   "sentences":[{"cap":"Tu mets du fond de teint juste pour cacher tes taches ?","say":"Tu mets du fond de teint juste pour cacher tes taches ?","tag":"[curious]"}]},
+  {"id":"E","nom":"peau-mate","audience":"Femmes à peau mate ou foncée déçues par les soins classiques","angle":"Appartenance : les routines ne sont pas pensées pour moi",
+   "sentences":[{"cap":"Peau mate ou foncée, et aucun soin ne marche sur tes taches ?","say":"Peau mate ou foncée, et aucun soin ne marche sur tes taches ?","tag":"[curious]"}]},
+  {"id":"F","nom":"tout-essaye","audience":"Femmes qui ont déjà tout essayé (froid, déçues)","angle":"Frustration : tout testé, rien ne change",
+   "sentences":[{"cap":"Citron, gommage, vitamine C : tu as tout essayé et tes taches sont toujours là ?","say":"Citron, gommage, vitamine C, tu as tout essayé et tes taches sont toujours là ?","tag":"[exasperated]"}]}
+ ]
+}

@@ -1,0 +1,1566 @@
+{
+ "duration": 86.89,
+ "beats": [
+  {
+   "id": "intro",
+   "sentences": [
+    {
+     "start": 0.05,
+     "end": 3.01,
+     "words": [
+      {
+       "w": "Cinq",
+       "start": 0.05,
+       "end": 0.29
+      },
+      {
+       "w": "signes",
+       "start": 0.29,
+       "end": 0.65
+      },
+      {
+       "w": "que",
+       "start": 0.65,
+       "end": 0.77
+      },
+      {
+       "w": "tes",
+       "start": 0.77,
+       "end": 1.037
+      },
+      {
+       "w": "taches",
+       "start": 1.037,
+       "end": 1.303
+      },
+      {
+       "w": "sont",
+       "start": 1.303,
+       "end": 1.45
+      },
+      {
+       "w": "de",
+       "start": 1.45,
+       "end": 1.5
+      },
+      {
+       "w": "l'hyperpigmentation.",
+       "start": 1.45,
+       "end": 3.01
+      }
+     ]
+    }
+   ],
+   "start": 0.05,
+   "end": 3.01
+  },
+  {
+   "id": "s1",
+   "sentences": [
+    {
+     "start": 3.09,
+     "end": 6.61,
+     "words": [
+      {
+       "w": "Un :",
+       "start": 3.09,
+       "end": 3.65
+      },
+      {
+       "w": "elles",
+       "start": 3.65,
+       "end": 3.81
+      },
+      {
+       "w": "restent",
+       "start": 3.81,
+       "end": 4.21
+      },
+      {
+       "w": "des",
+       "start": 4.21,
+       "end": 4.37
+      },
+      {
+       "w": "mois",
+       "start": 4.37,
+       "end": 4.81
+      },
+      {
+       "w": "après",
+       "start": 4.81,
+       "end": 5.01
+      },
+      {
+       "w": "la",
+       "start": 5.01,
+       "end": 5.17
+      },
+      {
+       "w": "disparition",
+       "start": 5.17,
+       "end": 5.73
+      },
+      {
+       "w": "du",
+       "start": 5.73,
+       "end": 5.89
+      },
+      {
+       "w": "bouton.",
+       "start": 5.89,
+       "end": 6.61
+      }
+     ]
+    }
+   ],
+   "start": 3.09,
+   "end": 6.61
+  },
+  {
+   "id": "s2",
+   "sentences": [
+    {
+     "start": 6.65,
+     "end": 10.69,
+     "words": [
+      {
+       "w": "Deux :",
+       "start": 6.65,
+       "end": 7.25
+      },
+      {
+       "w": "elles",
+       "start": 7.25,
+       "end": 7.37
+      },
+      {
+       "w": "sont",
+       "start": 7.37,
+       "end": 7.61
+      },
+      {
+       "w": "brunes",
+       "start": 7.61,
+       "end": 8.01
+      },
+      {
+       "w": "ou",
+       "start": 8.01,
+       "end": 8.13
+      },
+      {
+       "w": "noires,",
+       "start": 8.13,
+       "end": 8.85
+      },
+      {
+       "w": "plus",
+       "start": 8.85,
+       "end": 9.01
+      },
+      {
+       "w": "foncées",
+       "start": 9.01,
+       "end": 9.37
+      },
+      {
+       "w": "que",
+       "start": 9.37,
+       "end": 9.49
+      },
+      {
+       "w": "le",
+       "start": 9.49,
+       "end": 9.73
+      },
+      {
+       "w": "reste",
+       "start": 9.73,
+       "end": 9.93
+      },
+      {
+       "w": "de",
+       "start": 9.93,
+       "end": 10.05
+      },
+      {
+       "w": "ta",
+       "start": 10.05,
+       "end": 10.25
+      },
+      {
+       "w": "peau.",
+       "start": 10.25,
+       "end": 10.69
+      }
+     ]
+    }
+   ],
+   "start": 6.65,
+   "end": 10.69
+  },
+  {
+   "id": "s3",
+   "sentences": [
+    {
+     "start": 10.77,
+     "end": 16.45,
+     "words": [
+      {
+       "w": "Trois :",
+       "start": 10.77,
+       "end": 11.37
+      },
+      {
+       "w": "tu",
+       "start": 11.37,
+       "end": 11.45
+      },
+      {
+       "w": "en",
+       "start": 11.45,
+       "end": 11.57
+      },
+      {
+       "w": "as",
+       "start": 11.57,
+       "end": 11.73
+      },
+      {
+       "w": "pas",
+       "start": 11.73,
+       "end": 11.89
+      },
+      {
+       "w": "seulement",
+       "start": 11.89,
+       "end": 12.21
+      },
+      {
+       "w": "sur",
+       "start": 12.21,
+       "end": 12.26
+      },
+      {
+       "w": "le",
+       "start": 12.21,
+       "end": 12.33
+      },
+      {
+       "w": "visage,",
+       "start": 12.33,
+       "end": 13.05
+      },
+      {
+       "w": "mais",
+       "start": 13.05,
+       "end": 13.29
+      },
+      {
+       "w": "aussi",
+       "start": 13.29,
+       "end": 13.57
+      },
+      {
+       "w": "après",
+       "start": 13.57,
+       "end": 13.85
+      },
+      {
+       "w": "le",
+       "start": 13.85,
+       "end": 13.9
+      },
+      {
+       "w": "rasage,",
+       "start": 13.85,
+       "end": 14.663
+      },
+      {
+       "w": "l'épilation,",
+       "start": 14.663,
+       "end": 15.703
+      },
+      {
+       "w": "les",
+       "start": 15.703,
+       "end": 15.753
+      },
+      {
+       "w": "frottements.",
+       "start": 15.703,
+       "end": 16.45
+      }
+     ]
+    }
+   ],
+   "start": 10.77,
+   "end": 16.45
+  },
+  {
+   "id": "s4",
+   "sentences": [
+    {
+     "start": 16.49,
+     "end": 21.49,
+     "words": [
+      {
+       "w": "Quatre :",
+       "start": 16.49,
+       "end": 17.17
+      },
+      {
+       "w": "depuis",
+       "start": 17.17,
+       "end": 17.49
+      },
+      {
+       "w": "que",
+       "start": 17.49,
+       "end": 17.65
+      },
+      {
+       "w": "tu",
+       "start": 17.65,
+       "end": 17.7
+      },
+      {
+       "w": "gommes",
+       "start": 17.65,
+       "end": 18.09
+      },
+      {
+       "w": "ta",
+       "start": 18.09,
+       "end": 18.14
+      },
+      {
+       "w": "peau",
+       "start": 18.09,
+       "end": 18.37
+      },
+      {
+       "w": "ou",
+       "start": 18.37,
+       "end": 18.49
+      },
+      {
+       "w": "que",
+       "start": 18.49,
+       "end": 18.61
+      },
+      {
+       "w": "tu",
+       "start": 18.61,
+       "end": 18.77
+      },
+      {
+       "w": "testes",
+       "start": 18.77,
+       "end": 19.09
+      },
+      {
+       "w": "des",
+       "start": 19.09,
+       "end": 19.29
+      },
+      {
+       "w": "produits",
+       "start": 19.29,
+       "end": 19.53
+      },
+      {
+       "w": "au",
+       "start": 19.53,
+       "end": 19.58
+      },
+      {
+       "w": "hasard,",
+       "start": 19.53,
+       "end": 20.25
+      },
+      {
+       "w": "c'est",
+       "start": 20.25,
+       "end": 20.3
+      },
+      {
+       "w": "encore",
+       "start": 20.25,
+       "end": 20.93
+      },
+      {
+       "w": "pire.",
+       "start": 20.93,
+       "end": 21.49
+      }
+     ]
+    }
+   ],
+   "start": 16.49,
+   "end": 21.49
+  },
+  {
+   "id": "s5",
+   "sentences": [
+    {
+     "start": 21.856,
+     "end": 25.97,
+     "words": [
+      {
+       "w": "Et",
+       "start": 21.856,
+       "end": 21.93
+      },
+      {
+       "w": "cinq :",
+       "start": 21.93,
+       "end": 22.69
+      },
+      {
+       "w": "aucun",
+       "start": 22.69,
+       "end": 23.17
+      },
+      {
+       "w": "gommage",
+       "start": 23.17,
+       "end": 23.81
+      },
+      {
+       "w": "ni",
+       "start": 23.81,
+       "end": 23.86
+      },
+      {
+       "w": "crème",
+       "start": 23.81,
+       "end": 24.49
+      },
+      {
+       "w": "éclat",
+       "start": 24.49,
+       "end": 24.61
+      },
+      {
+       "w": "ne",
+       "start": 24.61,
+       "end": 24.66
+      },
+      {
+       "w": "change",
+       "start": 24.61,
+       "end": 25.13
+      },
+      {
+       "w": "quoi",
+       "start": 25.13,
+       "end": 25.18
+      },
+      {
+       "w": "que",
+       "start": 25.13,
+       "end": 25.25
+      },
+      {
+       "w": "ce",
+       "start": 25.25,
+       "end": 25.41
+      },
+      {
+       "w": "soit.",
+       "start": 25.41,
+       "end": 25.97
+      }
+     ]
+    },
+    {
+     "start": 26.21,
+     "end": 29.17,
+     "words": [
+      {
+       "w": "Normal :",
+       "start": 26.21,
+       "end": 26.89
+      },
+      {
+       "w": "la",
+       "start": 26.89,
+       "end": 26.94
+      },
+      {
+       "w": "plupart",
+       "start": 26.89,
+       "end": 27.33
+      },
+      {
+       "w": "des",
+       "start": 27.33,
+       "end": 27.38
+      },
+      {
+       "w": "routines",
+       "start": 27.33,
+       "end": 27.943
+      },
+      {
+       "w": "sont",
+       "start": 27.943,
+       "end": 27.993
+      },
+      {
+       "w": "pensées",
+       "start": 27.943,
+       "end": 28.37
+      },
+      {
+       "w": "pour",
+       "start": 28.37,
+       "end": 28.42
+      },
+      {
+       "w": "des",
+       "start": 28.37,
+       "end": 28.49
+      },
+      {
+       "w": "peaux",
+       "start": 28.49,
+       "end": 28.69
+      },
+      {
+       "w": "claires.",
+       "start": 28.69,
+       "end": 29.17
+      }
+     ]
+    }
+   ],
+   "start": 21.856,
+   "end": 29.17
+  },
+  {
+   "id": "bascule",
+   "sentences": [
+    {
+     "start": 29.394,
+     "end": 30.237,
+     "words": [
+      {
+       "w": "Ça",
+       "start": 29.394,
+       "end": 29.49
+      },
+      {
+       "w": "te",
+       "start": 29.49,
+       "end": 29.65
+      },
+      {
+       "w": "parle ?",
+       "start": 29.65,
+       "end": 30.237
+      }
+     ]
+    },
+    {
+     "start": 30.263,
+     "end": 33.25,
+     "words": [
+      {
+       "w": "Alors",
+       "start": 30.263,
+       "end": 30.61
+      },
+      {
+       "w": "le",
+       "start": 30.61,
+       "end": 30.66
+      },
+      {
+       "w": "problème",
+       "start": 30.61,
+       "end": 31.25
+      },
+      {
+       "w": "n'est",
+       "start": 31.25,
+       "end": 31.3
+      },
+      {
+       "w": "pas",
+       "start": 31.25,
+       "end": 31.41
+      },
+      {
+       "w": "sur",
+       "start": 31.41,
+       "end": 31.65
+      },
+      {
+       "w": "ta",
+       "start": 31.65,
+       "end": 31.81
+      },
+      {
+       "w": "peau,",
+       "start": 31.81,
+       "end": 32.25
+      },
+      {
+       "w": "mais",
+       "start": 32.25,
+       "end": 32.53
+      },
+      {
+       "w": "en",
+       "start": 32.53,
+       "end": 32.73
+      },
+      {
+       "w": "dessous.",
+       "start": 32.73,
+       "end": 33.25
+      }
+     ]
+    },
+    {
+     "start": 33.387,
+     "end": 35.09,
+     "words": [
+      {
+       "w": "Et",
+       "start": 33.387,
+       "end": 33.49
+      },
+      {
+       "w": "c'est",
+       "start": 33.49,
+       "end": 33.73
+      },
+      {
+       "w": "là",
+       "start": 33.73,
+       "end": 33.97
+      },
+      {
+       "w": "que",
+       "start": 33.97,
+       "end": 34.13
+      },
+      {
+       "w": "tu",
+       "start": 34.13,
+       "end": 34.25
+      },
+      {
+       "w": "peux",
+       "start": 34.25,
+       "end": 34.45
+      },
+      {
+       "w": "agir.",
+       "start": 34.45,
+       "end": 35.09
+      }
+     ]
+    }
+   ],
+   "start": 29.394,
+   "end": 35.09
+  },
+  {
+   "id": "meca",
+   "sentences": [
+    {
+     "start": 35.17,
+     "end": 37.33,
+     "words": [
+      {
+       "w": "Le",
+       "start": 35.17,
+       "end": 35.33
+      },
+      {
+       "w": "but",
+       "start": 35.33,
+       "end": 35.65
+      },
+      {
+       "w": "n'est",
+       "start": 35.65,
+       "end": 35.85
+      },
+      {
+       "w": "pas",
+       "start": 35.85,
+       "end": 35.97
+      },
+      {
+       "w": "d'éclaircir",
+       "start": 35.97,
+       "end": 36.69
+      },
+      {
+       "w": "ta",
+       "start": 36.69,
+       "end": 36.85
+      },
+      {
+       "w": "peau.",
+       "start": 36.85,
+       "end": 37.33
+      }
+     ]
+    },
+    {
+     "start": 37.383,
+     "end": 43.65,
+     "words": [
+      {
+       "w": "Tout",
+       "start": 37.383,
+       "end": 37.53
+      },
+      {
+       "w": "vient",
+       "start": 37.53,
+       "end": 37.77
+      },
+      {
+       "w": "de",
+       "start": 37.77,
+       "end": 37.82
+      },
+      {
+       "w": "la",
+       "start": 37.77,
+       "end": 37.89
+      },
+      {
+       "w": "mélanine",
+       "start": 37.89,
+       "end": 38.61
+      },
+      {
+       "w": "que",
+       "start": 38.61,
+       "end": 38.66
+      },
+      {
+       "w": "ta",
+       "start": 38.61,
+       "end": 38.77
+      },
+      {
+       "w": "peau",
+       "start": 38.77,
+       "end": 38.89
+      },
+      {
+       "w": "fabrique",
+       "start": 38.89,
+       "end": 39.218
+      },
+      {
+       "w": "en",
+       "start": 39.218,
+       "end": 39.49
+      },
+      {
+       "w": "trop",
+       "start": 39.49,
+       "end": 39.61
+      },
+      {
+       "w": "après",
+       "start": 39.61,
+       "end": 39.97
+      },
+      {
+       "w": "une",
+       "start": 39.97,
+       "end": 40.29
+      },
+      {
+       "w": "inflammation,",
+       "start": 40.29,
+       "end": 40.77
+      },
+      {
+       "w": "à",
+       "start": 40.77,
+       "end": 41.33
+      },
+      {
+       "w": "cause",
+       "start": 41.33,
+       "end": 41.49
+      },
+      {
+       "w": "d'une",
+       "start": 41.49,
+       "end": 41.61
+      },
+      {
+       "w": "enzyme :",
+       "start": 41.61,
+       "end": 42.41
+      },
+      {
+       "w": "la",
+       "start": 42.41,
+       "end": 42.46
+      },
+      {
+       "w": "tyrosinase.",
+       "start": 42.41,
+       "end": 43.65
+      }
+     ]
+    }
+   ],
+   "start": 35.17,
+   "end": 43.65
+  },
+  {
+   "id": "a1",
+   "sentences": [
+    {
+     "start": 43.677,
+     "end": 47.49,
+     "words": [
+      {
+       "w": "L'acide",
+       "start": 43.677,
+       "end": 44.05
+      },
+      {
+       "w": "azélaïque,",
+       "start": 44.05,
+       "end": 45.09
+      },
+      {
+       "w": "à",
+       "start": 45.09,
+       "end": 45.14
+      },
+      {
+       "w": "10 %,",
+       "start": 45.09,
+       "end": 45.81
+      },
+      {
+       "w": "freine",
+       "start": 45.81,
+       "end": 46.09
+      },
+      {
+       "w": "cette",
+       "start": 46.09,
+       "end": 46.29
+      },
+      {
+       "w": "production",
+       "start": 46.29,
+       "end": 46.77
+      },
+      {
+       "w": "de",
+       "start": 46.77,
+       "end": 46.82
+      },
+      {
+       "w": "mélanine.",
+       "start": 46.77,
+       "end": 47.49
+      }
+     ]
+    },
+    {
+     "start": 47.65,
+     "end": 49.81,
+     "words": [
+      {
+       "w": "L'alpha-arbutine",
+       "start": 47.65,
+       "end": 48.77
+      },
+      {
+       "w": "bloque",
+       "start": 48.77,
+       "end": 49.05
+      },
+      {
+       "w": "l'enzyme.",
+       "start": 49.05,
+       "end": 49.81
+      }
+     ]
+    }
+   ],
+   "start": 43.677,
+   "end": 49.81
+  },
+  {
+   "id": "a2",
+   "sentences": [
+    {
+     "start": 49.89,
+     "end": 54.77,
+     "words": [
+      {
+       "w": "Ajoute",
+       "start": 49.89,
+       "end": 50.17
+      },
+      {
+       "w": "l'acide",
+       "start": 50.17,
+       "end": 50.65
+      },
+      {
+       "w": "tranexamique,",
+       "start": 50.65,
+       "end": 51.81
+      },
+      {
+       "w": "et",
+       "start": 51.81,
+       "end": 51.86
+      },
+      {
+       "w": "tu",
+       "start": 51.81,
+       "end": 52.25
+      },
+      {
+       "w": "agis",
+       "start": 52.25,
+       "end": 52.53
+      },
+      {
+       "w": "aussi",
+       "start": 52.53,
+       "end": 52.69
+      },
+      {
+       "w": "sur",
+       "start": 52.69,
+       "end": 52.81
+      },
+      {
+       "w": "les",
+       "start": 52.81,
+       "end": 52.86
+      },
+      {
+       "w": "taches",
+       "start": 52.81,
+       "end": 53.13
+      },
+      {
+       "w": "tenaces,",
+       "start": 53.13,
+       "end": 53.73
+      },
+      {
+       "w": "celles",
+       "start": 53.73,
+       "end": 54.13
+      },
+      {
+       "w": "qui",
+       "start": 54.13,
+       "end": 54.18
+      },
+      {
+       "w": "reviennent.",
+       "start": 54.13,
+       "end": 54.77
+      }
+     ]
+    }
+   ],
+   "start": 49.89,
+   "end": 54.77
+  },
+  {
+   "id": "a3",
+   "sentences": [
+    {
+     "start": 54.81,
+     "end": 60.37,
+     "words": [
+      {
+       "w": "Et",
+       "start": 54.81,
+       "end": 54.93
+      },
+      {
+       "w": "la",
+       "start": 54.93,
+       "end": 55.05
+      },
+      {
+       "w": "niacinamide,",
+       "start": 55.05,
+       "end": 56.29
+      },
+      {
+       "w": "à",
+       "start": 56.29,
+       "end": 56.34
+      },
+      {
+       "w": "5 %,",
+       "start": 56.29,
+       "end": 56.53
+      },
+      {
+       "w": "renforce",
+       "start": 56.53,
+       "end": 57.57
+      },
+      {
+       "w": "ta",
+       "start": 57.57,
+       "end": 57.62
+      },
+      {
+       "w": "barrière",
+       "start": 57.57,
+       "end": 58.05
+      },
+      {
+       "w": "cutanée",
+       "start": 58.05,
+       "end": 58.53
+      },
+      {
+       "w": "pour",
+       "start": 58.53,
+       "end": 58.77
+      },
+      {
+       "w": "limiter",
+       "start": 58.77,
+       "end": 59.25
+      },
+      {
+       "w": "le",
+       "start": 59.25,
+       "end": 59.41
+      },
+      {
+       "w": "retour",
+       "start": 59.41,
+       "end": 59.73
+      },
+      {
+       "w": "des",
+       "start": 59.73,
+       "end": 59.917
+      },
+      {
+       "w": "taches.",
+       "start": 59.917,
+       "end": 60.37
+      }
+     ]
+    },
+    {
+     "start": 60.45,
+     "end": 62.85,
+     "words": [
+      {
+       "w": "La",
+       "start": 60.45,
+       "end": 60.57
+      },
+      {
+       "w": "plupart",
+       "start": 60.57,
+       "end": 60.93
+      },
+      {
+       "w": "des",
+       "start": 60.93,
+       "end": 61.09
+      },
+      {
+       "w": "soins",
+       "start": 61.09,
+       "end": 61.383
+      },
+      {
+       "w": "n'en",
+       "start": 61.383,
+       "end": 61.61
+      },
+      {
+       "w": "contiennent",
+       "start": 61.61,
+       "end": 61.93
+      },
+      {
+       "w": "que",
+       "start": 61.93,
+       "end": 62.05
+      },
+      {
+       "w": "quelques-uns.",
+       "start": 62.05,
+       "end": 62.85
+      }
+     ]
+    }
+   ],
+   "start": 54.81,
+   "end": 62.85
+  },
+  {
+   "id": "conso",
+   "sentences": [
+    {
+     "start": 62.89,
+     "end": 65.33,
+     "words": [
+      {
+       "w": "Il",
+       "start": 62.89,
+       "end": 63.01
+      },
+      {
+       "w": "existe",
+       "start": 63.01,
+       "end": 63.53
+      },
+      {
+       "w": "plusieurs",
+       "start": 63.53,
+       "end": 63.89
+      },
+      {
+       "w": "façons",
+       "start": 63.89,
+       "end": 64.21
+      },
+      {
+       "w": "de",
+       "start": 64.21,
+       "end": 64.33
+      },
+      {
+       "w": "cibler",
+       "start": 64.33,
+       "end": 64.69
+      },
+      {
+       "w": "une",
+       "start": 64.69,
+       "end": 64.877
+      },
+      {
+       "w": "tache.",
+       "start": 64.877,
+       "end": 65.33
+      }
+     ]
+    },
+    {
+     "start": 65.399,
+     "end": 71.09,
+     "words": [
+      {
+       "w": "Mais",
+       "start": 65.399,
+       "end": 65.49
+      },
+      {
+       "w": "tu",
+       "start": 65.49,
+       "end": 65.597
+      },
+      {
+       "w": "n'as",
+       "start": 65.597,
+       "end": 65.89
+      },
+      {
+       "w": "pas",
+       "start": 65.89,
+       "end": 66.05
+      },
+      {
+       "w": "besoin",
+       "start": 66.05,
+       "end": 66.37
+      },
+      {
+       "w": "de",
+       "start": 66.37,
+       "end": 66.57
+      },
+      {
+       "w": "dix",
+       "start": 66.57,
+       "end": 66.77
+      },
+      {
+       "w": "flacons",
+       "start": 66.77,
+       "end": 67.17
+      },
+      {
+       "w": "différents :",
+       "start": 67.17,
+       "end": 67.85
+      },
+      {
+       "w": "le",
+       "start": 67.85,
+       "end": 68.05
+      },
+      {
+       "w": "Sérum",
+       "start": 68.05,
+       "end": 68.37
+      },
+      {
+       "w": "Anti-Taches",
+       "start": 68.37,
+       "end": 69.05
+      },
+      {
+       "w": "MELA",
+       "start": 69.05,
+       "end": 69.37
+      },
+      {
+       "w": "SKIN",
+       "start": 69.37,
+       "end": 69.89
+      },
+      {
+       "w": "les",
+       "start": 69.89,
+       "end": 70.05
+      },
+      {
+       "w": "réunit",
+       "start": 70.05,
+       "end": 70.49
+      },
+      {
+       "w": "tous.",
+       "start": 70.49,
+       "end": 71.09
+      }
+     ]
+    }
+   ],
+   "start": 62.89,
+   "end": 71.09
+  },
+  {
+   "id": "preuve",
+   "sentences": [
+    {
+     "start": 71.13,
+     "end": 74.45,
+     "words": [
+      {
+       "w": "94 %",
+       "start": 71.13,
+       "end": 72.29
+      },
+      {
+       "w": "de",
+       "start": 72.29,
+       "end": 72.45
+      },
+      {
+       "w": "celles",
+       "start": 72.45,
+       "end": 72.69
+      },
+      {
+       "w": "qui",
+       "start": 72.69,
+       "end": 72.77
+      },
+      {
+       "w": "l'ont",
+       "start": 72.77,
+       "end": 72.93
+      },
+      {
+       "w": "testé",
+       "start": 72.93,
+       "end": 73.49
+      },
+      {
+       "w": "le",
+       "start": 73.49,
+       "end": 73.65
+      },
+      {
+       "w": "recommandent.",
+       "start": 73.65,
+       "end": 74.45
+      }
+     ]
+    }
+   ],
+   "start": 71.13,
+   "end": 74.45
+  },
+  {
+   "id": "garantie",
+   "sentences": [
+    {
+     "start": 74.519,
+     "end": 75.517,
+     "words": [
+      {
+       "w": "Toujours",
+       "start": 74.519,
+       "end": 74.73
+      },
+      {
+       "w": "sceptique ?",
+       "start": 74.73,
+       "end": 75.517
+      }
+     ]
+    },
+    {
+     "start": 75.543,
+     "end": 76.21,
+     "words": [
+      {
+       "w": "Très",
+       "start": 75.543,
+       "end": 75.73
+      },
+      {
+       "w": "bien.",
+       "start": 75.73,
+       "end": 76.21
+      }
+     ]
+    },
+    {
+     "start": 76.25,
+     "end": 80.21,
+     "words": [
+      {
+       "w": "Voilà",
+       "start": 76.25,
+       "end": 76.53
+      },
+      {
+       "w": "pourquoi",
+       "start": 76.53,
+       "end": 76.85
+      },
+      {
+       "w": "tu",
+       "start": 76.85,
+       "end": 77.01
+      },
+      {
+       "w": "as",
+       "start": 77.01,
+       "end": 77.09
+      },
+      {
+       "w": "une",
+       "start": 77.09,
+       "end": 77.25
+      },
+      {
+       "w": "garantie",
+       "start": 77.25,
+       "end": 77.69
+      },
+      {
+       "w": "satisfait",
+       "start": 77.69,
+       "end": 78.29
+      },
+      {
+       "w": "ou",
+       "start": 78.29,
+       "end": 78.34
+      },
+      {
+       "w": "remboursé",
+       "start": 78.29,
+       "end": 79.09
+      },
+      {
+       "w": "de",
+       "start": 79.09,
+       "end": 79.14
+      },
+      {
+       "w": "quatre-vingt-dix",
+       "start": 79.09,
+       "end": 79.73
+      },
+      {
+       "w": "jours.",
+       "start": 79.73,
+       "end": 80.21
+      }
+     ]
+    },
+    {
+     "start": 80.25,
+     "end": 82.29,
+     "words": [
+      {
+       "w": "Si",
+       "start": 80.25,
+       "end": 80.37
+      },
+      {
+       "w": "tu",
+       "start": 80.37,
+       "end": 80.503
+      },
+      {
+       "w": "n'es",
+       "start": 80.503,
+       "end": 80.65
+      },
+      {
+       "w": "pas",
+       "start": 80.65,
+       "end": 80.77
+      },
+      {
+       "w": "convaincue,",
+       "start": 80.77,
+       "end": 81.61
+      },
+      {
+       "w": "tu",
+       "start": 81.61,
+       "end": 81.73
+      },
+      {
+       "w": "ne",
+       "start": 81.73,
+       "end": 81.78
+      },
+      {
+       "w": "paies",
+       "start": 81.73,
+       "end": 81.89
+      },
+      {
+       "w": "rien.",
+       "start": 81.89,
+       "end": 82.29
+      }
+     ]
+    },
+    {
+     "start": 82.359,
+     "end": 83.17,
+     "words": [
+      {
+       "w": "Pas",
+       "start": 82.359,
+       "end": 82.45
+      },
+      {
+       "w": "de",
+       "start": 82.45,
+       "end": 82.557
+      },
+      {
+       "w": "souci.",
+       "start": 82.557,
+       "end": 83.17
+      }
+     ]
+    }
+   ],
+   "start": 74.519,
+   "end": 83.17
+  },
+  {
+   "id": "offre",
+   "sentences": [
+    {
+     "start": 83.25,
+     "end": 86.69,
+     "words": [
+      {
+       "w": "Cette",
+       "start": 83.25,
+       "end": 83.49
+      },
+      {
+       "w": "semaine,",
+       "start": 83.49,
+       "end": 84.25
+      },
+      {
+       "w": "pour",
+       "start": 84.25,
+       "end": 84.3
+      },
+      {
+       "w": "2",
+       "start": 84.25,
+       "end": 84.37
+      },
+      {
+       "w": "flacons",
+       "start": 84.37,
+       "end": 84.77
+      },
+      {
+       "w": "achetés,",
+       "start": 84.77,
+       "end": 85.29
+      },
+      {
+       "w": "tu",
+       "start": 85.29,
+       "end": 85.41
+      },
+      {
+       "w": "en",
+       "start": 85.41,
+       "end": 85.49
+      },
+      {
+       "w": "reçois",
+       "start": 85.49,
+       "end": 85.93
+      },
+      {
+       "w": "1",
+       "start": 85.93,
+       "end": 86.05
+      },
+      {
+       "w": "offert.",
+       "start": 86.05,
+       "end": 86.69
+      }
+     ]
+    }
+   ],
+   "start": 83.25,
+   "end": 86.69
+  }
+ ]
+}
