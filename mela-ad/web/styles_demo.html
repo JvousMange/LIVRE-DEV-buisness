@@ -1,0 +1,80 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:"DM Sans";font-weight:800;src:url(fonts/dm-sans-latin-800-normal.woff2)}
+@font-face{font-family:"DM Sans";font-weight:400;src:url(fonts/dm-sans-latin-400-normal.woff2)}
+@font-face{font-family:"Anton";src:url(fonts/anton-latin-400-normal.woff2)}
+@font-face{font-family:"Marker";src:url(fonts/permanent-marker-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}svg{display:block}
+</style></head><body><svg id="s" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920"></svg>
+<script>
+const S=+new URLSearchParams(location.search).get('s')||1, svg=document.getElementById('s'), NS="http://www.w3.org/2000/svg";
+let seed=7; const R=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const el=(t,a,p=svg)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+const wob=(pts,j)=>pts.map(([x,y])=>[x+(R()-.5)*j,y+(R()-.5)*j]);
+const path=(pts,close=true)=>"M"+pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join("L")+(close?"Z":"");
+const blob=(cx,cy,rx,ry,n=18,j=.06)=>{const p=[];for(let i=0;i<n;i++){const a=i/n*6.283,k=1+(R()-.5)*j;p.push([cx+Math.cos(a)*rx*k,cy+Math.sin(a)*ry*k])}return p};
+const cells=[170,380,590,800,960], dots=[[300,880],[470,860],[700,885],[860,870],[540,905]];
+const cap=(w)=>{const t=el('text',{x:540,y:1300,'font-size':108,'font-weight':800,'text-anchor':'middle',fill:'#fff',stroke:'#5a3418','stroke-width':20,'paint-order':'stroke','stroke-linejoin':'round','font-family':'DM Sans'});t.textContent=w};
+const defs=el('defs',{});
+const sh=el('filter',{id:'sh',x:'-20%',y:'-20%',width:'140%',height:'150%'},defs);el('feDropShadow',{dx:0,dy:10,stdDeviation:7,'flood-color':'#2a1305','flood-opacity':.35},sh);
+const sh1=el('filter',{id:'sh1',x:'-30%',y:'-30%',width:'160%',height:'170%'},defs);el('feDropShadow',{dx:0,dy:4,stdDeviation:3,'flood-color':'#2a1305','flood-opacity':.4},sh1);
+const g0=el('g',{});
+
+if(S===1){ /* PAPIER DÉCOUPÉ */
+ el('rect',{width:1080,height:1920,fill:'#DDBD92'});
+ const L=[["#F0D9B0",860,170],["#D9A074",1030,330],["#A56A47",1360,300],["#7A4A30",1660,400]];
+ L.forEach(([c,y,h],i)=>{const p=wob([[-40,y],[1120,y],[1120,y+h],[-40,y+h]],8);const g=el('g',{filter:'url(#sh)'});el('path',{d:path(p),fill:H(c,.7),transform:'translate(0,10)'},g);el('path',{d:path(p),fill:c,stroke:'#fff','stroke-opacity':.22,'stroke-width':2},g)});
+ function H(h,k){const n=parseInt(h.slice(1),16);return'#'+[n>>16&255,n>>8&255,n&255].map(v=>Math.round(v*k).toString(16).padStart(2,'0')).join('')}
+ cells.forEach((x,i)=>{const g=el('g',{filter:'url(#sh1)'});el('path',{d:path(blob(x,1070,62,52,14,.14)),fill:'#3A1F10'},g);el('path',{d:`M${x-30},${1050} l-60,-70 M${x+30},${1050} l60,-60`,stroke:'#3A1F10','stroke-width':10,'stroke-linecap':'round',fill:'none'},g)});
+ dots.forEach(([x,y])=>{const g=el('g',{filter:'url(#sh1)'});el('path',{d:path(blob(x,y,22,20,10,.2)),fill:'#3A1F10'},g)});
+ const patch=el('g',{filter:'url(#sh1)'});el('path',{d:path(blob(540,852,330,40,24,.08)),fill:'#3A1F10'},patch);
+ /* titre : bandeau déchiré collé sur le décor */
+ const t=el('g',{filter:'url(#sh)',transform:'rotate(-2 540 480)'});el('path',{d:path(wob([[90,300],[990,290],[1000,660],[80,670]],14)),fill:'#F6EDD0'},t);el('text',{x:540,y:420,'font-size':80,'text-anchor':'middle',fill:'#7A3A22','font-family':'Anton','letter-spacing':3},t).textContent='TA PEAU FABRIQUE';el('text',{x:540,y:580,'font-size':128,'text-anchor':'middle',fill:'#3A1F10','font-family':'Anton','letter-spacing':4},t).textContent='DE LA MÉLANINE';
+ /* étiquettes collées */
+ [[210,1560,'MÉLANOCYTE',-4],[760,1560,'COUCHE PROFONDE',3]].forEach(([x,y,s,r])=>{const g=el('g',{filter:'url(#sh1)',transform:`rotate(${r} ${x} ${y})`});el('path',{d:path(wob([[x-170,y-45],[x+170,y-48],[x+175,y+45],[x-165,y+48]],6)),fill:'#F6EDD0'},g);el('text',{x,y:y+13,'font-size':40,'text-anchor':'middle',fill:'#7A3A22','font-family':'Anton','letter-spacing':2},g).textContent=s});
+ cap('mélanine');
+}
+if(S===2){ /* MOTION FLAT */
+ el('rect',{width:1080,height:1920,fill:'#FBEBD3'});
+ el('circle',{cx:900,cy:260,r:230,fill:'#F6D2B0'});el('circle',{cx:140,cy:1700,r:260,fill:'#F3DFC0'});
+ [["#F4C9A0",850,170],["#E3A079",1020,330],["#B9714E",1350,310],["#8A4C34",1660,400]].forEach(([c,y,h])=>el('rect',{x:0,y,width:1080,height:h,fill:c}));
+ cells.forEach(x=>{el('circle',{cx:x,cy:1070,r:62,fill:'#3A1F10'});[[-80,-70],[80,-60],[0,86]].forEach(([dx,dy])=>{el('line',{x1:x,y1:1070,x2:x+dx,y2:1070+dy,stroke:'#3A1F10','stroke-width':14,'stroke-linecap':'round'});el('circle',{cx:x+dx,cy:1070+dy,r:12,fill:'#3A1F10'})});el('circle',{cx:x+14,cy:1058,r:18,fill:'#6B3D24'})});
+ dots.forEach(([x,y])=>el('circle',{cx:x,cy:y,r:20,fill:'#3A1F10'}));el('rect',{x:210,y:838,width:660,height:34,rx:17,fill:'#3A1F10'});
+ el('text',{x:90,y:420,'font-size':84,'font-weight':800,fill:'#7A3A22','font-family':'DM Sans'}).textContent='Ta peau fabrique';
+ el('text',{x:90,y:560,'font-size':118,'font-weight':800,fill:'#3A1F10','font-family':'DM Sans'}).textContent='de la mélanine';
+ el('rect',{x:90,y:600,width:300,height:14,rx:7,fill:'#E07A4F'});
+ [[90,1540,'Mélanocyte'],[540,1540,'Couche profonde']].forEach(([x,y,s])=>{const w=s.length*24+60;el('rect',{x,y,width:w,height:84,rx:42,fill:'#FBEBD3'});el('text',{x:x+w/2,y:y+56,'font-size':40,'font-weight':800,'text-anchor':'middle',fill:'#7A3A22','font-family':'DM Sans'}).textContent=s});
+ cap('mélanine');
+}
+if(S===3){ /* RISO / COLLAGE */
+ el('rect',{width:1080,height:1920,fill:'#F2E6CF'});
+ const pat=el('pattern',{id:'ht',width:18,height:18,patternUnits:'userSpaceOnUse',patternTransform:'rotate(30)'},defs);el('circle',{cx:9,cy:9,r:5,fill:'#E4572E'},pat);
+ const pat2=el('pattern',{id:'ht2',width:14,height:14,patternUnits:'userSpaceOnUse',patternTransform:'rotate(-15)'},defs);el('circle',{cx:7,cy:7,r:3.6,fill:'#1F3A4D'},pat2);
+ const mult={style:'mix-blend-mode:multiply'};
+ [[ 'url(#ht)',850,170],['#F3A072',1020,330],['url(#ht)',1350,310],['#1F3A4D',1660,400]].forEach(([f,y,h],i)=>{el('rect',{x:-10,y,width:1100,height:h,fill:f,...mult});});
+ el('rect',{x:-10,y:1020,width:1100,height:330,fill:'url(#ht2)',opacity:.35,...mult});
+ cells.forEach(x=>{el('path',{d:path(blob(x+6,1076,62,52,14,.16)),fill:'#E4572E',...mult});el('path',{d:path(blob(x,1070,62,52,14,.16)),fill:'#1F3A4D',...mult});});
+ dots.forEach(([x,y])=>{el('circle',{cx:x+5,cy:y+4,r:20,fill:'#E4572E',...mult});el('circle',{cx:x,cy:y,r:20,fill:'#1F3A4D',...mult})});
+ el('text',{x:70,y:420,'font-size':84,'font-family':'Anton',fill:'#E4572E','letter-spacing':3,...mult}).textContent='TA PEAU FABRIQUE';
+ el('text',{x:76,y:426,'font-size':84,'font-family':'Anton',fill:'#1F3A4D','letter-spacing':3,...mult}).textContent='TA PEAU FABRIQUE';
+ el('text',{x:70,y:580,'font-size':128,'font-family':'Anton',fill:'#E4572E','letter-spacing':3,...mult}).textContent='DE LA MÉLANINE';
+ el('text',{x:77,y:587,'font-size':128,'font-family':'Anton',fill:'#1F3A4D','letter-spacing':3,...mult}).textContent='DE LA MÉLANINE';
+ [[70,1530,'MÉLANOCYTE'],[500,1530,'COUCHE PROFONDE']].forEach(([x,y,s])=>{const w=s.length*26+50;el('rect',{x,y,width:w,height:80,fill:'#F2E6CF',stroke:'#1F3A4D','stroke-width':5});el('text',{x:x+w/2,y:y+56,'font-size':42,'font-family':'Anton','text-anchor':'middle',fill:'#1F3A4D','letter-spacing':2}).textContent=s});
+ cap('mélanine');
+}
+if(S===4){ /* DOODLE FEUTRE sur kraft */
+ el('rect',{width:1080,height:1920,fill:'#E7D2AA'});
+ const line=(d,w=9,c='#2B1A12')=>el('path',{d,stroke:c,'stroke-width':w,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'});
+ const wl=(x1,y1,x2,y2,n=18)=>{const p=[];for(let i=0;i<=n;i++){const t=i/n;p.push([x1+(x2-x1)*t+(R()-.5)*5,y1+(y2-y1)*t+(R()-.5)*5])}return path(p,false)};
+ [[860,'#F3E3C0'],[1030,'#E8B88A'],[1360,'#C98C63'],[1660,'#A56A47']].forEach(([y,c],i)=>{const h=[170,330,300,400][i];el('rect',{x:20,y,width:1040,height:h,fill:c,opacity:.9});line(wl(20,y,1060,y),10);for(let k=0;k<14;k++){const x=40+k*74;line(wl(x,y+20,x-30,y+70,4),4,'#2B1A12')}});
+ cells.forEach(x=>{el('path',{d:path(blob(x,1070,60,50,16,.12)),fill:'#2B1A12'});[[-90,-70],[90,-60],[0,92]].forEach(([dx,dy])=>line(wl(x,1070,x+dx,1070+dy,6),9));});
+ dots.forEach(([x,y])=>el('path',{d:path(blob(x,y,20,18,10,.2)),fill:'#2B1A12'}));
+ el('path',{d:path(blob(540,852,330,34,24,.08)),fill:'#2B1A12'});
+ el('text',{x:70,y:420,'font-size':84,'font-family':'Marker',fill:'#7A3A22',transform:'rotate(-2 80 420)'}).textContent='ta peau fabrique';
+ el('text',{x:70,y:580,'font-size':112,'font-family':'Marker',fill:'#2B1A12',transform:'rotate(-2 80 580)'}).textContent='de la mélanine';
+ line('M80,615 q180,24 560,-4',12,'#E4572E');
+ [[110,1560,'mélanocyte'],[560,1560,'couche profonde']].forEach(([x,y,s])=>{el('text',{x,y,'font-size':46,'font-family':'Marker',fill:'#2B1A12'}).textContent=s;line(wl(x,y+14,x+s.length*30,y+18,8),6,'#E4572E')});
+ line('M300,1500 C290,1380 320,1260 300,1150',7);line('M270,1180 l30,-40 l34,38',7);
+ cap('mélanine');
+}
+window.READY=document.fonts.ready.then(()=>true);
+</script></body></html>
