@@ -11,7 +11,7 @@ S.factory = (g, o = {}) => { const x = o.x ?? 540, y = o.y ?? 1080, s = o.s ?? 1
   H.rrect(q, 170, -470, 90, 290, "#8A4632", { r: 6, jit: 0, th: 8 }); H.rrect(q, 160, -490, 110, 40, "#6E3624", { r: 6, jit: 0, th: 5 });
   const roof = [[-340, -190]]; for (let i = 0; i < 4; i++) roof.push([-340 + i * 170 + 120, -290], [-340 + (i + 1) * 170, -190]); H.poly(q, roof, "#8E4A34", { jit: 0, th: 8 });
   H.rrect(q, -340, -200, 680, 420, "#B5654A", { r: 6, jit: 0, th: 10 }); for (let r = 0; r < 6; r++) for (let c = 0; c < 9; c++) H.rrect(q, -330 + c * 76 + (r % 2) * 38, -190 + r * 66, 70, 6, "#9C543C", { r: 2, jit: 0, sh: false, th: 0, attr: { opacity: .6 } });
-  for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) { H.rrect(q, -290 + c * 150, -150 + r * 130, 100, 90, "#F3E6C8", { r: 6, jit: 0, sh: false, th: 0 }); H.rrect(q, -282 + c * 150, -142 + r * 130, 84, 74, o.alarm ? "#E8833A" : "#3A4F5E", { r: 4, jit: 0, sh: false, th: 0 }); }
+  for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) { H.rrect(q, -290 + c * 150, -150 + r * 130, 100, 90, "#F3E6C8", { r: 6, jit: 0, sh: false, th: 0 }); H.rrect(q, -282 + c * 150, -142 + r * 130, 84, 74, o.alarm ? "#E8833A" : o.idle ? "#252A2E" : "#3A4F5E", { r: 4, jit: 0, sh: false, th: 0 }); }
   H.rrect(q, -60, 90, 120, 130, "#3A2A22", { r: 6, jit: 0, sh: false, th: 0 });
   const dl = K4.dial(q, -250, 300, 70); H.set(dl.nd, { r: o.dial === undefined ? -60 : o.dial });
   H.rrect(q, 60, 190, 520, 34, Q.blk, { r: 14, jit: 0, th: 6 }); for (let i = 0; i < 6; i++) H.circ(q, 80 + i * 96, 207, 12, "#4A3C34", { sh: false, th: 0 });
@@ -29,3 +29,10 @@ S.split = (g, top, o = {}) => { const T = H.grp(g, 0, 0, { j: 0 }); S.clip(T, "M
 
 /* flamme = agression */
 S.flame = (g, x, y, s = 1) => { const f = H.grp(g, x, y, { j: .5 }), q = H.grp(f, 0, 0, { j: 0 }); H.set(q, { s }); H.poly(q, [[0, -190], [60, -90], [86, 0], [50, 70], [-50, 70], [-86, 0], [-50, -100], [-24, -40]], "#E0782B", { jit: 2, seed: 4, th: 6 }); H.poly(q, [[0, -90], [34, -10], [20, 50], [-20, 50], [-34, -10]], "#F5C65A", { jit: 1, sh: false, th: 0 }); H.poly(q, [[0, -20], [14, 20], [-14, 20]], "#FBF0C8", { jit: 0, sh: false, th: 0 }); return f; };
+
+/* niveau d'emballement 0..5 : flamme, production, tache */
+S.LV = L => ({ smoke: [0, 3, 6, 9, 13, 17, 26][L], belt: [0, 2, 4, 6, 9, 12, 18][L], dial: [-80, -50, -20, 10, 35, 60, 80][L], spot: [.5, .7, .9, 1.1, 1.4, 1.8, 2.4][L], flame: [0, .55, .8, 1.05, 1.3, 1.55, 1.9][L], alarm: L >= 1, idle: L === 0 });
+S.mechL = (g, L, o = {}) => { const v = S.LV(L); const F = S.mech(g, Object.assign({ smoke: v.smoke, belt: v.belt, dial: v.dial, spot: v.spot, alarm: v.alarm, idle: v.idle, pressed: L >= 1 }, o)); if (v.flame) S.flame(g, 150, 1560 - 60 * v.flame, v.flame); return F; };
+S.splitL = (g, L, top) => { const v = S.LV(L); const F = S.split(g, top, { smoke: v.smoke, belt: v.belt, dial: v.dial, alarm: v.alarm, idle: v.idle, pressed: L >= 1, reach: 420 }); const sy = 900; H.rrect(g, -60, 860, 1200, 70, S.SK, { r: 0, jit: 0, th: 6 }); H.blob(g, 540, sy - 6, 70 * v.spot, 20, "#1E120C", { n: 14, jit: .12, sh: false, th: 0 }); if (v.flame) S.flame(g, 160, 1700 - 40 * v.flame, v.flame * .8); return F; };
+/* poubelle */
+S.bin = (g, x, y, s = 1, open = true) => { const b = H.grp(g, x, y, { j: .2 }), q = H.grp(b, 0, 0, { j: 0 }); H.set(q, { s }); H.poly(q, [[-170, -200], [170, -200], [140, 260], [-140, 260]], "#7C8A8F", { jit: 0, th: 10 }); for (let i = 0; i < 5; i++) H.rrect(q, -110 + i * 55, -150, 14, 360, "#6A777B", { r: 6, jit: 0, sh: false, th: 0 }); const lid = H.grp(q, -180, -210, { j: 0 }); lid._b.r = open ? -35 : 0; H.rrect(lid, 0, -20, 360, 40, "#5E6B70", { r: 10, jit: 0, th: 6 }); H.rrect(lid, 150, -50, 60, 30, "#5E6B70", { r: 8, jit: 0, th: 4 }); b.q = q; return b; };
