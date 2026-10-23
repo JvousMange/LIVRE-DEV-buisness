@@ -116,11 +116,44 @@ const shotStillF = mkShot({ id: "stillF", at: ["hook", 0, 8], sfx: [[.15, "stamp
   init(L) { BG.cream(L.bg); this.bu = P.burst(L.bg, 340, 480, 14, C.red); H.set(this.bu, { x: 540, y: 800 }); patchF(L, this); this.q = [[220, 380], [860, 360], [190, 1150]].map(q => { const g = P.question(L.fg, .3, C.terra); H.set(g, { x: q[0], y: q[1] }); return g; }); },
   update(t, p, d, L) { const sk = p < .4 ? 1 : 0; H.look(L, Math.sin(t * 50) * 4 * sk, Math.cos(t * 43) * 3 * sk, lerp(1.0, 1.1, p)); H.set(this.bu, { r: t * 30, s: E.pop(seg(p, .05, .3)) * (1 + .05 * Math.sin(t * 10)), o: p > .05 ? 1 : 0 }); H.set(this.mk, { s: 1 + .25 * E.in(p) }); this.q.forEach((g, i) => H.set(g, { s: E.pop(seg(p, .4 + i * .12, .55 + i * .12)) * .3, r: Math.sin(t * 6 + i) * 8 })); } });
 
+
+/* ================= G · négation absolue (« Aucune crème éclat… Vraiment aucune ») ================= */
+const shotGlow = mkShot({ id: "glowjars", at: ["hook", 0, 0], sfx: [[.25, "pop", 0], [.5, "pop", 2], [.75, "pop", 4]],
+  init(L) { BG.wall(L.bg, "#EFD9B4", null, 1250); P.shelfBoard(L.mid, 1060); this.j = [P.jar(L.mid, "#F2C6A0", 190, 920), P.jar(L.mid, "#F6E3B4", 420, 920), P.jar(L.mid, "#EFB38A", 650, 920), P.jar(L.mid, "#F8D6C0", 880, 920)];
+    this.sp = this.j.map((g, i) => { const q = H.grp(L.fg, g._b.x, g._b.y - 150, { j: .8 }); H.el("path", { d: H.d(H.star(0, 0, 14, 40, 4)), fill: "#F8E04A", filter: "url(#sh1)" }, q); return q; }); },
+  update(t, p, d, L) { H.look(L, 0, 0, lerp(1.0, 1.1, E.io(p))); this.j.forEach((g, i) => { const a = E.back(seg(p, .04 + i * .14, .2 + i * .14)); H.set(g, { y: lerp(-300, 920, a), o: a > 0 ? 1 : 0 }); });
+    this.sp.forEach((q, i) => { const a = E.pop(seg(p, .2 + i * .14, .34 + i * .14)); H.set(q, { s: a * (1 + .25 * Math.sin(t * 8 + i)), r: t * 60, o: a > 0 ? 1 : 0 }); }); } });
+const shotBlocked = mkShot({ id: "blocked", at: ["hook", 0, 4], sfx: [[.3, "thud"], [.62, "thud"]],
+  init(L) { BG.cream(L.bg); this.pa = P.patch(L.mid, 540, 800, 300); this.mk = P.mark(this.pa, 20, 10, 80, C.ink, 4); this.jr = P.jar(L.mid, "#F2C6A0", 0, 0); this.tb = P.tube(L.mid, "#EFB38A", 0, 0); H.set(this.tb, { s: .8 });
+    this.sp = Array.from({ length: 6 }, (_, i) => { const q = H.grp(L.fg, 0, 0, { j: .8 }); H.el("path", { d: H.d(H.star(0, 0, 10, 28, 4)), fill: "#F8E04A", filter: "url(#sh1)" }, q); return q; }); },
+  update(t, p, d, L) { const hit = Math.max(Math.exp(-Math.abs(p - .3) * 20), Math.exp(-Math.abs(p - .62) * 20)); H.look(L, Math.sin(t * 60) * 4 * hit, 0, lerp(1.0, 1.08, p));
+    [[this.jr, -220, 280, 0, .3], [this.tb, 1300, 1250, 0, .62]].forEach(([g, sx, sy, , pt]) => { const a = seg(p, pt - .28, pt + .28), k = a < .5 ? E.in(a * 2) : 1 - E.out((a - .5) * 2); H.set(g, { x: lerp(sx, 540 + (sx < 0 ? -310 : 310), k), y: lerp(sy, 800 + (sy < 800 ? -230 : 230), k), r: (sx < 0 ? 1 : -1) * 260 * a, o: a > 0 && a < 1 ? 1 : 0 }); });
+    this.sp.forEach((q, i) => { const pt = i < 3 ? .3 : .62, k = seg(p, pt, pt + .22), ang = i * 2.1; H.set(q, { x: 540 + Math.cos(ang) * (300 + 160 * k), y: 800 + Math.sin(ang) * (230 + 120 * k) - k * 40, s: 1 - k * .6, o: k > 0 && k < 1 ? 1 : 0, r: k * 200 }); }); H.set(this.mk, { s: 1 + .05 * Math.sin(t * 6) }); } });
+const shotTrash = mkShot({ id: "trash", at: ["hook", 1, 0], sfx: [[.18, "thud"], [.4, "thud"], [.62, "stamp"]],
+  init(L) { BG.wall(L.bg, "#EBD9B5", null, 1350); this.bin = H.grp(L.mid, 540, 1000, { j: .5 }); H.poly(this.bin, [[-200, -230], [200, -230], [170, 250], [-170, 250]], "#B9B2A4", { seed: 3, jit: 2.5, th: 10 }); for (let i = -2; i <= 2; i++) H.rrect(this.bin, i * 70 - 12, -190, 24, 400, "#9C9484", { r: 8, sh: false, th: 0 });
+    this.it = [P.jar(L.fg, "#F2C6A0", 0, 0), P.tube(L.fg, "#EFB38A", 0, 0), P.jar(L.fg, "#F6E3B4", 0, 0), P.serum(L.fg, "#E58A2B", .7)]; this.it.forEach(g => H.set(g, { s: .75 }));
+    this.lid = H.grp(L.fg, 540, 740, { j: .5 }); H.rrect(this.lid, -240, -34, 480, 68, "#8A8272", { r: 20, seed: 6 }); this.x = P.cross(L.fg, 150, C.red); H.set(this.x, { x: 540, y: 960 }); },
+  update(t, p, d, L) { H.look(L, 0, 0, lerp(1.0, 1.08, p)); this.it.forEach((g, i) => { const a = E.bounce(seg(p, .02 + i * .13, .24 + i * .13)); H.set(g, { x: 400 + i * 90, y: lerp(-300, 760 + (i % 2) * 40, a), r: (1 - a) * (i % 2 ? 40 : -40), o: p > .02 + i * .13 ? 1 : 0 }); });
+    H.set(this.bin, { r: Math.sin(t * 40) * 1.5 * (p > .5 ? 1 : 0) }); const xs = E.back(seg(p, .55, .72)); H.set(this.x, { s: lerp(2.6, 1, xs), o: xs > 0 ? 1 : 0 }); H.set(this.lid, { y: 740 - E.out(seg(p, .8, 1)) * 40, o: 0 }); } });
+
+/* ================= H · révélation (« Ces marques ne viennent pas de tes boutons. Elles viennent de ta mélanine. ») ================= */
+const shotMarksH = mkShot({ id: "marksH", at: ["hook", 0, 0], sfx: [[.3, "pop", 1], [.6, "pop", 3]],
+  init(L) { BG.cream(L.bg); this.pa = P.patch(L.mid, 540, 800, 320); this.mk = [[-120, -60, 50], [90, -90, 38], [130, 60, 56], [-60, 100, 42], [10, -10, 30]].map((q, i) => P.mark(this.pa, q[0], q[1], q[2], C.ink, i + 3)); },
+  update(t, p, d, L) { H.look(L, 0, 0, lerp(1.0, 1.12, E.io(p))); this.mk.forEach((m, i) => { const a = E.pop(seg(p, .05 + i * .12, .2 + i * .12)); H.set(m, { s: a, o: a > 0 ? 1 : 0 }); }); } });
+const shotNoPimples = mkShot({ id: "nopimples", at: ["hook", 0, 2], sfx: [[.3, "stamp"], [.6, "stamp"], [.85, "whoosh"]],
+  init(L) { BG.cream(L.bg); this.pa = P.patch(L.mid, 540, 800, 320); this.mk = [[-120, -60, 50], [90, -90, 38], [130, 60, 56], [-60, 100, 42], [10, -10, 30]].map((q, i) => { const m = P.mark(this.pa, q[0], q[1], q[2], C.ink, i + 3); H.set(m, { s: 1 }); return m; });
+    this.pm = [[-250, 180], [230, 220], [20, -260]].map(q => { const g = P.pimple(L.mid, 540 + q[0], 800 + q[1], 44); return g; }); this.x = this.pm.map(g => { const c = P.cross(L.fg, 70, C.red); H.set(c, { x: g._b.x, y: g._b.y }); return c; }); },
+  update(t, p, d, L) { H.look(L, 0, 0, lerp(1.1, 1.0, p)); this.pm.forEach((g, i) => { const a = E.pop(seg(p, .02 + i * .1, .16 + i * .1)), out = E.in(seg(p, .6 + i * .08, .95)); H.set(g, { s: a, x: g._b.x0 === undefined ? (g._b.x0 = g._b.x) : g._b.x0 + (i - 1) * out * 900, y: (g._b.y0 === undefined ? (g._b.y0 = g._b.y) : g._b.y0) - out * 900, r: out * 300, o: a > 0 && out < .98 ? 1 : 0 }); });
+    this.x.forEach((c, i) => { const a = E.back(seg(p, .3 + i * .12, .42 + i * .12)), out = E.in(seg(p, .6 + i * .08, .95)); H.set(c, { s: lerp(2.6, 1, a), x: (c._b.x0 === undefined ? (c._b.x0 = c._b.x) : c._b.x0) + (i - 1) * out * 900, y: (c._b.y0 === undefined ? (c._b.y0 = c._b.y) : c._b.y0) - out * 900, o: a > 0 && out < .98 ? 1 : 0 }); }); } });
+const pigmentH = (() => { const o = SHOTS.find(s => s.id === "pigment"); return Object.assign({}, o, { id: "pigmentH", at: ["hook", 1, 0] }); })();
+
 const HOOKSHOTS = {
   A: ["pop", "stay", "mirror"].map(id => SHOTS.find(s => s.id === id)),
   B: [shotPreg, shotMask, shotMaskTime],
   C: [shotShave, shotWax, shotCompare],
   D: [shotFound, shotCover, shotMirrorD],
   E: [shotTones, shotShelf, shotStainE],
-  F: [shotLemon, shotScrubF, shotVitC, shotAllX, shotStillF]
+  F: [shotLemon, shotScrubF, shotVitC, shotAllX, shotStillF],
+  G: [shotGlow, shotBlocked, shotTrash],
+  H: [shotMarksH, shotNoPimples, pigmentH]
 };

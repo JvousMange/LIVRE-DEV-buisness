@@ -77,6 +77,42 @@
      "tag": "[exasperated]"
     }
    ]
+  },
+  {
+   "id": "G",
+   "nom": "negation",
+   "audience": "Toutes : on exclut la solution habituelle (levier « négation absolue », comme Cloudless v2)",
+   "angle": "Aucune crème éclat ne règle ça",
+   "sentences": [
+    {
+     "cap": "Aucune crème éclat ne va faire partir ça.",
+     "say": "Aucune crème éclat ne va faire partir ça.",
+     "tag": "[exasperated]"
+    },
+    {
+     "cap": "Vraiment aucune.",
+     "say": "Vraiment aucune.",
+     "tag": ""
+    }
+   ]
+  },
+  {
+   "id": "H",
+   "nom": "revelation-melanine",
+   "audience": "Toutes : révélation sur la cause (levier « ce n'est pas ce que tu crois », comme Cloudless v4)",
+   "angle": "Ce n'est pas les boutons, c'est la mélanine",
+   "sentences": [
+    {
+     "cap": "Ces marques ne viennent pas de tes boutons.",
+     "say": "Ces marques ne viennent pas de tes boutons.",
+     "tag": "[curious]"
+    },
+    {
+     "cap": "Elles viennent de ta mélanine.",
+     "say": "Elles viennent de ta mélanine.",
+     "tag": ""
+    }
+   ]
   }
  ]
 }

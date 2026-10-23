@@ -6,12 +6,11 @@ Une seule pub, deux blocs :
 | Bloc | Rôle | Durée | Statut |
 |---|---|---|---|
 | **Hook** (1 phrase + pont) | Arrêter le scroll **et** parler à une audience précise | 5 à 8 s | **Change** (6 variantes) |
-| **Pont** | « Alors ta peau fabrique trop de pigment. » — raccord commun | 2 s | Identique |
-| **Corps** | 5 signes → mécanisme → actifs → preuve → garantie → offre | ~87 s | **Identique, aucune modification** |
+| **Corps** | Démarre à « Cinq signes que tes taches sont de l'hyperpigmentation » : 5 signes → mécanisme → actifs → preuve → garantie → offre | ~87 s | **Identique, aucune modification** |
 
 Le corps n'est jamais retouché : voix, images, sous-titres, bruitages, offre. Quand les résultats diffèrent, la seule cause possible est le hook. C'est ce qui rend le test lisible.
 
-## Les 6 hooks
+## Les 8 hooks
 
 | ID | Nom | Audience visée | Hook (voix off) | Visuel |
 |---|---|---|---|---|
@@ -21,8 +20,12 @@ Le corps n'est jamais retouché : voix, images, sous-titres, bruitages, offre. Q
 | **D** | fond-de-teint | Teint non uniforme, maquillage « cache-taches » | « Tu mets du fond de teint juste pour cacher tes taches ? » | Éponge qui tamponne, les taches transparaissent |
 | **E** | peau-mate | Peaux mates/foncées déçues par les soins classiques | « Peau mate ou foncée, et aucun soin ne marche sur tes taches ? » | Affiches de visages clairs, produits barrés |
 | **F** | tout-essayé | Déjà tout essayé | « Citron, gommage, vitamine C, tu as tout essayé et tes taches sont toujours là ? » | Produits en pluie, croix rouges, tache qui s'agrandit |
+| **G** | negation | Déçues par les crèmes éclat | « Aucune crème éclat ne va faire partir ça. Vraiment aucune. » | Pots « éclat » alignés, tache qui résiste, tout à la poubelle |
+| **H** | revelation-melanine | Curieuses de la cause | « Ces marques ne viennent pas de tes boutons. Elles viennent de ta mélanine. » | Boutons barrés, coupe de peau : la mélanine s'accumule |
 
-Chaque hook se termine par le même pont. Les angles couvrent les 4 déclencheurs d'achat du produit (post-acné, grossesse, rasage, teint non uniforme) plus 2 angles transversaux (appartenance « peau mate » et frustration « j'ai tout essayé »).
+G (négation absolue) et H (révélation causale) viennent de l'analyse des pubs Cloudless : corps identique, hooks de 3,5 à 5,5 s, cinq leviers différents.
+
+Les angles couvrent les 4 déclencheurs d'achat du produit (post-acné, grossesse, rasage, teint non uniforme) plus 2 angles transversaux (appartenance « peau mate » et frustration « j'ai tout essayé »).
 
 ## Nommage
 `MELA_explicatif_hook{ID}_{nom}_{JJMM}_v1.mp4` — par exemple `MELA_explicatif_hookB_grossesse-melasma_2310_v1.mp4`.
@@ -30,7 +33,7 @@ Une nouvelle version du hook devient `v2`. Le corps ne change pas de version tan
 
 ## Plan de test sur Meta
 1. **Une campagne de test, un seul ensemble de publicités** (public large : femmes, 22–45 ans, pays cible). Le hook est le seul filtre d'audience : c'est la vidéo qui sélectionne qui s'arrête.
-2. **6 publicités** (une par hook), même budget, même texte principal, même titre, même bouton, même page d'arrivée.
+2. **8 publicités** (une par hook), même budget, même texte principal, même titre, même bouton, même page d'arrivée.
 3. **Laisser tourner** jusqu'à avoir assez de données par hook (ordre de grandeur : quelques milliers d'impressions chacun avant de décider, davantage pour juger le coût par achat).
 4. **Indicateurs, dans l'ordre :**
    - **Taux d'accroche** = vues de 3 s ÷ impressions → mesure le hook seul.
