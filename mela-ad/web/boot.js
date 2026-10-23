@@ -42,6 +42,6 @@ function renderAt(t) {
   return ts;
 }
 window.renderAt = renderAt;
-window.sfxList = () => { const out = []; plan.forEach((sc, i) => { (sc.def.sfx || []).forEach(([f, ty, o]) => out.push({ t: +(sc.start + f * (sc.end - sc.start)).toFixed(3), type: ty, opt: o === undefined ? null : o })); if (sc.swipe && i > 0) out.push({ t: +(sc.start).toFixed(3), type: "whoosh" }); }); return out; };
+window.sfxList = () => { const out = []; plan.forEach((sc, i) => { (sc.def.sfx || []).forEach(([f, ty, o]) => out.push({ t: +(sc.start + f * (sc.end - sc.start)).toFixed(3), type: ty, opt: o === undefined ? null : o })); if (sc.swipe && i > 0) out.push({ t: +(sc.start).toFixed(3), type: "whoosh", opt: "soft" }); }); return out; };
 window.PLAN = plan.map(({ id, start, end }) => ({ id, start, end }));
 window.READY = document.fonts.ready.then(() => true);

@@ -2,7 +2,7 @@
 Usage : audio.py <sfx.json> <voice.wav 48k mono> <mix.wav>      (pas de musique de fond)
 Chaque son est généré à partir de grains de bruit filtrés, de résonances et d'enveloppes, avec variation de hauteur,
 panoramique et petite réverbération de pièce. Les événements viennent de web/sfx_map.js (calés sur les gestes à l'image)."""
-import json, sys, wave
+import json, sys, wave, os
 import numpy as np
 
 SR = 48000
@@ -81,13 +81,14 @@ def s_ding(r, o=None):   # petit glockenspiel
     x = sum(a * np.sin(2 * np.pi * f * m * t) * np.exp(-t / d) for m, a, d in ((1, 1, .45), (2.76, .35, .2), (5.4, .12, .09))) * np.minimum(t / .002, 1)
     return norm(x, .6), .17
 GEN = dict(paper=s_paper, flip=s_flip, pop=s_pop, tap=s_tap, thud=s_thud, stamp=s_stamp, tick=s_tick, whoosh=s_whoosh, slide=s_slide, tear=s_tear, rub=s_rub, ding=s_ding)
+GAINS = dict(paper=.6, flip=.5, pop=.5, tap=.55, thud=.5, stamp=.5, tick=.5, whoosh=.45, slide=.45, tear=.5, rub=.45, ding=.5)   # sons plus discrets
 WET = dict(pop=.16, ding=.22, stamp=.12, thud=.1, whoosh=.12, slide=.08, flip=.06, tap=.08, tick=.05, paper=.05, tear=.05, rub=.04)
 
 sfx = np.zeros((N, 2), np.float32)
 for k, ev in enumerate(sfxj["sfx"]):
     r = np.random.default_rng(100 + k); ty = ev["type"]; f = GEN[ty]
     x, gain = (f(r, ev.get("opt")) if ty in ("pop", "ding") else f(r))
-    x = reverb(x.astype(np.float32), WET.get(ty, .08)) * gain * r.uniform(.85, 1.0)
+    x = reverb(x.astype(np.float32), WET.get(ty, .08)) * gain * GAINS.get(ty, .5) * (.55 if ev.get('opt') == 'soft' else 1) * r.uniform(.85, 1.0)
     pan = r.uniform(-.35, .35) if ty not in ("whoosh", "slide") else 0
     if ty in ("whoosh", "slide"):
         w = np.linspace(-.7, .7, len(x)) * (1 if r.random() < .5 else -1); gl, gr = np.sqrt((1 - w) / 2), np.sqrt((1 + w) / 2)
@@ -101,8 +102,14 @@ voice = np.zeros(N, np.float32); voice[:len(v)] = v[:N]
 def ma(x, k):
     c = np.cumsum(np.insert(x, 0, 0)); y = (c[k:] - c[:-k]) / k; return np.concatenate([np.full(k // 2, y[0]), y, np.full(k - k // 2 - 1, y[-1])])[:len(x)]
 m = np.clip((ma(np.abs(voice), int(.03 * SR)) - .008) / .03, 0, 1); m = np.clip(ma(m, int(.15 * SR)) * 1.6, 0, 1)
+MUSIC_DB = float(os.environ.get("MUSIC_DB", "-33"))
 bed = 0
-mix = np.stack([voice * .92, voice * .92], 1) + sfx * (1 - .4 * m)[:, None] + bed
+if MUSIC_DB > -90:
+    sys.path.insert(0, os.path.dirname(__file__)); import music
+    mus = music.make(total, SR, reverb)                         # stéréo (N0,2), niveau RMS normalisé à 0 dBFS
+    g = 10 ** (MUSIC_DB / 20); bed = np.zeros((N, 2), np.float32); n0 = min(N, len(mus))
+    bed[:n0] = mus[:n0] * g * (1 - .6 * m[:n0])[:, None]     # la musique s'efface quand la voix parle
+mix = np.stack([voice * .92, voice * .92], 1) + sfx * (1 - .5 * m)[:, None] + bed
 mix = np.tanh(mix * 1.05) / np.tanh(1.05); mix = mix / max(np.abs(mix).max(), 1e-6) * .93
 with wave.open(out, "wb") as o: o.setnchannels(2); o.setsampwidth(2); o.setframerate(SR); o.writeframes((mix * 32767).astype("<i2").tobytes())
 print("mix ok", round(N / SR, 1), "s,", len(sfxj["sfx"]), "bruitages")
