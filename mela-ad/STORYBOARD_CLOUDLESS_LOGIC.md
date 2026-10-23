@@ -93,3 +93,22 @@ Femme de profil/trois-quarts, visage sans traits, **peau carton brun un peu plus
 - Moins de panneaux de texte, plus de scènes physiques avec un mécanisme.
 - Le héros revient dans plusieurs plans larges (pas seulement un buste).
 - Rendu : carton ondulé réel, relief et lumière sur chaque pièce, profondeur de champ (flou léger au premier plan).
+
+---
+# Règle de cohérence (ajoutée : ça ne doit pas partir dans tous les sens)
+
+**4 motifs seulement, repris du début à la fin :**
+1. **Le héros** (même silhouette, mêmes points rouges = taches) : tous les plans « vécu ».
+2. **La coupe de peau** (mêmes couleurs, même position) : tous les plans « mécanisme ».
+3. **L'usine à mélanine** (engrenages + cadran) : la cause, puis la solution (on la freine, on la régule).
+4. **Le panneau suspendu** (même police, même ficelle) : seulement pour les chiffres et les noms d'actifs.
+
+**Code couleur fixe :** rouge = problème/agression, vert = solution/validé, kraft = neutre. Le rouge n'apparaît jamais pour autre chose.
+
+**Un seul décor récurrent :** la salle de bain (miroir, lavabo). Les autres plans sont sur fond kraft uni.
+
+**Arc visuel :** vécu (héros, points rouges) → on ouvre la peau → l'usine déréglée → on freine l'usine (4 actifs) → l'usine calme, peau uniforme → flacon.
+
+**Rythme :** ~45 plans (au lieu de 72), 1,5 à 3 s chacun, un seul objet principal par plan, pas d'éléments décoratifs parasites (confettis, étoiles supprimés).
+
+**Coupes par rapport à la liste ci-dessus :** on garde un seul plan par raison (5 raisons = 5 plans + 1 de transition), les objets exotiques (bras mécanique, pile de gobelets, pluie d'étiquettes) ne servent que s'ils portent le sens (le bras mécanique reste pour « produits au hasard »).
