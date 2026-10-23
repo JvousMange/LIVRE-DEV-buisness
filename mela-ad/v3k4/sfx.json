@@ -14,11 +14,6 @@
   {
    "id": "r1",
    "start": 3.6,
-   "end": 5.58
-  },
-  {
-   "id": "r1b",
-   "start": 5.58,
    "end": 6.920000000000001
   },
   {
@@ -29,11 +24,6 @@
   {
    "id": "r2",
    "start": 8.66,
-   "end": 9.559999999999999
-  },
-  {
-   "id": "r2b",
-   "start": 9.559999999999999,
    "end": 12.12
   },
   {
@@ -64,15 +54,10 @@
   {
    "id": "r4",
    "start": 20.92,
-   "end": 22.46
-  },
-  {
-   "id": "r4b",
-   "start": 22.46,
    "end": 23.380000000000003
   },
   {
-   "id": "r4c",
+   "id": "r4b",
    "start": 23.380000000000003,
    "end": 24.94
   },
@@ -369,22 +354,22 @@
    "opt": null
   },
   {
-   "t": 3.699,
+   "t": 3.766,
    "type": "paper",
    "opt": null
   },
   {
-   "t": 3.996,
-   "type": "pop",
-   "opt": null
-  },
-  {
-   "t": 4.392,
+   "t": 4.264,
    "type": "rub",
    "opt": null
   },
   {
-   "t": 4.986,
+   "t": 5.26,
+   "type": "rub",
+   "opt": null
+  },
+  {
+   "t": 6.256,
    "type": "rub",
    "opt": null
   },
@@ -394,84 +379,54 @@
    "opt": "soft"
   },
   {
-   "t": 5.647,
-   "type": "paper",
-   "opt": null
-  },
-  {
-   "t": 5.982,
-   "type": "slide",
-   "opt": null
-  },
-  {
-   "t": 6.25,
-   "type": "slide",
-   "opt": null
-  },
-  {
    "t": 7.007,
    "type": "paper",
    "opt": null
   },
   {
    "t": 7.529,
-   "type": "tear",
+   "type": "whoosh",
    "opt": null
   },
   {
-   "t": 7.877,
-   "type": "stamp",
+   "t": 7.964,
+   "type": "ding",
+   "opt": 1
+  },
+  {
+   "t": 9.006,
+   "type": "tap",
    "opt": null
   },
   {
-   "t": 8.705,
-   "type": "paper",
+   "t": 9.421,
+   "type": "tap",
    "opt": null
   },
   {
-   "t": 8.84,
-   "type": "pop",
+   "t": 9.836,
+   "type": "tap",
    "opt": null
   },
   {
-   "t": 9.02,
-   "type": "pop",
+   "t": 10.252,
+   "type": "tap",
+   "opt": null
+  },
+  {
+   "t": 10.736,
+   "type": "rub",
+   "opt": null
+  },
+  {
+   "t": 11.428,
+   "type": "rub",
    "opt": null
   },
   {
    "t": 8.66,
    "type": "whoosh",
    "opt": "soft"
-  },
-  {
-   "t": 9.816,
-   "type": "tap",
-   "opt": null
-  },
-  {
-   "t": 10.123,
-   "type": "tap",
-   "opt": null
-  },
-  {
-   "t": 10.43,
-   "type": "tap",
-   "opt": null
-  },
-  {
-   "t": 10.738,
-   "type": "tap",
-   "opt": null
-  },
-  {
-   "t": 11.096,
-   "type": "rub",
-   "opt": null
-  },
-  {
-   "t": 11.608,
-   "type": "rub",
-   "opt": null
   },
   {
    "t": 12.436,
@@ -495,11 +450,16 @@
   },
   {
    "t": 14.555,
-   "type": "pop",
+   "type": "slide",
    "opt": null
   },
   {
    "t": 15.41,
+   "type": "slide",
+   "opt": null
+  },
+  {
+   "t": 16.265,
    "type": "stamp",
    "opt": null
   },
@@ -550,7 +510,7 @@
   },
   {
    "t": 20.152,
-   "type": "tap",
+   "type": "slide",
    "opt": null
   },
   {
@@ -564,22 +524,22 @@
    "opt": 0
   },
   {
-   "t": 20.997,
+   "t": 21.043,
    "type": "paper",
    "opt": null
   },
   {
-   "t": 21.228,
-   "type": "pop",
-   "opt": null
-  },
-  {
-   "t": 21.536,
+   "t": 21.412,
    "type": "rub",
    "opt": null
   },
   {
-   "t": 21.998,
+   "t": 21.904,
+   "type": "rub",
+   "opt": null
+  },
+  {
+   "t": 22.642,
    "type": "rub",
    "opt": null
   },
@@ -589,47 +549,27 @@
    "opt": "soft"
   },
   {
-   "t": 22.552,
-   "type": "rub",
-   "opt": null
-  },
-  {
-   "t": 22.736,
-   "type": "rub",
-   "opt": null
-  },
-  {
-   "t": 22.92,
-   "type": "rub",
-   "opt": null
-  },
-  {
-   "t": 23.104,
-   "type": "pop",
-   "opt": null
-  },
-  {
-   "t": 23.536,
-   "type": "slide",
-   "opt": null
-  },
-  {
-   "t": 23.848,
+   "t": 23.614,
    "type": "stamp",
    "opt": null
   },
   {
-   "t": 24.082,
+   "t": 23.879,
    "type": "stamp",
    "opt": null
   },
   {
-   "t": 24.316,
+   "t": 24.16,
    "type": "stamp",
    "opt": null
   },
   {
-   "t": 24.55,
+   "t": 24.441,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 24.706,
    "type": "stamp",
    "opt": null
   },
@@ -649,17 +589,17 @@
    "opt": null
   },
   {
-   "t": 26.386,
-   "type": "paper",
-   "opt": null
-  },
-  {
-   "t": 26.57,
+   "t": 26.432,
    "type": "pop",
    "opt": null
   },
   {
-   "t": 26.8,
+   "t": 26.708,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 26.984,
    "type": "pop",
    "opt": null
   },
@@ -705,23 +645,23 @@
   },
   {
    "t": 29.765,
-   "type": "flip",
+   "type": "rub",
    "opt": null
   },
   {
-   "t": 30.225,
-   "type": "flip",
+   "t": 30.34,
+   "type": "whoosh",
    "opt": null
   },
   {
-   "t": 30.685,
-   "type": "flip",
-   "opt": null
-  },
-  {
-   "t": 31.145,
+   "t": 31.03,
    "type": "pop",
    "opt": null
+  },
+  {
+   "t": 31.26,
+   "type": "ding",
+   "opt": 0
   },
   {
    "t": 31.851,
@@ -904,12 +844,17 @@
    "opt": null
   },
   {
-   "t": 52.85,
+   "t": 52.68,
+   "type": "whoosh",
+   "opt": null
+  },
+  {
+   "t": 53.36,
    "type": "pop",
    "opt": null
   },
   {
-   "t": 53.7,
+   "t": 54.04,
    "type": "pop",
    "opt": null
   },
@@ -1089,7 +1034,12 @@
    "opt": null
   },
   {
-   "t": 78.97,
+   "t": 78.869,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 79.374,
    "type": "ding",
    "opt": 2
   },
@@ -1215,13 +1165,13 @@
   },
   {
    "t": 100.88,
-   "type": "flip",
+   "type": "whoosh",
    "opt": null
   },
   {
-   "t": 101.51,
+   "t": 101.72,
    "type": "ding",
-   "opt": 1
+   "opt": 2
   },
   {
    "t": 102.914,
