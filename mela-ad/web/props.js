@@ -74,8 +74,20 @@ P.bottle = (parent, col, x = 0, y = 0, sc = 1) => { const b = H.grp(parent, x, y
 P.glove = parent => { const g = H.grp(parent, 0, 0, { j: .6 }); H.rrect(g, -110, -90, 220, 190, C.cream, { r: 70, seed: 7 }); H.rrect(g, -130, 60, 260, 56, C.terra, { r: 16, seed: 8, sh: "sh1" }); H.blob(g, 70, -105, 34, 52, C.cream, { seed: 9, sh: "sh1" }); for (let i = 0; i < 8; i++) H.circ(g, -70 + i * 20, -30 + (i % 3) * 30, 6, "#D9C894", { sh: false, th: 0 }); return g; };
 P.razor = (parent, sc = 1) => { const g = H.grp(parent, 0, 0, { j: .5 }); const s = H.grp(g, 0, 0, { j: 0 }); H.set(s, { s: sc }); H.rrect(s, -60, -26, 120, 52, C.greyD, { r: 10 }); H.rrect(s, 56, -14, 160, 28, C.blue, { r: 10, sh: false }); H.rrect(s, -54, 20, 108, 8, "#d9d4c6", { r: 3, sh: false, th: 0 }); return g; };
 P.sun = (parent, r = 120) => { const g = H.grp(parent, 0, 0, { j: 1 }); for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283; H.poly(g, [[Math.cos(a - .1) * (r + 30), Math.sin(a - .1) * (r + 30)], [Math.cos(a) * (r + 90), Math.sin(a) * (r + 90)], [Math.cos(a + .1) * (r + 30), Math.sin(a + .1) * (r + 30)]], "#E0A93C", { sh: "sh1", jit: 1 }); } H.circ(g, 0, 0, r, "#EFC356", { sh: "sh" }); return g; };
-P.calendar = (parent) => { const c = H.grp(parent, 0, 0, { j: .6 }); c.pages = []; H.rrect(c, -170, -40, 340, 380, C.cream, { r: 16, seed: 4 }); H.rrect(c, -170, -40, 340, 92, C.terra, { r: 16, seed: 5, sh: false });
-  for (let i = 0; i < 6; i++) { const pg = H.grp(c, 0, -40, { j: 0 }); H.rrect(pg, -170, 0, 340, 380, i % 2 ? "#F2E7BA" : C.cream, { r: 16, seed: 8 + i, sh: "sh1" }); H.rrect(pg, -170, 0, 340, 92, i % 2 ? C.terraD : C.terra, { r: 16, seed: 20 + i, sh: false, th: 0 }); for (let r = 0; r < 4; r++) for (let q = 0; q < 5; q++) H.rrect(pg, -134 + q * 64, 120 + r * 58, 42, 38, "#E4D3A8", { r: 7, sh: false, th: 0, jit: .6 }); H.txt(pg, ["JAN", "FÉV", "MARS", "AVR", "MAI", "JUIN"][i], 0, 66, 44, C.cream, { ls: 3 }); c.pages.push(pg); } return c; };
+P.MONTHS = ["JANVIER", "FÉVRIER", "MARS", "AVRIL", "MAI", "JUIN", "JUILLET", "AOÛT", "SEPTEMBRE", "OCTOBRE", "NOVEMBRE", "DÉCEMBRE"];
+/* calendrier : janvier au premier plan, les pages se tournent dans l'ordre jusqu'à décembre (page du dessous) */
+P.calendar = (parent) => {
+  const c = H.grp(parent, 0, 0, { j: .6 }); c.pages = [];
+  const draw = (g, m, tone, sh) => {
+    H.rrect(g, -170, 0, 340, 380, tone, { r: 16, seed: 8 + m, sh });
+    H.rrect(g, -170, 0, 340, 92, m % 2 ? C.terraD : C.terra, { r: 16, seed: 20 + m, sh: false, th: 0 });
+    for (let r = 0; r < 4; r++) for (let q = 0; q < 5; q++) H.rrect(g, -134 + q * 64, 120 + r * 58, 42, 38, "#E4D3A8", { r: 7, sh: false, th: 0, jit: .6 });
+    const name = P.MONTHS[m]; H.txt(g, name, 0, 62, name.length <= 5 ? 46 : name.length <= 7 ? 40 : 33, C.cream, { ls: 2.5 });
+  };
+  const base = H.grp(c, 0, -40, { j: 0 }); draw(base, 11, C.cream, "sh");           // décembre, en dessous de tout
+  for (let m = 10; m >= 0; m--) { const pg = H.grp(c, 0, -40, { j: 0 }); draw(pg, m, m % 2 ? "#F2E7BA" : C.cream, "sh1"); c.pages[m] = pg; }   // janvier ajouté en dernier = au-dessus
+  return c;
+};
 P.check = (parent, r = 120, col = C.sage, ink = C.cream) => { const g = H.grp(parent, 0, 0, { j: .8 }); H.circ(g, 0, 0, r, col, { sh: "sh" }); H.el("path", { d: `M${-r * .43},${r * .03} L${-r * .12},${r * .36} L${r * .48},${-r * .32}`, stroke: ink, "stroke-width": r * .2, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, g); return g; };
 P.cross = (parent, r = 120, col = C.red) => { const g = H.grp(parent, 0, 0, { j: .8 }); H.poly(g, [[-r, -r * .55], [-r * .75, -r * .8], [r, r * .55], [r * .75, r * .8]], col, { seed: 3, jit: 1.5 }); H.poly(g, [[r, -r * .55], [r * .75, -r * .8], [-r, r * .55], [-r * .75, r * .8]], col, { seed: 9, jit: 1.5, sh: false }); return g; };
 P.shield = (parent, sc = 1) => { const g = H.grp(parent, 0, 0, { j: .5 }); const s = H.grp(g, 0, 0, { j: 0 }); H.set(s, { s: sc }); H.poly(s, [[-230, -120], [230, -120], [230, 60], [140, 140], [0, 180], [-140, 140], [-230, 60]], C.sage, { seed: 3, jit: 3, sh: "sh2" }); H.poly(s, [[-180, -80], [180, -80], [180, 40], [110, 100], [0, 130], [-110, 100], [-180, 40]], C.sageD, { seed: 4, jit: 2, sh: false, th: 0 }); H.el("path", { d: "M-70,0 L-20,48 L72,-48", stroke: C.cream, "stroke-width": 24, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, s); return g; };
@@ -121,4 +133,22 @@ P.ico = {
   capsule: parent => { const g = H.grp(parent, 0, 0, { j: .6 }); g._b.r = -32; H.rrect(g, -62, -28, 62, 56, "#F6EDD0", { r: 28, seed: 3, th: 5 }); H.rrect(g, 0, -28, 62, 56, "#C26A45", { r: 28, seed: 4, th: 5 }); return g; },
   b3: parent => { const g = H.grp(parent, 0, 0, { j: .6 }); H.poly(g, Array.from({ length: 6 }, (_, i) => [Math.cos(i / 6 * 6.283 + .52) * 62, Math.sin(i / 6 * 6.283 + .52) * 62]), "#6B8F71", { seed: 3, jit: 1, th: 6 }); H.txt(g, "B3", 0, 22, 62, "#F6EDD0", { font: "Anton, sans-serif", w: 400 }); return g; },
   orange: parent => { const g = H.grp(parent, 0, 0, { j: .6 }); H.circ(g, 0, 0, 56, "#EE9A2E", { sh: "sh1", th: 6 }); H.circ(g, 0, 0, 44, "#FFD58A", { sh: false, th: 0 }); for (let i = 0; i < 8; i++) { const a = i / 8 * 6.283; H.el("path", { d: `M0,0 L${Math.cos(a) * 44},${Math.sin(a) * 44}`, stroke: "#EE9A2E", "stroke-width": 4 }, g); } return g; }
+};
+
+/* ---------- gommage skincare : main qui masse une pâte à grains + pot ouvert ---------- */
+P.grains = (parent, n, R, seed) => { const r = H.rng(seed); for (let i = 0; i < n; i++) { const a = r() * 6.283, d = Math.sqrt(r()) * R; H.circ(parent, Math.cos(a) * d, Math.sin(a) * d * .85, 3 + r() * 3.5, ["#C9A06A", "#A87A48", "#E2C48E", "#8A5A3C"][i % 4], { sh: false, th: 0 }); } };
+P.scrubHand = parent => {
+  const g = H.grp(parent, 0, 0, { j: .6 });
+  H.blob(g, 0, 12, 86, 80, "#C28A5B", { seed: 3, jit: .03, th: 6 });                              // paume
+  [[-52, -62, -14, 76], [-18, -86, -4, 88], [18, -86, 4, 88], [52, -62, 14, 76]].forEach(([x, y, r, h], i) => { const f = H.grp(g, x, y, { j: .3 }); f._b.r = r; H.rrect(f, -17, -h + 20, 34, h, "#C28A5B", { r: 17, seed: i + 4, th: 5 }); });
+  const th = H.grp(g, -80, 20, { j: .3 }); th._b.r = -58; H.rrect(th, -18, -64, 36, 72, "#C28A5B", { r: 18, seed: 9, th: 5 });
+  const paste = H.grp(g, 0, 26, { j: .4 }); H.blob(paste, 0, 0, 74, 62, "#F6EBD6", { seed: 5, jit: .09, th: 5 }); P.grains(paste, 26, 56, 3);   // pâte crème avec grains
+  return g;
+};
+P.scrubJar = parent => {
+  const g = H.grp(parent, 0, 0, { j: .6 });
+  H.rrect(g, -120, -30, 240, 150, C.sage, { r: 26, seed: 3 }); H.rrect(g, -100, 20, 200, 60, "#F6EBD6", { r: 12, sh: false, th: 0 });
+  H.blob(g, 0, -34, 112, 32, "#F6EBD6", { seed: 4, jit: .05, th: 4 }); P.grains(g, 30, 90, 7);       // pâte visible, pot ouvert
+  const lid = H.grp(g, 150, 90, { j: .5 }); lid._b.r = 24; H.rrect(lid, -62, -22, 124, 44, C.terra, { r: 12, seed: 6 });
+  return g;
 };

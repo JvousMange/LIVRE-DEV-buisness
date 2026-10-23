@@ -6,7 +6,7 @@ const SFX = {
   mirror: [[.38, "slide"], [.62, "tap"]],
   pigment: [[.2, "pop", 0], [.6, "pop", 2]],
   fan: [[.2, "flip"], [.42, "flip"], [.64, "flip"]],
-  months: [[.3, "pop", 2], [.4, "flip"], [.62, "flip"], [.84, "flip"]],
+  months: [[.18, "flip"], [.3, "pop", 2], [.42, "flip"], [.62, "flip"], [.82, "flip"]],
   colors: [[.2, "pop", 0], [.4, "pop", 2], [.6, "pop", 4]],
   darker: [[.4, "pop", 1], [.55, "pop", 3], [.62, "slide"]],
   body: [[.38, "pop", 2]],
