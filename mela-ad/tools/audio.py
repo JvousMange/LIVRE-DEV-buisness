@@ -101,14 +101,17 @@ w = wave.open(voice_path); v = np.frombuffer(w.readframes(w.getnframes()), "<i2"
 voice = np.zeros(N, np.float32); voice[:len(v)] = v[:N]
 def ma(x, k):
     c = np.cumsum(np.insert(x, 0, 0)); y = (c[k:] - c[:-k]) / k; return np.concatenate([np.full(k // 2, y[0]), y, np.full(k - k // 2 - 1, y[-1])])[:len(x)]
-m = np.clip((ma(np.abs(voice), int(.03 * SR)) - .008) / .03, 0, 1); m = np.clip(ma(m, int(.15 * SR)) * 1.6, 0, 1)
+m = np.clip((ma(np.abs(voice), int(.03 * SR)) - .008) / .03, 0, 1)
+blk = int(.01 * SR); mb = np.array([m[i:i + blk].max() for i in range(0, len(m) - blk + 1, blk)]); envb = np.zeros_like(mb); rel = np.exp(-.01 / .9)   # relâchement ~0,9 s : plus de pompage entre les mots
+for i in range(len(mb)): envb[i] = max(mb[i], envb[i - 1] * rel) if i else mb[i]
+env_m = np.repeat(envb, blk); m = np.concatenate([env_m, np.full(len(voice) - len(env_m), envb[-1])]); m = ma(m, int(.06 * SR))
 MUSIC_DB = float(os.environ.get("MUSIC_DB", "-33"))
 bed = 0
 if MUSIC_DB > -90:
     sys.path.insert(0, os.path.dirname(__file__)); import music
     mus = music.make(total, SR, reverb, os.environ.get('MUSIC_STYLE', 'ambient'))                         # stéréo (N0,2), niveau RMS normalisé à 0 dBFS
     g = 10 ** (MUSIC_DB / 20); bed = np.zeros((N, 2), np.float32); n0 = min(N, len(mus))
-    bed[:n0] = mus[:n0] * g * (1 - .6 * m[:n0])[:, None]     # la musique s'efface quand la voix parle
+    bed[:n0] = mus[:n0] * g * (1 - .4 * m[:n0])[:, None]     # la musique s'efface quand la voix parle
 mix = np.stack([voice * .92, voice * .92], 1) + sfx * (1 - .5 * m)[:, None] + bed
 mix = np.tanh(mix * 1.05) / np.tanh(1.05); mix = mix / max(np.abs(mix).max(), 1e-6) * .93
 with wave.open(out, "wb") as o: o.setnchannels(2); o.setsampwidth(2); o.setframerate(SR); o.writeframes((mix * 32767).astype("<i2").tobytes())

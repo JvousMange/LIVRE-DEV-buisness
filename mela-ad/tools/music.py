@@ -5,6 +5,8 @@ BPM = 104
 def make(total, SR, reverb, style="ambient"):
     if style == "ambient": return make_ambient(total, SR, reverb)
     if style == "pulse": return make_pulse(total, SR, reverb)
+    if style == "rythme": return make_pulse(total, SR, reverb, pad_on=False)
+    if style == "padclean": return highpass(make_ambient(total, SR, reverb, clean=True), SR, 150)
     return make_groove(total, SR, reverb)
 
 def make_groove(total, SR, reverb):
@@ -74,7 +76,7 @@ def make_groove(total, SR, reverb):
     return st.astype(np.float32)
 
 
-def make_ambient(total, SR, reverb):
+def make_ambient(total, SR, reverb, clean=False):
     """Nappe ambiante chaude et lente en mi bémol (comme la piste de la pub de référence) : accords tenus, drone grave, quelques notes de cloche."""
     rng = np.random.default_rng(33); N = int((total + 4) * SR); L = np.zeros(N, np.float32); R = np.zeros(N, np.float32)
     mf = lambda m: 440 * 2 ** ((m - 69) / 12)
@@ -84,7 +86,7 @@ def make_ambient(total, SR, reverb):
         if m > 0: L[i:i + m] += x[:m] * gl; R[i:i + m] += x[:m] * gr
     def pad(f, dur, fade):                                   # oscillateurs détunés, harmoniques douces
         n = int(dur * SR); t = np.arange(n) / SR; out = {}
-        for cents, pan in ((-7, -1), (0, 0), (7, 1)):
+        for cents, pan in (((-2, -1), (2, 1)) if clean else ((-7, -1), (0, 0), (7, 1))):
             ff = f * 2 ** (cents / 1200); x = np.zeros(n, np.float32)
             for h in range(1, 7): x += (np.sin(2 * np.pi * ff * h * t + rng.uniform(0, 6.28)) / h ** 1.7).astype(np.float32)
             out[pan] = x * (1 + .08 * np.sin(2 * np.pi * rng.uniform(.1, .22) * t + rng.uniform(0, 6.28)))
@@ -98,7 +100,7 @@ def make_ambient(total, SR, reverb):
             for pan, x in o.items(): put(x * env, max(st, 0), np.sqrt((1 - pan * .6) / 2) * .22, np.sqrt((1 + pan * .6) / 2) * .22)
         n = int((cd + 2 * fade) * SR); tt = np.arange(n) / SR                     # drone grave
         sub = np.sin(2 * np.pi * mf(root) * tt) + .35 * np.sin(2 * np.pi * mf(root + 12) * tt); e2 = np.minimum(tt / fade, 1) * np.minimum((cd + 2 * fade - tt) / fade, 1)
-        put((sub * e2).astype(np.float32), max(t - fade, 0), .5, .5)
+        if not clean: put((sub * e2).astype(np.float32), max(t - fade, 0), .5, .5)
         # quelques notes de cloche, espacées
         for _ in range(rng.integers(1, 3)):
             bt = t + rng.uniform(.5, cd - 1.5); m = int(rng.choice(notes)) + 24; f0 = mf(m); nn = int(1.6 * SR); u = np.arange(nn) / SR
@@ -108,14 +110,21 @@ def make_ambient(total, SR, reverb):
     n = int((total + 1.2) * SR); L, R = L[:n], R[:n]
     fadein = np.minimum(np.arange(n) / (SR * 2.0), 1) * np.minimum((n - np.arange(n)) / (SR * 3.0), 1)
     st = np.stack([L, R], 1) * fadein[:, None]
-    st = np.stack([reverb(st[:, 0].copy(), .22, .9)[:n], reverb(st[:, 1].copy(), .22, .9)[:n]], 1)
+    st = np.stack([reverb(st[:, 0].copy(), .12 if clean else .22, .6 if clean else .9)[:n], reverb(st[:, 1].copy(), .12 if clean else .22, .6 if clean else .9)[:n]], 1)
     st = st / (np.sqrt((st ** 2).mean()) + 1e-9)
     return st.astype(np.float32)
 
 
-def make_pulse(total, SR, reverb):
+def highpass(st, SR, fc):
+    out = np.empty_like(st)
+    for c in range(st.shape[1]):
+        X = np.fft.rfft(st[:, c]); f = np.fft.rfftfreq(len(st), 1 / SR); out[:, c] = np.fft.irfft(X * np.clip((f - fc * .6) / (fc * .8), 0, 1), len(st))
+    return (out / (np.sqrt((out ** 2).mean()) + 1e-9)).astype(np.float32)
+
+def make_pulse(total, SR, reverb, pad_on=True):
     """Nappe ambiante (mi bémol) + pulsation discrète : kick feutré, charleys swingués, petit claquement sur 2 et 4, arpège pincé doux."""
-    pad = make_ambient(total, SR, reverb); n = len(pad); rng = np.random.default_rng(44)
+    pad = make_ambient(total, SR, reverb, clean=True) if pad_on else None
+    n = int((total + 1.2) * SR); rng = np.random.default_rng(44)
     L = np.zeros(n + SR * 4, np.float32); R = np.zeros(n + SR * 4, np.float32)
     bpm = 92; beat = 60 / bpm; eighth = beat / 2; bar = 4 * beat; t0 = 2.2          # la pulsation entre après la première phrase
     def put(x, t, pan=0.0, g=1.0):
@@ -151,12 +160,20 @@ def make_pulse(total, SR, reverb):
             hat(te, [.9, .45, .7, .4, .85, .4, .7, .5][e] * (.6 if b < 2 else 1))
             if b >= 1 and e in (2, 6): rim(te, .8)
         if b >= 1: kick(tb, 1.0); kick(tb + 3 * eighth, .55)
+        if not pad_on and b >= 1:
+            for bt, bv in ((0, 1.0), (4, .7)):
+                f0 = mf(ch[0] - 12); k2 = int(.4 * SR); tt2 = np.arange(k2) / SR; put(((np.sin(2 * np.pi * f0 * tt2) + .25 * np.sin(4 * np.pi * f0 * tt2)) * env(k2, .005, .16)).astype(np.float32), tb + bt * eighth, 0, .6 * bv)
         if b >= 3 and b % 4 == 3: kick(tb + 6 * eighth, .5)
         if b >= 2:
             for pos, ai in zip(arp_pos, arp_idx): put(pluck(mf(ch[ai] + 12)), tb + pos * eighth + (eighth * .12 if pos % 2 else 0), -.3 + .15 * ai, [.8, .5, .6, .45, .5][arp_pos.index(pos)] * .9)
     rh = np.stack([L[:n], R[:n]], 1)
     rh = reverb(rh[:, 0].copy(), .08)[:n], reverb(rh[:, 1].copy(), .08)[:n]; rh = np.stack(rh, 1)
     rms = lambda a: np.sqrt((a ** 2).mean()) + 1e-9
-    rh = rh / rms(rh) * rms(pad) * 0.55                           # rythme ~5 dB sous la nappe (en RMS), mais les attaques ressortent
-    out = pad + rh; out = out / rms(out)
-    return out.astype(np.float32)
+    if pad_on:
+        rh = rh / rms(rh) * rms(pad) * 0.55                       # rythme ~5 dB sous la nappe (en RMS), mais les attaques ressortent
+        out = highpass(pad, SR, 150) + rh
+    else:
+        out = highpass(rh, SR, 110)                               # rythme seul : aucun son tenu, aucun grondement
+    out = np.tanh(out / (3 * rms(out))) * 3 * rms(out)             # écrête les attaques (kick) pour qu'elles restent discrètes
+    fade = np.minimum(np.arange(len(out)) / (SR * 1.5), 1) * np.minimum((len(out) - np.arange(len(out))) / (SR * 2.5), 1)
+    out = out * fade[:, None]; return (out / rms(out)).astype(np.float32)
