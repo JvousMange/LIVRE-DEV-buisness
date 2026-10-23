@@ -1,0 +1,114 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:"DM Sans";font-weight:800;src:url(fonts/dm-sans-latin-800-normal.woff2)}
+@font-face{font-family:"DM Sans";font-weight:400;src:url(fonts/dm-sans-latin-400-normal.woff2)}
+@font-face{font-family:"Anton";src:url(fonts/anton-latin-400-normal.woff2)}
+@font-face{font-family:"Marker";src:url(fonts/permanent-marker-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}svg{display:block}
+</style></head><body><svg id="s" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920"></svg>
+<script>
+const Q=new URLSearchParams(location.search), ST=Q.get('st')||'p', SC=+Q.get('sc')||1, svg=document.getElementById('s'), NS="http://www.w3.org/2000/svg";
+let seed=11; const R=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const el=(t,a,p=svg)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+const G=(a={},p=svg)=>el('g',a,p);
+const wob=(pts,j)=>pts.map(([x,y])=>[x+(R()-.5)*j,y+(R()-.5)*j]);
+const D=(pts,close=true)=>"M"+pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join("L")+(close?"Z":"");
+const blob=(cx,cy,rx,ry,n=18,j=.06)=>{const p=[];for(let i=0;i<n;i++){const a=i/n*6.283,k=1+(R()-.5)*j;p.push([cx+Math.cos(a)*rx*k,cy+Math.sin(a)*ry*k])}return p};
+const shade=(h,k)=>{const n=parseInt(h.slice(1),16);return'#'+[n>>16&255,n>>8&255,n&255].map(v=>Math.min(255,Math.round(v*k)).toString(16).padStart(2,'0')).join('')};
+const defs=el('defs',{});
+[['sh',10,7,.35],['sh1',4,3,.4],['sh2',16,11,.4]].forEach(([id,dy,sd,o])=>{const f=el('filter',{id,x:'-30%',y:'-30%',width:'160%',height:'170%'},defs);el('feDropShadow',{dx:0,dy,stdDeviation:sd,'flood-color':'#2a1305','flood-opacity':o},f)});
+const AMB='#8B4A20';
+/* flacon symétrique, centré (x=0, centre visuel y=0) ; mode 'paper' ou 'line' */
+function bottle(p,x,y,s,mode){const g=G({transform:`translate(${x},${y+128*s}) scale(${s})`},p);
+  const pap=(d,f,sh='sh1')=>{const gg=G(sh&&mode==='paper'?{filter:`url(#${sh})`}:{},g);if(mode==='paper')el('path',{d,fill:shade(f,.66),transform:'translate(0,4)'},gg);return el('path',{d,fill:f,stroke:mode==='paper'?'#fff':'#1d1d1b','stroke-opacity':mode==='paper'?.22:1,'stroke-width':mode==='paper'?2:6,'stroke-linejoin':'round'},gg)};
+  const rr=(x,y,w,h,r)=>`M${x+r},${y}H${x+w-r}Q${x+w},${y} ${x+w},${y+r}V${y+h-r}Q${x+w},${y+h} ${x+w-r},${y+h}H${x+r}Q${x},${y+h} ${x},${y+h-r}V${y+r}Q${x},${y} ${x+r},${y}Z`;
+  pap(rr(-88,-170,176,330,34),AMB,'sh'); if(mode==='paper')pap(rr(-74,-150,14,90,7),'#B5733A',null);
+  pap(rr(-52,-215,104,60,10),'#7A3F1C'); pap(rr(-74,-268,148,78,10),'#4F2F22');
+  for(let i=0;i<9;i++)el('path',{d:`M${-60+i*15},-258V-200`,stroke:mode==='paper'?'#3A2118':'#1d1d1b','stroke-width':4,'stroke-linecap':'round'},g);
+  pap(D(blob(0,-338,42,78,24,0)),'#5C3F33');
+  pap(rr(-78,-60,156,180,8),'#4B2E26');
+  const T=(s2,y2,fs,c,w=800,ls=0)=>{const t=el('text',{x:0,y:y2,'font-size':fs,'font-weight':w,'text-anchor':'middle',fill:c,'letter-spacing':ls,'font-family':'DM Sans'},g);t.textContent=s2};
+  T('MELA SKIN',-6,26,'#E8A08A',800,1);T("L'expertise pensée pour vous",16,9.5,'#E9CDBE',400);T('SÉRUM CORRECTEUR DE TEINT',52,8.8,'#E8A08A',700,.4);T('ANTI-TÂCHES',65,8.8,'#E8A08A',700,.4);T('30 ml',104,8,'#E9CDBE',400);
+  return g}
+/* ===== PAPIER ===== */
+const paper=(p,d,f,sh='sh')=>{const g=G({filter:`url(#${sh})`},p);el('path',{d,fill:shade(f,.66),transform:'translate(0,8)'},g);el('path',{d,fill:f,stroke:'#fff','stroke-opacity':.22,'stroke-width':2},g);return g};
+const rect=(x,y,w,h,j=6)=>D(wob([[x,y],[x+w,y],[x+w,y+h],[x,y+h]],j));
+const label=(p,x,y,w,txt,fs=40,rot=0,fill='#F6EDD0',col='#7A3A22')=>{const g=G({transform:`rotate(${rot} ${x} ${y})`},p);paper(g,rect(x-w/2,y-fs*1.1,w,fs*2.2,5),fill,'sh1');const t=el('text',{x,y:y+fs*.36,'font-size':fs,'text-anchor':'middle',fill:col,'font-family':'Anton','letter-spacing':2},g);t.textContent=txt;return g};
+const capP=w=>{const t=el('text',{x:540,y:1300,'font-size':108,'font-weight':800,'text-anchor':'middle',fill:'#fff',stroke:'#5a3418','stroke-width':20,'paint-order':'stroke','stroke-linejoin':'round','font-family':'DM Sans',filter:'url(#sh1)'});t.textContent=w};
+function skinP(p,y0){[["#F0D9B0",y0,170],["#D9A074",y0+170,330],["#A56A47",y0+500,300],["#7A4A30",y0+800,500]].forEach(([c,y,h])=>paper(p,rect(-40,y,1160,h,8),c));
+ [170,380,590,800,960].forEach(x=>{const g=G({filter:'url(#sh1)'},p);el('path',{d:D(blob(x,y0+230,62,52,14,.14)),fill:'#3A1F10'},g);el('path',{d:`M${x-30},${y0+210}l-60,-70M${x+30},${y0+210}l60,-60M${x},${y0+280}v60`,stroke:'#3A1F10','stroke-width':10,'stroke-linecap':'round',fill:'none'},g)});}
+function spotsP(p,cx,cy,R0){[[-.5,-.2,.17],[.3,-.4,.13],[.45,.2,.2],[-.2,.45,.12],[.0,.0,.14]].forEach(([a,b,r])=>{const g=G({filter:'url(#sh1)'},p);el('path',{d:D(blob(cx+a*R0,cy+b*R0,r*R0,r*R0*.9,11,.2)),fill:'#3A1F10'},g)})}
+function skinPatchP(p,cx,cy,R0){paper(p,D(blob(cx,cy,R0,R0,30,.03)),'#9A6340','sh2');spotsP(p,cx,cy,R0)}
+if(ST==='p'){
+ el('rect',{width:1080,height:1920,fill:'#DDBD92'});
+ if(SC===1){ /* intro */
+  const t=G({},svg);const b=G({transform:'rotate(-2 540 360)'});paper(b,rect(70,170,940,430,12),'#F6EDD0');
+  [['CINQ RAISONS',320,130,'#3A1F10'],['QUI FONT QUE TON',430,70,'#7A3A22'],['HYPERPIGMENTATION',530,96,'#C8402A']].forEach(([s,y,f,c])=>{const x=el('text',{x:540,y,'font-size':f,'text-anchor':'middle',fill:c,'font-family':'Anton','letter-spacing':3},b);x.textContent=s});
+  const sb=G({transform:'rotate(2 540 650)'});paper(sb,rect(250,610,580,100,8),'#F6EDD0','sh1');const x=el('text',{x:540,y:683,'font-size':62,'text-anchor':'middle',fill:'#7A3A22','font-family':'Anton','letter-spacing':3},sb);x.textContent='NE PART PAS';
+  skinPatchP(svg,540,1000,230);
+  [1,2,3,4,5].forEach((n,i)=>{const g=G({transform:`translate(${150+i*195},${1560+Math.abs(i-2)*28}) rotate(${(i-2)*7})`});paper(g,rect(-80,-110,160,220,10),i%2?'#F2E7BA':'#FFF7C9','sh1');const x=el('text',{x:0,y:40,'font-size':150,'text-anchor':'middle',fill:'#8C4A32','font-family':'Anton'},g);x.textContent=n});
+  capP('Cinq');
+ }
+ if(SC===2){ /* raison 1 */
+  skinP(svg,900); const bd=G({transform:'translate(150,260)'});paper(bd,D(Array.from({length:36},(_,i)=>{const a=i/36*6.283,r=i%2?100:114;return[Math.cos(a)*r,Math.sin(a)*r]})),'#8C4A32','sh');const n=el('text',{x:0,y:38,'font-size':118,'text-anchor':'middle',fill:'#FFF7C9','font-family':'DM Sans','font-weight':800},bd);n.textContent='1';
+  const t=G({transform:'rotate(-1.5 600 300)'});paper(t,rect(300,190,700,200,10),'#F6EDD0');[['TU TRAITES',270,64,'#7A3A22'],['LA SURFACE',360,92,'#3A1F10']].forEach(([s,y,f,c])=>{const x=el('text',{x:650,y,'font-size':f,'text-anchor':'middle',fill:c,'font-family':'Anton','letter-spacing':3},t);x.textContent=s});
+  paper(svg,D(blob(540,880,330,34,24,.08)),'#3A1F10','sh1');
+  /* gommage sur la surface */
+  const h=G({transform:'translate(700,760) rotate(-12)'});paper(h,D(blob(0,0,84,70,16,.04)),'#C28A5B','sh');paper(h,D(blob(0,10,64,52,14,.1)),'#F6EBD6','sh1');
+  /* flèche + étiquette sous la peau */
+  paper(svg,D([[520,1180],[560,1180],[560,1260],[600,1260],[540,1330],[480,1260],[520,1260]]),'#FFF7C9','sh1');
+  label(svg,540,1480,820,'ICI SE FABRIQUE LA TACHE',48,-1.5,'#FFF7C9','#8C4A32'); label(svg,230,1010,260,'SURFACE',34,-4);
+  capP('surface');
+ }
+ if(SC===3){ /* héros */
+  const gl=G({});el('circle',{cx:540,cy:880,r:420,fill:'#F1D9A8',opacity:.3},gl);
+  [['ACIDE AZÉLAÏQUE',[215,420],-5],['ACIDE TRANEXAMIQUE',[820,360],4],['ALPHA-ARBUTINE',[210,1400],3],['NIACINAMIDE',[840,1420],-4]].forEach(([s,[x,y],r])=>{const g=G({transform:`rotate(${r} ${x} ${y})`});el('path',{d:`M${x},${y-120}v-160`,stroke:'#5a3a1e','stroke-width':4},g);paper(g,rect(x-200,y-95,400,190,10),'#F6EDD0','sh1');s.split(' ').forEach((w,i,a)=>{const t=el('text',{x,y:y+(i-(a.length-1)/2)*58+18,'font-size':50,'text-anchor':'middle',fill:'#3A1F10','font-family':'Anton','letter-spacing':2},g);t.textContent=w})});
+  bottle(svg,540,860,1.75,'paper'); capP('Skine');
+ }
+ el('rect',{x:0,y:0,width:1080,height:1920,fill:'none'});
+}
+/* ===== TABLEAU BLANC ===== */
+if(ST==='w'){
+ el('rect',{width:1080,height:1920,fill:'#9AA3A8'}); el('rect',{x:30,y:60,width:1020,height:1800,rx:26,fill:'#F7F7F3',filter:'url(#sh2)'}); el('rect',{x:30,y:60,width:1020,height:1800,rx:26,fill:'none',stroke:'#C9CDD0','stroke-width':14});
+ const smudge=(x,y,w)=>el('ellipse',{cx:x,cy:y,rx:w,ry:22,fill:'#E9ECEC',opacity:.7,transform:`rotate(${(R()-.5)*30} ${x} ${y})`});smudge(250,1650,160);smudge(820,320,120);smudge(700,1500,150);
+ const INK='#1d1d1b',RED='#D9432E',GRN='#2E8B57',BLU='#2D6FB5',ORG='#E8892B';
+ const wl=(x1,y1,x2,y2,n=14,j=4)=>{const p=[];for(let i=0;i<=n;i++){const t=i/n;p.push([x1+(x2-x1)*t+(R()-.5)*j,y1+(y2-y1)*t+(R()-.5)*j])}return D(p,false)};
+ const ln=(d,c=INK,w=9,p=svg)=>el('path',{d,stroke:c,'stroke-width':w,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'},p);
+ const tx=(s,x,y,fs,c=INK,anchor='middle',rot=0)=>{const t=el('text',{x,y,'font-size':fs,'text-anchor':anchor,fill:c,'font-family':'Marker',transform:`rotate(${rot} ${x} ${y})`});t.textContent=s;return t};
+ const ul=(x1,x2,y,c=RED)=>ln(`M${x1},${y} q${(x2-x1)/2},${14} ${x2-x1},${-6}`,c,11);
+ const hi=(x,y,w,h,c='#FFE66B')=>el('rect',{x,y,width:w,height:h,fill:c,opacity:.8,transform:`rotate(-1 ${x} ${y})`});
+ const arrow=(x1,y1,x2,y2,c=INK)=>{ln(wl(x1,y1,x2,y2,8,6),c,9);const a=Math.atan2(y2-y1,x2-x1);ln(`M${x2},${y2}l${-40*Math.cos(a-.5)},${-40*Math.sin(a-.5)}M${x2},${y2}l${-40*Math.cos(a+.5)},${-40*Math.sin(a+.5)}`,c,9)};
+ const capW=w=>{const t=tx(w,540,1300,100,'#fff','middle');t.setAttribute('stroke','#1d1d1b');t.setAttribute('stroke-width',16);t.setAttribute('paint-order','stroke');t.setAttribute('stroke-linejoin','round')};
+ const blobFill=(cx,cy,rx,ry,c,op=1)=>el('path',{d:D(blob(cx,cy,rx,ry,20,.1)),fill:c,opacity:op});
+ const spot=(x,y,r,c=INK)=>{el('path',{d:D(blob(x,y,r,r*.9,10,.25)),fill:c})};
+ if(SC===1){
+  tx('5 RAISONS',540,330,170,INK);ul(160,920,360);tx('qui font que ton',540,500,76,INK);hi(150,555,780,120);tx('hyperpigmentation',540,640,98,RED);tx('ne part pas',540,760,76,INK);
+  /* patch dessiné */
+  el('path',{d:D(blob(540,1000,220,200,26,.04)),fill:'#C98C63',stroke:INK,'stroke-width':9});[[-80,-40,30],[60,-70,24],[90,40,36],[-30,70,22],[0,0,26]].forEach(([a,b,r])=>spot(540+a,1000+b,r));
+  [1,2,3,4,5].forEach((n,i)=>{const x=150+i*195,y=1500;el('circle',{cx:x,cy:y,r:70,fill:'#fff',stroke:[RED,BLU,GRN,ORG,RED][i],'stroke-width':10});tx(n,x,y+30,84,[RED,BLU,GRN,ORG,RED][i])});
+  capW('Cinq');
+ }
+ if(SC===2){
+  tx('1',150,330,190,RED);tx('Tu traites la surface',610,330,64,INK);ul(290,940,360);
+  [[820,170,'#F5E1B8'],[990,330,'#E6A97D'],[1320,300,'#C98C63'],[1620,240,'#A56A47']].forEach(([y,h,c],i)=>{el('rect',{x:70,y:y+i*0,width:940,height:h,fill:c,opacity:.55,stroke:'none'})});
+  [820,990,1320,1620].forEach(y=>ln(wl(70,y,1010,y,22,5),INK,8));
+  for(let k=0;k<12;k++)ln(wl(110+k*76,1020,90+k*76,1090,3,3),INK,4);
+  [170,380,590,800,960].forEach(x=>{el('path',{d:D(blob(x,1230,56,48,14,.14)),fill:INK});ln(`M${x-28},${1205}l-56,-64M${x+28},${1205}l56,-56M${x},${1275}v56`,INK,9)});
+  el('path',{d:D(blob(540,790,320,30,24,.08)),fill:INK});
+  /* main + gommage */
+  el('path',{d:D(blob(740,690,84,66,14,.06)),fill:'#F6D9B8',stroke:INK,'stroke-width':8});ln('M690,650c20,-20,60,-20,80,0',BLU,7);ln('M650,720l-50,-20M650,740l-50,10',BLU,7);
+  arrow(540,900,540,1130,RED);tx('SURFACE',250,885,56,BLU,'middle',-4);
+  tx('ICI se fabrique la tache',540,1530,70,RED);hi(80,1560,900,20);
+  capW('surface');
+ }
+ if(SC===3){
+  /* flacon dessiné au feutre */
+  blobFill(540,880,380,380,'#FFE66B',.35);
+  bottle(svg,540,860,1.75,'line');
+  [['Acide azélaïque',[210,420],-5,GRN],['Acide tranexamique',[790,330],4,BLU],['Alpha-arbutine',[200,1380],3,ORG],['Niacinamide',[860,1420],-4,RED]].forEach(([s,[x,y],r,c])=>{tx(s,x,y,46,c,'middle',r);ul(x-170,x+170,y+22,c)});
+  arrow(330,470,430,640,GRN);arrow(740,390,650,560,BLU);arrow(300,1330,430,1180,ORG);arrow(770,1370,650,1220,RED);
+  tx('4 actifs, 1 flacon',540,1700,84,INK);hi(120,1730,840,24);
+  capW('Skine');
+ }
+}
+window.READY=document.fonts.ready.then(()=>true);
+</script></body></html>
