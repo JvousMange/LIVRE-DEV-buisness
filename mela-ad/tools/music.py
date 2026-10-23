@@ -4,6 +4,7 @@ import numpy as np
 BPM = 104
 def make(total, SR, reverb, style="ambient"):
     if style == "ambient": return make_ambient(total, SR, reverb)
+    if style == "pulse": return make_pulse(total, SR, reverb)
     return make_groove(total, SR, reverb)
 
 def make_groove(total, SR, reverb):
@@ -110,3 +111,52 @@ def make_ambient(total, SR, reverb):
     st = np.stack([reverb(st[:, 0].copy(), .22, .9)[:n], reverb(st[:, 1].copy(), .22, .9)[:n]], 1)
     st = st / (np.sqrt((st ** 2).mean()) + 1e-9)
     return st.astype(np.float32)
+
+
+def make_pulse(total, SR, reverb):
+    """Nappe ambiante (mi bémol) + pulsation discrète : kick feutré, charleys swingués, petit claquement sur 2 et 4, arpège pincé doux."""
+    pad = make_ambient(total, SR, reverb); n = len(pad); rng = np.random.default_rng(44)
+    L = np.zeros(n + SR * 4, np.float32); R = np.zeros(n + SR * 4, np.float32)
+    bpm = 92; beat = 60 / bpm; eighth = beat / 2; bar = 4 * beat; t0 = 2.2          # la pulsation entre après la première phrase
+    def put(x, t, pan=0.0, g=1.0):
+        i = int(t * SR); m = min(len(x), len(L) - i)
+        if m > 0: L[i:i + m] += x[:m] * g * np.sqrt((1 - pan) / 2); R[i:i + m] += x[:m] * g * np.sqrt((1 + pan) / 2)
+    noise = lambda k: rng.normal(0, 1, k).astype(np.float32)
+    def bp(x, lo, hi):
+        X = np.fft.rfft(x); f = np.fft.rfftfreq(len(x), 1 / SR); m = np.clip((f - lo) / (lo * .35 + 1), 0, 1) * np.clip((hi - f) / (hi * .35 + 1), 0, 1); return np.fft.irfft(X * m, len(x)).astype(np.float32)
+    def env(k, a, d): t = np.arange(k) / SR; return np.minimum(t / a, 1) * np.exp(-t / d)
+    def kick(t, v):
+        k = int(.3 * SR); tt = np.arange(k) / SR; f = 46 + 70 * np.exp(-tt / .035); x = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt / .1); put(x.astype(np.float32), t, 0, .9 * v)
+    def rim(t, v):
+        k = int(.11 * SR); tt = np.arange(k) / SR; x = np.sin(2 * np.pi * 1750 * tt) * np.exp(-tt / .012) * .6 + bp(noise(k), 1400, 4800) * env(k, .001, .01) * .5; put(x.astype(np.float32), t, .15, .55 * v)
+    def hat(t, v):
+        k = int(.07 * SR); put(bp(noise(k), 6500, 11500) * env(k, .001, .014), t, -.2, .5 * v)
+    cache = {}
+    def pluck(fr, dur=.7, damp=.994):
+        key = round(fr, 2)
+        if key in cache: return cache[key]
+        k = int(dur * SR); p = int(SR / fr); buf = noise(p) * np.hanning(p) ** .3; buf = (buf + np.roll(buf, 1) + np.roll(buf, 2)) / 3; out = np.empty(k + p, np.float32)
+        for q in range(0, k, p): out[q:q + p] = buf; buf = damp * .5 * (buf + np.roll(buf, -1))
+        o = out[:k] * np.exp(-np.arange(k) / SR / .3); cache[key] = o / (np.abs(o).max() + 1e-9); return cache[key]
+    mf = lambda m: 440 * 2 ** ((m - 69) / 12)
+    chords = [[51, 55, 58, 62], [46, 53, 58, 62], [48, 51, 55, 58], [44, 51, 55, 60]]
+    arp_pos = [0, 2, 3, 5, 7]; arp_idx = [0, 1, 2, 1, 3]
+    nb = int((total - t0) / bar) + 1
+    for b in range(nb):
+        tb = t0 + b * bar
+        if tb > total - 3.5: break
+        ch = chords[int(tb / 8.0) % 4]
+        for e in range(8):
+            sw = eighth * .12 if e % 2 else 0; te = tb + e * eighth + sw
+            hat(te, [.9, .45, .7, .4, .85, .4, .7, .5][e] * (.6 if b < 2 else 1))
+            if b >= 1 and e in (2, 6): rim(te, .8)
+        if b >= 1: kick(tb, 1.0); kick(tb + 3 * eighth, .55)
+        if b >= 3 and b % 4 == 3: kick(tb + 6 * eighth, .5)
+        if b >= 2:
+            for pos, ai in zip(arp_pos, arp_idx): put(pluck(mf(ch[ai] + 12)), tb + pos * eighth + (eighth * .12 if pos % 2 else 0), -.3 + .15 * ai, [.8, .5, .6, .45, .5][arp_pos.index(pos)] * .9)
+    rh = np.stack([L[:n], R[:n]], 1)
+    rh = reverb(rh[:, 0].copy(), .08)[:n], reverb(rh[:, 1].copy(), .08)[:n]; rh = np.stack(rh, 1)
+    rms = lambda a: np.sqrt((a ** 2).mean()) + 1e-9
+    rh = rh / rms(rh) * rms(pad) * 0.55                           # rythme ~5 dB sous la nappe (en RMS), mais les attaques ressortent
+    out = pad + rh; out = out / rms(out)
+    return out.astype(np.float32)
