@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 W, H = 1080, 1920
-FPS = 12
+FPS = 24
 
 KR = (201, 160, 107)
 KR_D = (170, 126, 78)
@@ -100,10 +100,8 @@ class Cv:
         self.fi = fi
         self.n = 0
 
-    def jit(self, amp=1.7):
-        self.n += 1
-        r = random.Random(self.fi * 7919 + self.n * 104729)
-        return r.uniform(-amp, amp), r.uniform(-amp, amp)
+    def jit(self, amp=0.0):
+        return 0.0, 0.0
 
     def _comp(self, layer, x, y):
         x0 = max(0, x)

@@ -120,10 +120,9 @@ def render_frame(fi):
     fx = lerp(cm[2], cm[4], u)
     fy = lerp(cm[3], cm[5], u)
     rot = lerp(cm[6], cm[7], u)
-    rr = random.Random(fi * 31 + 7)
-    amp = cm[8] * math.exp(-t * 4.5) + 1.2
-    sx = rr.uniform(-1, 1) * amp * 3 + math.sin(ts * 1.7) * 6
-    sy = rr.uniform(-1, 1) * amp * 3 + math.cos(ts * 1.3) * 6
+    amp = cm[8] * math.exp(-t * 4.5)
+    sx = amp * 3.2 * (math.sin(ts * 46) + .6 * math.sin(ts * 29.3)) + math.sin(ts * 1.7) * 5
+    sy = amp * 3.2 * (math.cos(ts * 41) + .6 * math.sin(ts * 33.1)) + math.cos(ts * 1.3) * 5
     c.camera(z, fx, fy, rot, sx, sy)
     if tr == 'whip' and i > 0 and t < .2:
         k_ = 1 - t / .2
