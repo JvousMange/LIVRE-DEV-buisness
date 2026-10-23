@@ -105,7 +105,7 @@ m = np.clip((ma(np.abs(voice), int(.03 * SR)) - .008) / .03, 0, 1)
 blk = int(.01 * SR); mb = np.array([m[i:i + blk].max() for i in range(0, len(m) - blk + 1, blk)]); envb = np.zeros_like(mb); rel = np.exp(-.01 / .9)   # relâchement ~0,9 s : plus de pompage entre les mots
 for i in range(len(mb)): envb[i] = max(mb[i], envb[i - 1] * rel) if i else mb[i]
 env_m = np.repeat(envb, blk); m = np.concatenate([env_m, np.full(len(voice) - len(env_m), envb[-1])]); m = ma(m, int(.06 * SR))
-MUSIC_DB = float(os.environ.get("MUSIC_DB", "-33"))
+MUSIC_DB = float(os.environ.get("MUSIC_DB", "-100"))   # -100 = pas de musique (par défaut)
 bed = 0
 if MUSIC_DB > -90:
     sys.path.insert(0, os.path.dirname(__file__)); import music
