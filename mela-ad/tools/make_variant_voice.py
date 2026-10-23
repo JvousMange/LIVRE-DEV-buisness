@@ -4,16 +4,16 @@ import os, sys, re, json, base64, subprocess, wave, urllib.request, urllib.error
 import numpy as np
 hid, out = sys.argv[1], sys.argv[2]; opt = dict(a.lstrip("-").split("=", 1) for a in sys.argv[3:])
 os.makedirs(out, exist_ok=True); SR = 48000
-H = json.load(open("hooks.json")); hook = next(h for h in H["hooks"] if h["id"] == hid); bridge = H["bridge"]
-sents = hook["sentences"] + [dict(bridge, tag="")]
+H = json.load(open("hooks.json")); hook = next(h for h in H["hooks"] if h["id"] == hid)
+sents = hook["sentences"]            # le hook enchaîne directement sur le corps (« Cinq signes que… »)
 text = " ".join(((s.get("tag", "") + " ") if s.get("tag") else "") + s["say"] for s in sents)
-cache = f"{out}/hook.mp3"
-if not os.path.exists(cache) or opt.get("regen"):
+cache = f"{out}/hook.mp3"; txtf = f"{out}/hook.txt"
+if not os.path.exists(cache) or opt.get("regen") or not os.path.exists(txtf) or open(txtf).read() != text:
     body = {"text": text, "model_id": opt.get("model", "eleven_v4"), "voice_settings": {"stability": .3, "similarity_boost": .75, "style": 0, "use_speaker_boost": True}}
     req = urllib.request.Request("https://api.elevenlabs.io/v1/text-to-speech/Pipj99NMS7t8dQEzyxgB/with-timestamps?output_format=mp3_44100_128", json.dumps(body).encode(), {"xi-api-key": os.environ["ELEVENLABS_API_KEY"], "Content-Type": "application/json"})
     try: r = json.load(urllib.request.urlopen(req, timeout=240))
     except urllib.error.HTTPError as e: sys.exit(f"HTTP {e.code}: {e.read().decode()[:300]}")
-    open(cache, "wb").write(base64.b64decode(r["audio_base64"])); json.dump(r["alignment"], open(cache + ".alignment.json", "w"))
+    open(cache, "wb").write(base64.b64decode(r["audio_base64"])); json.dump(r["alignment"], open(cache + ".alignment.json", "w")); open(txtf, "w").write(text)
 al = json.load(open(cache + ".alignment.json")); AC, AS, AE = al["characters"], al["character_start_times_seconds"], al["character_end_times_seconds"]
 def load(path):
     r = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"], capture_output=True, check=True); return np.frombuffer(r.stdout, np.float32).copy()

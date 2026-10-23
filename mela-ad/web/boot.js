@@ -4,7 +4,7 @@ const layer = document.getElementById("scenes"), settle = document.getElementByI
 const wordsOf = {}; TL.beats.forEach(b => wordsOf[b.id] = b.sentences.map(s => s.words));
 const anchor = a => wordsOf[a[0]][a[1]][a[2]].start;
 const HOOK = new URLSearchParams(location.search).get('hook') || 'A';
-const ALLSHOTS = HOOKSHOTS[HOOK].concat(SHOTS.filter(s => !['pop', 'stay', 'mirror'].includes(s.id)));
+const ALLSHOTS = HOOKSHOTS[HOOK].concat(SHOTS.filter(s => !['pop', 'stay', 'mirror', 'pigment'].includes(s.id)));
 const plan = ALLSHOTS.map(s => ({ def: s, id: s.id, start: s.at ? anchor(s.at) - LEAD : null, swipe: !!(s.at && s.at[1] === 0 && s.at[2] === 0) }));
 plan[0].start = 0;
 const speechEnd = TL.duration + 0.3;
