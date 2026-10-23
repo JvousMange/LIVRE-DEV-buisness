@@ -1,35 +1,37 @@
 =====================================================================
-MELA SKIN — CORPS DE PUB V2 — À COLLER DANS ELEVENLABS
+MELA SKIN — CORPS DE PUB V2 (mots simples) — À COLLER DANS ELEVENLABS
 =====================================================================
 Réglages : modèle Eleven v3 (balises [ ] comprises) · voix Marion
 Stabilité 30 % · Similarité 75 % · Vitesse 1,00
 Le HOOK est généré à part (il change). Ici : le corps figé, du début à la fin.
+Fil rouge : « l'usine à couleur » sous la peau. Phrases courtes, mots simples.
+Les mots d'expert (hyperpigmentation, mélanine, tyrosinase, acide azélaïque...)
+restent, mais toujours expliqués juste après.
 Les nombres sont en lettres et la marque s'écrit « Méla Skine » : ne pas modifier.
-Laisse les lignes vides : elles font respirer la voix.
 
 === OPTION 1 : UN SEUL BLOC (copie tout ce qui est entre les deux lignes) ===
 ---------------------------------------------------------------------
 [excited] Cinq raisons qui font que ton hyperpigmentation ne part pas.
 
-Un, tu traites la surface de ta peau. [curious] Mais la tache se fabrique en dessous, là où ta peau produit la mélanine.
+Un, tu travailles la surface de ta peau. [curious] Mais ta tache ne vient pas de la surface. Sous ta peau, il y a une petite usine à couleur. Elle s'appelle la mélanine.
 
-Deux, tu gommes, tu frottes, tu testes des produits agressifs. [sighs] Ta peau s'irrite, et elle fabrique encore plus de pigment.
+Deux, tu gommes, tu frottes, tu testes plein de produits. [sighs] Ta peau se sent attaquée, alors elle se défend. Et elle fabrique encore plus de couleur.
 
-Trois, la plupart des soins sont pensés pour des peaux claires. [exasperated] Sur une peau mate ou noire, ils irritent, ou ils ne font rien.
+Trois, la plupart des soins sont faits pour des peaux claires. [exasperated] Sur une peau mate ou noire, ils piquent, ou ils ne font rien.
 
-Quatre, tu caches ou tu éclaircis, mais tu ne freines pas la production. [curious] Un fond de teint ou un citron ne touchent pas à ce qui fabrique la tache.
+Quatre, tu caches la tache. [curious] Un fond de teint, un citron. Mais la tache est cachée, pas arrêtée. L'usine, elle, continue de tourner.
 
-Et cinq, soleil, rasage, frottements, ta peau n'est pas protégée du retour. [sighs] Chaque agression peut relancer la tache.
+Et cinq, le soleil, le rasage, les frottements. [sighs] Chaque petit choc réveille l'usine, et la tache revient.
 
-[optimistic] Il te faut un soin qui agit là où la tache se fabrique, et qui respecte ta peau.
+[optimistic] Alors il te faut un soin qui freine l'usine, pas un soin qui frotte la surface.
 
-[excited] Le Sérum Anti-Taches, Méla Skine, est pensé pour les peaux mates à noires.
+[excited] Le Sérum Anti-Taches, Méla Skine, est fait pour les peaux mates à noires.
 
-L'acide azélaïque, à dix pour cent, freine la production de mélanine. L'alpha-arbutine bloque l'enzyme, la tirozinase.
+L'acide azélaïque, à dix pour cent, calme l'usine à couleur. L'alpha-arbutine bloque la tirozinase. C'est le bouton « démarrer » de l'usine.
 
-L'acide tranéxamique agit sur les taches tenaces, celles qui reviennent.
+L'acide tranéxamique s'occupe des taches têtues, celles qui reviennent.
 
-Et la niacinamide, à cinq pour cent, renforce ta barrière pour limiter leur retour.
+Et la niacinamide, à cinq pour cent, répare la barrière de ta peau, pour que les taches reviennent moins.
 
 Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent.
 
@@ -46,34 +48,34 @@ Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent.
 [excited] Cinq raisons qui font que ton hyperpigmentation ne part pas.
 
 02 · raison 1
-Un, tu traites la surface de ta peau. [curious] Mais la tache se fabrique en dessous, là où ta peau produit la mélanine.
+Un, tu travailles la surface de ta peau. [curious] Mais ta tache ne vient pas de la surface. Sous ta peau, il y a une petite usine à couleur. Elle s'appelle la mélanine.
 
 03 · raison 2
-Deux, tu gommes, tu frottes, tu testes des produits agressifs. [sighs] Ta peau s'irrite, et elle fabrique encore plus de pigment.
+Deux, tu gommes, tu frottes, tu testes plein de produits. [sighs] Ta peau se sent attaquée, alors elle se défend. Et elle fabrique encore plus de couleur.
 
 04 · raison 3
-Trois, la plupart des soins sont pensés pour des peaux claires. [exasperated] Sur une peau mate ou noire, ils irritent, ou ils ne font rien.
+Trois, la plupart des soins sont faits pour des peaux claires. [exasperated] Sur une peau mate ou noire, ils piquent, ou ils ne font rien.
 
 05 · raison 4
-Quatre, tu caches ou tu éclaircis, mais tu ne freines pas la production. [curious] Un fond de teint ou un citron ne touchent pas à ce qui fabrique la tache.
+Quatre, tu caches la tache. [curious] Un fond de teint, un citron. Mais la tache est cachée, pas arrêtée. L'usine, elle, continue de tourner.
 
 06 · raison 5
-Et cinq, soleil, rasage, frottements, ta peau n'est pas protégée du retour. [sighs] Chaque agression peut relancer la tache.
+Et cinq, le soleil, le rasage, les frottements. [sighs] Chaque petit choc réveille l'usine, et la tache revient.
 
 07 · solution (bascule)
-[optimistic] Il te faut un soin qui agit là où la tache se fabrique, et qui respecte ta peau.
+[optimistic] Alors il te faut un soin qui freine l'usine, pas un soin qui frotte la surface.
 
 08 · solution (produit)
-[excited] Le Sérum Anti-Taches, Méla Skine, est pensé pour les peaux mates à noires.
+[excited] Le Sérum Anti-Taches, Méla Skine, est fait pour les peaux mates à noires.
 
 09 · actifs 1
-L'acide azélaïque, à dix pour cent, freine la production de mélanine. L'alpha-arbutine bloque l'enzyme, la tirozinase.
+L'acide azélaïque, à dix pour cent, calme l'usine à couleur. L'alpha-arbutine bloque la tirozinase. C'est le bouton « démarrer » de l'usine.
 
 10 · actifs 2
-L'acide tranéxamique agit sur les taches tenaces, celles qui reviennent.
+L'acide tranéxamique s'occupe des taches têtues, celles qui reviennent.
 
 11 · actifs 3
-Et la niacinamide, à cinq pour cent, renforce ta barrière pour limiter leur retour.
+Et la niacinamide, à cinq pour cent, répare la barrière de ta peau, pour que les taches reviennent moins.
 
 12 · trust
 Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent.
@@ -88,6 +90,6 @@ Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent.
 [excited] Clique sur le bouton ci-dessous et commande ton Sérum Anti-Taches, Méla Skine.
 
 =====================================================================
-Remarque : « là où la tache se fabrique » remplace « en profondeur »
+Remarque : « freine l'usine » et « calme l'usine » remplacent « en profondeur »
 tant qu'aucun test ne justifie ce dernier mot.
 =====================================================================
