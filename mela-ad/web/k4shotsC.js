@@ -34,7 +34,7 @@ v([30, 12], { id: "s3", sfx: [[.1, "paper"], [.35, "stamp"], [.6, "ding", 2]],
   init(L) { this.sg = K3.sign(L.fg, "90 JOURS", 540, 340, { size: 160, maxw: 760 }); this.sc = H.grp(L.mid, 540, 1000, { j: .4 }); H.circ(this.sc, 0, 0, 330, "#A9482F", { sh: "sh2", th: 14 }); H.circ(this.sc, 0, 0, 290, "#C9633F", { sh: false, th: 0 }); H.circ(this.sc, 0, 0, 200, "#F3E6C8", { sh: "sh1", th: 8 }); H.circ(this.sc, 0, 0, 160, "#8B5A35", { sh: false, th: 0 }); H.circ(this.sc, -40, -40, 70, "#A9754A", { sh: false, th: 0, attr: { opacity: .6 } }); this.hd = H.grp(this.sc, 260, 0, { j: .4 }); H.rrect(this.hd, 0, -60, 150, 120, "#F3E6C8", { r: 40, jit: 0, th: 8 }); },
   update(t, p, d, L) { zoom(L, p); ent(this.sg, p, .02, .22, 0, -800); swing(this.sg, t); H.set(this.sc, { s: E.pop(seg(p, .1, .4)) }); } });
 v([31, 0], { id: "s4", sfx: [[.1, "pop"], [.4, "stamp"]],
-  init(L) { this.b = setHero(L, 0); this.dt = K3.dot(this.b.sc, -100, -50, 16, 4); },
+  init(L) { this.f = FC(L, 540, 840, 2.0, { spots: 0, hair: "bun", turn: .4 }); this.dt = K3.dot(this.f.hd, 80, 40, 20, 4); },
   update(t, p, d, L) { zoom(L, p, 1, 1.07); pp(this.dt, p, .3, .45); } });
 v([31, 7], { id: "s5", sfx: [[.15, "flip"], [.4, "flip"], [.65, "flip"], [.85, "ding", 1]],
   init(L) { this.cs = [0, 1, 2].map(i => { const g = calCard(L.mid, 3 + i, 230 + i * 310, 900, i === 0); H.set(g, { s: 1.35 }); return g; }); this.ar = [0, 1].map(i => K.arrow(L.fg, 330 + i * 310, 900, 400 + i * 310, 900, Q.red, 36)); },
