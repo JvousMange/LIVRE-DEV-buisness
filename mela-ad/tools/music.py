@@ -2,7 +2,11 @@
 Sol majeur, 104 bpm, grille G - D - Em - C. Retourne un tableau stéréo normalisé (RMS ~ 1) ; le niveau est réglé par le mixeur."""
 import numpy as np
 BPM = 104
-def make(total, SR, reverb):
+def make(total, SR, reverb, style="ambient"):
+    if style == "ambient": return make_ambient(total, SR, reverb)
+    return make_groove(total, SR, reverb)
+
+def make_groove(total, SR, reverb):
     rng = np.random.default_rng(21); beat = 60 / BPM; eighth = beat / 2; bar = 4 * beat
     nbars = int(np.ceil((total + 1) / bar)) + 1; N = int((nbars * bar + 4) * SR)
     L = np.zeros(N, np.float32); R = np.zeros(N, np.float32)
@@ -66,4 +70,43 @@ def make(total, SR, reverb):
     st = np.stack([L, R], 1) * fade[:, None]
     wet = reverb(st[:, 0].copy(), .1) [:n]; wet2 = reverb(st[:, 1].copy(), .1)[:n]; st = np.stack([wet, wet2], 1)
     st = st / (np.sqrt((st ** 2).mean()) + 1e-9)                      # RMS normalisé : le niveau est réglé par MUSIC_DB
+    return st.astype(np.float32)
+
+
+def make_ambient(total, SR, reverb):
+    """Nappe ambiante chaude et lente en mi bémol (comme la piste de la pub de référence) : accords tenus, drone grave, quelques notes de cloche."""
+    rng = np.random.default_rng(33); N = int((total + 4) * SR); L = np.zeros(N, np.float32); R = np.zeros(N, np.float32)
+    mf = lambda m: 440 * 2 ** ((m - 69) / 12)
+    chords = [([51, 55, 58, 62], 39), ([46, 53, 58, 62], 34), ([48, 51, 55, 58], 36), ([44, 51, 55, 60], 32)]   # Ebmaj7, Bb(add9), Cm7, Abmaj7 + basse
+    def put(x, t, gl, gr):
+        i = int(t * SR); m = min(len(x), N - i)
+        if m > 0: L[i:i + m] += x[:m] * gl; R[i:i + m] += x[:m] * gr
+    def pad(f, dur, fade):                                   # oscillateurs détunés, harmoniques douces
+        n = int(dur * SR); t = np.arange(n) / SR; out = {}
+        for cents, pan in ((-7, -1), (0, 0), (7, 1)):
+            ff = f * 2 ** (cents / 1200); x = np.zeros(n, np.float32)
+            for h in range(1, 7): x += (np.sin(2 * np.pi * ff * h * t + rng.uniform(0, 6.28)) / h ** 1.7).astype(np.float32)
+            out[pan] = x * (1 + .08 * np.sin(2 * np.pi * rng.uniform(.1, .22) * t + rng.uniform(0, 6.28)))
+        env = np.minimum(t / fade, 1) * np.minimum((dur - t) / fade, 1); env = env ** 1.5
+        return out, env
+    cd = 8.0; fade = 2.6; k = 0; t = 0.0
+    while t < total + 2:
+        notes, root = chords[k % 4]
+        for m in notes:
+            o, env = pad(mf(m), cd + 2 * fade, fade); st = t - fade
+            for pan, x in o.items(): put(x * env, max(st, 0), np.sqrt((1 - pan * .6) / 2) * .22, np.sqrt((1 + pan * .6) / 2) * .22)
+        n = int((cd + 2 * fade) * SR); tt = np.arange(n) / SR                     # drone grave
+        sub = np.sin(2 * np.pi * mf(root) * tt) + .35 * np.sin(2 * np.pi * mf(root + 12) * tt); e2 = np.minimum(tt / fade, 1) * np.minimum((cd + 2 * fade - tt) / fade, 1)
+        put((sub * e2).astype(np.float32), max(t - fade, 0), .5, .5)
+        # quelques notes de cloche, espacées
+        for _ in range(rng.integers(1, 3)):
+            bt = t + rng.uniform(.5, cd - 1.5); m = int(rng.choice(notes)) + 24; f0 = mf(m); nn = int(1.6 * SR); u = np.arange(nn) / SR
+            bell = (np.sin(2 * np.pi * f0 * u) * np.exp(-u / .55) + .3 * np.sin(2 * np.pi * f0 * 2.76 * u) * np.exp(-u / .22)) * np.minimum(u / .004, 1)
+            pan = rng.uniform(-.5, .5); put(bell.astype(np.float32), bt, np.sqrt((1 - pan) / 2) * .16, np.sqrt((1 + pan) / 2) * .16)
+        t += cd; k += 1
+    n = int((total + 1.2) * SR); L, R = L[:n], R[:n]
+    fadein = np.minimum(np.arange(n) / (SR * 2.0), 1) * np.minimum((n - np.arange(n)) / (SR * 3.0), 1)
+    st = np.stack([L, R], 1) * fadein[:, None]
+    st = np.stack([reverb(st[:, 0].copy(), .22, .9)[:n], reverb(st[:, 1].copy(), .22, .9)[:n]], 1)
+    st = st / (np.sqrt((st ** 2).mean()) + 1e-9)
     return st.astype(np.float32)
