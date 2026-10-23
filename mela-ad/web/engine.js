@@ -109,15 +109,19 @@ H.tag = (parent, text, w = 420, h = 190, o = {}) => {
 H.bottle = (parent, sc = 1) => {
   const g = H.grp(parent, 0, 0, { j: .5 });
   const s = H.grp(g); s._b.sx = s._b.sy = sc;
-  H.rrect(s, -88, -170, 176, 330, C.dark, { r: 34, seed: 2, jit: 1.6 });          // corps
-  H.rrect(s, -52, -215, 104, 60, "#4a2a18", { r: 12, seed: 4, jit: 1.2 });         // épaule/cou
-  H.rrect(s, -64, -250, 128, 46, C.cream, { r: 10, seed: 5, jit: 1.2, sh: "sh1" }); // collerette
-  H.blob(s, 0, -300, 40, 66, C.terra, { seed: 6, jit: .02, n: 22 });           // pipette
-  H.rrect(s, -118 + 30, -80, 176, 150, C.cream, { r: 6, seed: 7, jit: 1.2, sh: "sh1" });
-  H.circ(s, 0, -28, 34, "none", { sh: false, attr: { stroke: C.dark, "stroke-width": 4.5, "stroke-opacity": 1 } });
-  H.txt(s, "M", 0, -14, 44, C.dark, { w: 800 });
-  H.txt(s, "MELA SKIN", 0, 36, 20, C.dark, { ls: 2.5 });
-  H.txt(s, "SÉRUM ANTI-TACHES", 0, 62, 12.5, C.terra, { ls: 1.2, w: 700 });
+  H.rrect(s, -88, -170, 176, 330, "#8B4A20", { r: 34, seed: 2, jit: 1.6 });                         // verre ambré
+  H.rrect(s, -74, -150, 14, 90, "#B5733A", { r: 11, sh: false, th: 0, jit: .8, attr: { opacity: .55 } });  // reflet
+  H.rrect(s, -52, -215, 104, 60, "#7A3F1C", { r: 12, seed: 4, jit: 1.2 });                          // col
+  H.rrect(s, -74, -268, 148, 78, "#4F2F22", { r: 12, seed: 5, jit: 1.2, sh: "sh1" });               // collerette cannelée
+  for (let i = 0; i < 9; i++) H.el("path", { d: `M${-60 + i * 15},-258 V-200`, stroke: "#3A2118", "stroke-width": 4, "stroke-linecap": "round" }, s);
+  H.blob(s, 0, -338, 42, 78, "#5C3F33", { seed: 6, jit: .02, n: 22 });                              // pipette caoutchouc
+  H.rrect(s, -78, -52, 156, 186, "#4B2E26", { r: 8, seed: 7, jit: .6, sh: "sh1", th: 2 });        // étiquette brun foncé
+  H.txt(s, "MELA SKIN", 0, 4, 26, "#E8A08A", { w: 800, ls: 1.2 });
+  H.txt(s, "L'expertise pensée pour vous", 0, 24, 9.5, "#E9CDBE", { w: 400 });
+  H.txt(s, "SÉRUM CORRECTEUR DE TEINT", 0, 62, 8.8, "#E8A08A", { w: 700, ls: .4 });
+  H.txt(s, "ANTI-TÂCHES", 0, 75, 8.8, "#E8A08A", { w: 700, ls: .4 });
+  H.txt(s, "VEGAN · CRUELTY FREE · COMPOSITION CLEAN", 0, 110, 5.6, "#C98F7C", { w: 400 });
+  H.txt(s, "30 ml", 0, 124, 8, "#E9CDBE", { w: 400 });
   return g;
 };
 

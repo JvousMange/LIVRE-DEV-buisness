@@ -1,0 +1,877 @@
+{
+ "total": 139.67300000000003,
+ "plan": [
+  {
+   "id": "fan",
+   "start": 0,
+   "end": 3.6
+  },
+  {
+   "id": "surfaceRub",
+   "start": 3.6,
+   "end": 7.58
+  },
+  {
+   "id": "under",
+   "start": 7.58,
+   "end": 8.66
+  },
+  {
+   "id": "found2",
+   "start": 8.66,
+   "end": 11.7
+  },
+  {
+   "id": "cover",
+   "start": 11.7,
+   "end": 13.7
+  },
+  {
+   "id": "pale",
+   "start": 13.7,
+   "end": 17.12
+  },
+  {
+   "id": "irritate",
+   "start": 17.12,
+   "end": 20.92
+  },
+  {
+   "id": "scrub",
+   "start": 20.92,
+   "end": 23.380000000000003
+  },
+  {
+   "id": "random",
+   "start": 23.380000000000003,
+   "end": 24.94
+  },
+  {
+   "id": "worse",
+   "start": 24.94,
+   "end": 26.34
+  },
+  {
+   "id": "triggers",
+   "start": 26.34,
+   "end": 31.720000000000002
+  },
+  {
+   "id": "peel",
+   "start": 31.720000000000002,
+   "end": 35.44
+  },
+  {
+   "id": "act",
+   "start": 35.44,
+   "end": 38.559999999999995
+  },
+  {
+   "id": "factory",
+   "start": 38.559999999999995,
+   "end": 41.96
+  },
+  {
+   "id": "inflam",
+   "start": 41.96,
+   "end": 49.08
+  },
+  {
+   "id": "pigment",
+   "start": 49.08,
+   "end": 51.66
+  },
+  {
+   "id": "tones",
+   "start": 51.66,
+   "end": 55.059999999999995
+  },
+  {
+   "id": "months",
+   "start": 55.059999999999995,
+   "end": 57.199999999999996
+  },
+  {
+   "id": "xtubes",
+   "start": 57.199999999999996,
+   "end": 59.239999999999995
+  },
+  {
+   "id": "notlight",
+   "start": 59.239999999999995,
+   "end": 61.559999999999995
+  },
+  {
+   "id": "dial",
+   "start": 61.559999999999995,
+   "end": 68.78
+  },
+  {
+   "id": "imagine",
+   "start": 68.78,
+   "end": 71.84
+  },
+  {
+   "id": "notburn",
+   "start": 71.84,
+   "end": 74.98
+  },
+  {
+   "id": "source",
+   "start": 74.98,
+   "end": 79.06
+  },
+  {
+   "id": "four",
+   "start": 79.06,
+   "end": 81.72
+  },
+  {
+   "id": "brake",
+   "start": 81.72,
+   "end": 85.64
+  },
+  {
+   "id": "lock",
+   "start": 85.64,
+   "end": 90.36
+  },
+  {
+   "id": "tranex",
+   "start": 90.36,
+   "end": 94.89999999999999
+  },
+  {
+   "id": "wall",
+   "start": 94.89999999999999,
+   "end": 101.92
+  },
+  {
+   "id": "target",
+   "start": 101.92,
+   "end": 105.2
+  },
+  {
+   "id": "ten",
+   "start": 105.2,
+   "end": 109.14
+  },
+  {
+   "id": "hero",
+   "start": 109.14,
+   "end": 114.48
+  },
+  {
+   "id": "crowd",
+   "start": 114.48,
+   "end": 118.42
+  },
+  {
+   "id": "two",
+   "start": 118.42,
+   "end": 121.32
+  },
+  {
+   "id": "free",
+   "start": 121.32,
+   "end": 122.24
+  },
+  {
+   "id": "jars",
+   "start": 122.24,
+   "end": 123.28
+  },
+  {
+   "id": "okstamp",
+   "start": 123.28,
+   "end": 125.88
+  },
+  {
+   "id": "seal",
+   "start": 125.88,
+   "end": 128.97899999999998
+  },
+  {
+   "id": "refund",
+   "start": 128.97899999999998,
+   "end": 132.84
+  },
+  {
+   "id": "cta",
+   "start": 132.84,
+   "end": 137.27300000000002
+  },
+  {
+   "id": "end",
+   "start": 137.27300000000002,
+   "end": 139.67300000000003
+  }
+ ],
+ "sfx": [
+  {
+   "t": 0.72,
+   "type": "flip",
+   "opt": null
+  },
+  {
+   "t": 3.799,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 4.396,
+   "type": "rub",
+   "opt": null
+  },
+  {
+   "t": 5.59,
+   "type": "rub",
+   "opt": null
+  },
+  {
+   "t": 6.784,
+   "type": "rub",
+   "opt": null
+  },
+  {
+   "t": 3.6,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 7.634,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 7.904,
+   "type": "slide",
+   "opt": null
+  },
+  {
+   "t": 8.228,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 9.572,
+   "type": "tap",
+   "opt": null
+  },
+  {
+   "t": 10.484,
+   "type": "tap",
+   "opt": null
+  },
+  {
+   "t": 8.66,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 12.6,
+   "type": "pop",
+   "opt": 1
+  },
+  {
+   "t": 14.521,
+   "type": "flip",
+   "opt": null
+  },
+  {
+   "t": 16.265,
+   "type": "whoosh",
+   "opt": null
+  },
+  {
+   "t": 13.7,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 17.31,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 17.88,
+   "type": "slide",
+   "opt": null
+  },
+  {
+   "t": 18.45,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 19.21,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 19.78,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 17.12,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 21.166,
+   "type": "rub",
+   "opt": null
+  },
+  {
+   "t": 20.92,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 23.567,
+   "type": "thud",
+   "opt": null
+  },
+  {
+   "t": 25.15,
+   "type": "whoosh",
+   "opt": null
+  },
+  {
+   "t": 25.416,
+   "type": "pop",
+   "opt": 1
+  },
+  {
+   "t": 26.609,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 27.147,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 27.954,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 28.761,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 30.106,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 26.34,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 32.278,
+   "type": "tear",
+   "opt": null
+  },
+  {
+   "t": 33.394,
+   "type": "tear",
+   "opt": null
+  },
+  {
+   "t": 31.72,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 36.501,
+   "type": "ding",
+   "opt": 0
+  },
+  {
+   "t": 35.44,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 38.73,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 39.24,
+   "type": "slide",
+   "opt": null
+  },
+  {
+   "t": 39.92,
+   "type": "tick",
+   "opt": null
+  },
+  {
+   "t": 40.43,
+   "type": "tick",
+   "opt": null
+  },
+  {
+   "t": 40.94,
+   "type": "tick",
+   "opt": null
+  },
+  {
+   "t": 38.56,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 42.316,
+   "type": "whoosh",
+   "opt": null
+  },
+  {
+   "t": 43.384,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 41.96,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 49.596,
+   "type": "pop",
+   "opt": 0
+  },
+  {
+   "t": 49.08,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 52.68,
+   "type": "pop",
+   "opt": 0
+  },
+  {
+   "t": 53.53,
+   "type": "pop",
+   "opt": 2
+  },
+  {
+   "t": 54.38,
+   "type": "ding",
+   "opt": 1
+  },
+  {
+   "t": 51.66,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 55.445,
+   "type": "flip",
+   "opt": null
+  },
+  {
+   "t": 56.13,
+   "type": "flip",
+   "opt": null
+  },
+  {
+   "t": 56.815,
+   "type": "flip",
+   "opt": null
+  },
+  {
+   "t": 55.06,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 57.526,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 58.098,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 58.669,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 60.4,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 61.003,
+   "type": "ding",
+   "opt": 1
+  },
+  {
+   "t": 59.24,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 61.921,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 63.726,
+   "type": "slide",
+   "opt": null
+  },
+  {
+   "t": 65.892,
+   "type": "tick",
+   "opt": null
+  },
+  {
+   "t": 66.614,
+   "type": "tick",
+   "opt": null
+  },
+  {
+   "t": 67.697,
+   "type": "ding",
+   "opt": 1
+  },
+  {
+   "t": 61.56,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 68.933,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 69.545,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 70.463,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 71.228,
+   "type": "ding",
+   "opt": 0
+  },
+  {
+   "t": 68.78,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 71.997,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 72.468,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 73.253,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 73.881,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 74.509,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 71.84,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 75.184,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 76,
+   "type": "slide",
+   "opt": null
+  },
+  {
+   "t": 77.224,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 78.244,
+   "type": "ding",
+   "opt": 2
+  },
+  {
+   "t": 79.193,
+   "type": "paper",
+   "opt": null
+  },
+  {
+   "t": 79.592,
+   "type": "pop",
+   "opt": 0
+  },
+  {
+   "t": 80.124,
+   "type": "pop",
+   "opt": 2
+  },
+  {
+   "t": 80.656,
+   "type": "pop",
+   "opt": 4
+  },
+  {
+   "t": 81.188,
+   "type": "pop",
+   "opt": 5
+  },
+  {
+   "t": 79.06,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 83.366,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 84.778,
+   "type": "ding",
+   "opt": 2
+  },
+  {
+   "t": 81.72,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 88,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 88.944,
+   "type": "ding",
+   "opt": 1
+  },
+  {
+   "t": 85.64,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 93.175,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 93.992,
+   "type": "ding",
+   "opt": 2
+  },
+  {
+   "t": 90.36,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 97.287,
+   "type": "tap",
+   "opt": null
+  },
+  {
+   "t": 100.516,
+   "type": "ding",
+   "opt": 1
+  },
+  {
+   "t": 94.9,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 102.478,
+   "type": "thud",
+   "opt": null
+  },
+  {
+   "t": 104.314,
+   "type": "thud",
+   "opt": null
+  },
+  {
+   "t": 101.92,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 107.17,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 107.643,
+   "type": "whoosh",
+   "opt": null
+  },
+  {
+   "t": 105.2,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 110.635,
+   "type": "thud",
+   "opt": null
+  },
+  {
+   "t": 110.849,
+   "type": "ding",
+   "opt": 2
+  },
+  {
+   "t": 109.14,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 117.868,
+   "type": "ding",
+   "opt": 2
+  },
+  {
+   "t": 114.48,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 119.29,
+   "type": "pop",
+   "opt": 1
+  },
+  {
+   "t": 120.508,
+   "type": "ding",
+   "opt": 0
+  },
+  {
+   "t": 118.42,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 121.504,
+   "type": "thud",
+   "opt": null
+  },
+  {
+   "t": 122.056,
+   "type": "ding",
+   "opt": 2
+  },
+  {
+   "t": 122.365,
+   "type": "thud",
+   "opt": null
+  },
+  {
+   "t": 122.24,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 123.8,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 124.32,
+   "type": "ding",
+   "opt": 1
+  },
+  {
+   "t": 123.28,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 126.996,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 127.739,
+   "type": "ding",
+   "opt": 2
+  },
+  {
+   "t": 131.836,
+   "type": "ding",
+   "opt": 0
+  },
+  {
+   "t": 128.979,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 133.062,
+   "type": "whoosh",
+   "opt": null
+  },
+  {
+   "t": 134.17,
+   "type": "stamp",
+   "opt": null
+  },
+  {
+   "t": 135.057,
+   "type": "pop",
+   "opt": null
+  },
+  {
+   "t": 136.386,
+   "type": "ding",
+   "opt": 2
+  },
+  {
+   "t": 132.84,
+   "type": "whoosh",
+   "opt": "soft"
+  },
+  {
+   "t": 137.873,
+   "type": "ding",
+   "opt": 2
+  }
+ ]
+}
