@@ -4,7 +4,8 @@ import { stain, tag, sun, cross } from "../../library/components.mjs";
 import { razor, pimple, padlock, factory as factoryRaw, siren, pipeLine, underground } from "../../library/components2.mjs";
 import { A, POP, FADEIN, FADEOUT, DROP, SLOW } from "./kit.mjs";
 
-export function scenesF(C, X) {
+export function scenesF(C, X, opts = {}) {
+  const decor = opts.decor || underground;
   const R = (n, p, o) => X.rel(n, p, o);
   const FX = 430, FY = 1245, FS = 0.85, PX = 740, OUT = [FX + 250 * FS, 1305];
   const FCOL = { body: "#CF9068", roof: "#B5724B", chimney: "#E8D0A8", cap: "#7A4E32", base: "#7A4E32", gear: "#E3B08C" };
@@ -24,14 +25,14 @@ export function scenesF(C, X) {
       A(id, t + 1.9, 0.25, { o: 1 }, { o: 0 }, { ease: "lin", late: true }),
     ];
   }).flat();
-  const plant = () => underground(C) + pipeLine(C, PX, 940, 1300, OUT[0] - 5, "pipe");
+  const plant = () => decor(C) + pipeLine(C, PX, 940, 1300, OUT[0] - 5, "pipe");
 
   return {
     // « Voilà ce qui se passe. Ta peau fabrique de la mélanine : c'est ce qui lui donne sa couleur. »
     melanin: (() => {
       const dur = X.dur("melanin");
       return {
-        svg: underground(C) + pipeLine(C, PX, 940, 1300, OUT[0] - 5, "pipe") +
+        svg: decor(C) + pipeLine(C, PX, 940, 1300, OUT[0] - 5, "pipe") +
           factory(C, FX, FY, FS, "fac") + flowSvg("pg", 6) + `<g id="sign">${hangingSign(540, 640, 600, 180, ["MÉLANINE"], { palette: C, fontSize: 88, seed: 4 })}</g>` +
           `<g id="veil"><rect x="-300" y="-400" width="1700" height="2800" fill="rgb(255,247,230)"/></g>`,
         anims: [
@@ -93,7 +94,7 @@ export function scenesF(C, X) {
     compare: (() => {
       const dur = X.dur("compare"), tStrong = R("compare", "plus fort");
       return {
-        svg: underground(C) + factory(C, 250, 1285, 0.42, "fs") + factory(C, 715, 1235, 0.95, "fb") + siren(C, 655, 1235 - 212 * 0.95 - 20, 0.7, "siren") +
+        svg: decor(C) + factory(C, 250, 1285, 0.42, "fs") + factory(C, 715, 1235, 0.95, "fb") + siren(C, 655, 1235 - 212 * 0.95 - 20, 0.7, "siren") +
           tag(C, 250, 800, 380, 90, "PEAU CLAIRE", { id: "tL", fontSize: 38, color: C.solution, seed: 10 }) + tag(C, 715, 790, 470, 90, "MATE OU NOIRE", { id: "tD", fontSize: 38, color: C.alert, seed: 11 }),
         anims: [
           POP("fs", 0.1, [250, 1285]), POP("tL", 0.2, [250, 800]), ...smoke("fs", 0.5, 3, 1.0), spin("fs", dur, 40),
