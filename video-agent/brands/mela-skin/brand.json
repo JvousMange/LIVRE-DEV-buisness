@@ -1,0 +1,42 @@
+{
+  "_note": "Version provisoire construite depuis mela-skin/broll-prompts-kie.md. melaskin.fr n'était pas joignable depuis le conteneur : palette, polices et allégations sont à valider.",
+  "name": "MELA SKIN",
+  "site": "melaskin.fr",
+  "product": {
+    "name": "Sérum anti-taches",
+    "format": "flacon verre ambré 30 ml, compte-gouttes, bouchon brun chocolat, étiquette brun chaud mat, lettrage crème",
+    "actives": [
+      { "name": "Acide azélaïque", "dose": "10 %" },
+      { "name": "Niacinamide", "dose": "5 %" },
+      { "name": "Acide tranexamique", "dose": "2 %" },
+      { "name": "Alpha-arbutine", "dose": "2 %" },
+      { "name": "Vitamine C stable", "dose": "3 %" }
+    ],
+    "guarantee": "90 jours",
+    "accessory": "pochette en coton crème, zip brun, emblème terracotta"
+  },
+  "audience": "Femmes à peau mate à foncée (phototypes IV à VI) avec taches pigmentaires, marques post-acné, mélasma",
+  "tone": "Calme, direct, pédagogique, sans promesse médicale",
+  "palette": {
+    "kraft": "#C8A57B",
+    "kraftDark": "#A9845A",
+    "cream": "#F1E6D2",
+    "dark": "#2E2019",
+    "problem": "#4A2C1C",
+    "alert": "#C4552F",
+    "solution": "#7E9A6B",
+    "accent": "#E0A030",
+    "skinLight": "#D79B72",
+    "skinDeep": "#8A5A3C"
+  },
+  "roles": {
+    "problem": "taches, pigment, UV : brun profond + terracotta d'alerte",
+    "solution": "actifs, coche, produit : vert sauge",
+    "accent": "ambre = soleil et sérum"
+  },
+  "claimsToCheck": [
+    "Aucune promesse de guérison ou de traitement",
+    "Aucun pourcentage de résultat sans source",
+    "Les dosages d'actifs sont ceux de la fiche produit"
+  ]
+}
