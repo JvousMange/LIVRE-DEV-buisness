@@ -1,0 +1,10 @@
+node_modules/
+out/
+episodes/*/papercut/public/layers/
+episodes/*/papercut/public/audio/
+episodes/*/papercut/public/vo/voiceover.wav
+episodes/*/papercut/src/lib/
+episodes/*/papercut/public/bg/
+episodes/*/papercut/public/fonts/
+episodes/*/papercut/public/assets/
+episodes/*/papercut/tools/cues.json

@@ -1,0 +1,46 @@
+{
+ "comp": "MelaAd",
+ "out": "mela-ad",
+ "bed": "marimba-Am-120",
+ "narration": "../narration",
+ "timing": "timing_narrator.js",
+ "fps": 30,
+ "start": 0.2,
+ "gap": 0.22,
+ "hold": 2.3,
+ "whipScene": "",
+ "scenes": [],
+ "banners": {},
+ "cuts": {
+  "S03": {
+   "kind": "zoomThrough"
+  },
+  "S06": {
+   "kind": "whip"
+  },
+  "S11": {
+   "kind": "tapePull"
+  },
+  "S13": {
+   "kind": "zoomThrough"
+  },
+  "S16": {
+   "kind": "whip"
+  },
+  "S19": {
+   "kind": "whip"
+  },
+  "S28": {
+   "kind": "whip"
+  },
+  "S37": {
+   "kind": "pageTurn"
+  },
+  "S41": {
+   "kind": "stampCut"
+  },
+  "S43": {
+   "kind": "whip"
+  }
+ }
+}

@@ -1,6 +1,6 @@
 """Mini moteur « papier découpé » : chaque forme est une feuille avec ombre portée,
 grain de papier et léger liseré de lumière. Tout est dessiné en code (Pillow + numpy)."""
-import math, random
+import math, random, contextlib
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
 
@@ -15,6 +15,7 @@ AMBER = (186, 112, 42); BRN = (122, 84, 58); CHOC = (74, 48, 38)
 GRN = (82, 112, 92); TEAL = (66, 98, 94); YEL = (234, 178, 66); BLUE = (92, 122, 150)
 PINK = (214, 120, 100); WHITE = (250, 244, 232)
 
+REC = [False]   # mettre REC[0] = True pour enregistrer les couches
 _rng = np.random.default_rng(7)
 _grain = None
 
@@ -126,23 +127,33 @@ class Canvas:
         arr = np.zeros((H, W, 3), np.float32) + np.array(base, np.float32)
         yy, xx = np.mgrid[0:H, 0:W]
         v = 1 - vignette * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2) / 2
-        arr = arr * v[..., None] * (1 + g[..., None] * 1.1)
+        low = np.array(Image.fromarray(((np.random.default_rng(11).normal(0, 1, (H // 40, W // 40)) * 28) + 128).clip(0, 255).astype(np.uint8)).resize((W, H), Image.BICUBIC).filter(ImageFilter.GaussianBlur(40)), np.float32)
+        arr = arr * v[..., None] * (1 + g[..., None] * 1.1) * (1 + ((low - 128) / 128.0 * 0.16)[..., None])
         self.a = arr
         self.rnd = random.Random(seed)
+        self.rec = [] if REC[0] else None      # liste de couches si l'export est actif
+        self.tag = None
+        self.grp = None
+        self.groups = {}
+        self.acts = []
+        self.cams = []
+        self.bg = arr.copy() if REC[0] else None
 
-    def add(self, mask, color, elev=7, shade=0.0, edge=True, grainy=True, alpha=1.0):
+    def add(self, mask, color, elev=7, shade=0.0, edge=True, grainy=True, alpha=1.0, bevel=1.0):
         bb = mask.getbbox()
         if not bb:
             return self
-        pad = int(elev * 3 + 6)
+        pad = int(elev * 3 + 8)
         x0, y0 = max(0, bb[0] - pad), max(0, bb[1] - pad)
         x1, y1 = min(W, bb[2] + pad), min(H, bb[3] + pad)
         m = np.array(mask.crop((x0, y0, x1, y1)).filter(ImageFilter.GaussianBlur(0.9)), np.float32) / 255.0 * alpha
         reg = self.a[y0:y1, x0:x1]
+        s = None
         if elev > 0:
             sh = Image.fromarray((m * 255).astype(np.uint8))
-            sh = ImageChops.offset(sh, int(elev * 0.55), int(elev * 0.95)).filter(ImageFilter.GaussianBlur(elev * 0.8))
-            s = np.array(sh, np.float32) / 255.0 * 0.38
+            soft = np.array(ImageChops.offset(sh, int(elev * 0.55), int(elev * 0.95)).filter(ImageFilter.GaussianBlur(elev * 0.8)), np.float32) / 255.0 * 0.34
+            tight = np.array(ImageChops.offset(sh, 1, 2).filter(ImageFilter.GaussianBlur(1.6)), np.float32) / 255.0 * 0.42   # ombre de contact
+            s = 1 - (1 - soft) * (1 - tight)
             reg *= (1 - s[..., None])
         col = np.zeros(reg.shape, np.float32) + np.array(color, np.float32)
         if shade:
@@ -151,13 +162,50 @@ class Canvas:
         if grainy:
             col = col * (1 + grain()[y0:y1, x0:x1, None] * 1.4)
         if edge and elev > 0:
+            # relief : la feuille est une plaque d'épaisseur finie, biseau éclairé en haut à gauche
+            sig = max(1.6, min(elev * 0.45, 7.0))
+            hmap = np.array(Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(sig)), np.float32) / 255.0
+            gy_, gx_ = np.gradient(hmap)
+            k = sig * 2.2 * bevel
+            nz = 1.0 / np.sqrt(1 + (gx_ * k) ** 2 + (gy_ * k) ** 2)
+            lam = (-gx_ * k * -0.55 + -gy_ * k * -0.62) * nz + 0.56 * nz     # n . L  (L vers le haut-gauche)
+            lam = lam - 0.56
+            col = col * (1 + 1.5 * lam[..., None])
             sx = np.roll(np.roll(m, 2, 0), 2, 1)
-            hl = np.clip(m - sx, 0, 1)[..., None]       # liseré clair haut-gauche
-            sx2 = np.roll(np.roll(m, -2, 0), -2, 1)
-            dk = np.clip(m - sx2, 0, 1)[..., None]      # bord sombre bas-droite
-            col = col * (1 + 0.22 * hl - 0.20 * dk)
+            col = col * (1 + 0.16 * np.clip(m - sx, 0, 1)[..., None])
         mm = m[..., None]
+        if self.rec is not None:
+            tot = mm + (s[..., None] if s is not None else 0) * (1 - mm)
+            if float(tot.max()) > 0.02:
+                rgb = (col * mm) / np.maximum(tot, 1e-4)
+                rgba = np.concatenate([np.clip(rgb, 0, 255), np.clip(tot, 0, 1) * 255], axis=2).astype(np.uint8)
+                self.rec.append({"x": x0, "y": y0, "img": rgba, "tag": self.tag, "g": self.grp, "area": float(m.sum())})
         reg[:] = reg * (1 - mm) + col * mm
+        return self
+
+    # ---- chorégraphie -------------------------------------------------
+    @contextlib.contextmanager
+    def g(self, name, origin=None):
+        """Les couches dessinées dans le bloc forment le groupe `name` (animé ensemble).
+        origin : None (centre du groupe), 'bottom', 'top', 'left', 'right' ou (x, y) en px."""
+        old = self.grp
+        self.grp = name
+        self.groups.setdefault(name, {"origin": origin})
+        if origin is not None:
+            self.groups[name]["origin"] = origin
+        try:
+            yield
+        finally:
+            self.grp = old
+
+    def act(self, group, kind, t=0.0, **kw):
+        """Action d'animation sur un groupe : in, out, move, shake, wipe, pulse, bob, spin, sway, fall, scale, rot, fade, blink, wipein."""
+        self.acts.append({"g": group, "k": kind, "t": round(float(t), 3), **kw})
+        return self
+
+    def cam(self, kind, t=0.0, **kw):
+        """Caméra : push (f0,to,cx,cy), pan (dx,dy), shake (amp), tilt (deg)."""
+        self.cams.append({"k": kind, "t": round(float(t), 3), **kw})
         return self
 
     def img(self):
@@ -167,6 +215,15 @@ class Canvas:
         yy, xx = np.mgrid[0:H, 0:W]
         d = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2) / r
         g = np.clip(1 - d, 0, 1) ** 2 * strength
+        if self.rec is not None:
+            ys, xs = np.where(g > 0.004)
+            if len(ys):
+                y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
+                gg = g[y0:y1, x0:x1]
+                rgba = np.zeros((y1 - y0, x1 - x0, 4), np.uint8)
+                rgba[..., :3] = np.array(color, np.uint8)
+                rgba[..., 3] = (gg * 255).astype(np.uint8)
+                self.rec.append({"x": int(x0), "y": int(y0), "img": rgba, "tag": "glow", "g": self.grp, "area": 0.0})
         self.a = self.a * (1 - g[..., None]) + np.array(color, np.float32) * g[..., None]
         return self
 

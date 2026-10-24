@@ -3,7 +3,23 @@ import math, random
 from paper import *
 
 
-def dots(c, cx, cy, rx, ry, n=22, rmin=9, rmax=20, seed=1, color=OR, clip=None, elev=3):
+def tagged(tag):
+    """Marque les couches dessinées par la fonction (pour les animer côté vidéo)."""
+    def deco(fn):
+        def wrap(c, *a, **k):
+            old = c.tag
+            c.tag = tag
+            try:
+                return fn(c, *a, **k)
+            finally:
+                c.tag = old
+        wrap.__name__ = fn.__name__
+        return wrap
+    return deco
+
+
+@tagged('dot')
+def dots(c, cx, cy, rx, ry, n=22, rmin=9, rmax=20, seed=1, color=OR, clip=None, elev=3, alpha=1.0):
     r = random.Random(seed)
     placed = []
     tries = 0
@@ -18,14 +34,16 @@ def dots(c, cx, cy, rx, ry, n=22, rmin=9, rmax=20, seed=1, color=OR, clip=None, 
         m = ell(x, y, rad)
         if clip is not None:
             m = I(m, clip)
-        c.add(m, color, elev=elev)
+        c.add(m, color, elev=elev, alpha=alpha)
     return placed
 
 
+@tagged('xmark')
 def xmark(c, cx, cy, s=90, w=34, color=OR):
     c.add(U(line([(cx - s, cy - s), (cx + s, cy + s)], w), line([(cx - s, cy + s), (cx + s, cy - s)], w)), color, elev=9)
 
 
+@tagged('arrow')
 def arrow(c, x0, y0, x1, y1, w=46, head=95, color=OR):
     a = math.atan2(y1 - y0, x1 - x0)
     bx, by = x1 - head * math.cos(a), y1 - head * math.sin(a)
@@ -35,6 +53,7 @@ def arrow(c, x0, y0, x1, y1, w=46, head=95, color=OR):
           color, elev=9)
 
 
+@tagged('hand')
 def hand(c, x, y, ang=0, s=1.0, skin=SK_D, point=False, sleeve=None, arm=420):
     """Main « mitaine » en papier. (x,y)=poignet, ang en degrés (0 = pointe vers la droite)."""
     a = math.radians(ang)
@@ -75,33 +94,66 @@ def torso(c, cx, top, w, h, color=CHAR, r=60):
     c.add(rr(cx - w / 2, top, cx + w / 2, top + h, r), color, elev=9)
 
 
-def woman(c, cx, top, s=1.0, skin=SK_D, shirt=CHAR, hair=DARK, longhair=False, bun=False, seed=2, body=True, arms="down", spots=False):
+def _g(c, name, origin=None):
+    import contextlib
+    return c.g(name, origin) if name else contextlib.nullcontext()
+
+
+def woman(c, cx, top, s=1.0, skin=SK_D, shirt=CHAR, hair=DARK, longhair=False, bun=False, seed=2, body=True, arms="down", spots=False, gb=None, gh=None):
+    """Personnage en papier : tête, cou, épaules inclinées, col en V, manches, bras avec mains. gb / gh = groupes corps et tête."""
     hr = 130 * s
     hy = top + hr * 1.18
-    if body:
-        torso(c, cx, hy + hr * 1.55, 400 * s, 620 * s, shirt, 90 * s)
-        # bras
-        if arms == "down":
-            c.add(line([(cx - 175 * s, hy + hr * 1.9), (cx - 205 * s, hy + hr * 1.9 + 480 * s)], 82 * s), shirt, elev=8)
-            c.add(line([(cx + 175 * s, hy + hr * 1.9), (cx + 205 * s, hy + hr * 1.9 + 480 * s)], 82 * s), shirt, elev=8)
-    head(c, cx, hy, hr, hr * 1.22, skin, hair, seed=seed, bun=bun, longhair=longhair)
-    if spots:
-        dots(c, cx, hy + hr * 0.55, hr * 0.62, hr * 0.46, n=14, rmin=4 * s + 2, rmax=9 * s + 3, seed=seed)
+    sh_y = hy + hr * 1.62                      # ligne des épaules
+    dark = tuple(int(v * 0.84) for v in shirt)
+    light = tuple(min(255, int(v * 1.12)) for v in shirt)
+    with _g(c, gb, "bottom"):
+        if body:
+            # buste : épaules arrondies et inclinées
+            tw = 430 * s
+            pts = [(cx - tw / 2, sh_y + 120 * s), (cx - tw / 2 + 30 * s, sh_y + 20 * s), (cx - 120 * s, sh_y - 18 * s), (cx + 120 * s, sh_y - 18 * s),
+                   (cx + tw / 2 - 30 * s, sh_y + 20 * s), (cx + tw / 2, sh_y + 120 * s), (cx + tw / 2 - 20 * s, max(sh_y + 640 * s, H + 80)), (cx - tw / 2 + 20 * s, max(sh_y + 640 * s, H + 80))]
+            c.add(poly(pts), shirt, elev=9)
+            c.add(ell(cx - tw / 2 + 40 * s, sh_y + 60 * s, 62 * s, 52 * s), shirt, elev=6)
+            c.add(ell(cx + tw / 2 - 40 * s, sh_y + 60 * s, 62 * s, 52 * s), shirt, elev=6)
+            # col en V + plis
+            c.add(poly([(cx - 78 * s, sh_y - 16 * s), (cx + 78 * s, sh_y - 16 * s), (cx, sh_y + 120 * s)]), tuple(int(v * 0.9) for v in skin), elev=0, edge=False)
+            c.add(line([(cx - 90 * s, sh_y - 14 * s), (cx, sh_y + 134 * s), (cx + 90 * s, sh_y - 14 * s)], 12 * s), dark, elev=0, edge=False)
+            for dx in (-110, -40, 60, 130):
+                c.add(line([(cx + dx * s, sh_y + 260 * s), (cx + (dx + 16) * s, sh_y + 470 * s)], 7 * s), dark, elev=0, edge=False, alpha=0.7)
+            if arms == "down":
+                for sg in (-1, 1):
+                    ax = cx + sg * (tw / 2 - 30 * s)
+                    c.add(line([(ax, sh_y + 70 * s), (ax + sg * 24 * s, sh_y + 320 * s), (ax + sg * 12 * s, sh_y + 520 * s)], 84 * s), shirt, elev=8)
+                    c.add(ell(ax + sg * 12 * s, sh_y + 560 * s, 44 * s, 52 * s), skin, elev=7)
+    with _g(c, gh, (cx, hy + hr * 1.35)):
+        head(c, cx, hy, hr, hr * 1.22, skin, hair, seed=seed, bun=bun, longhair=longhair)
+        if longhair:
+            # mèches qui tombent devant les épaules
+            for sg in (-1, 1):
+                c.add(poly([(cx + sg * hr * 0.95, hy - hr * 0.1), (cx + sg * hr * 1.28, hy + hr * 0.2), (cx + sg * hr * 1.22, hy + hr * 1.9), (cx + sg * hr * 0.86, hy + hr * 1.75)]), hair, elev=6)
+        if spots:
+            dots(c, cx, hy + hr * 0.55, hr * 0.62, hr * 0.46, n=14, rmin=4 * s + 2, rmax=9 * s + 3, seed=seed)
     return cx, hy, hr
 
 
-def face_macro(c, cx=520, cy=900, rx=580, ry=740, skin=SK_D, hair=DARK, n=34, seed=5, dotcolor=OR, bigger=1.0, ndots=True, extra=None):
-    """Joue en gros plan (visage tourné à gauche, oreille et cheveux à droite)."""
-    c.add(ell(cx + 140, cy - 60, rx + 110, ry + 70, wob=0.02, seed=seed + 7), hair, elev=7)
-    c.add(rr(cx + 60, cy + ry * 0.55, cx + 480, cy + ry * 1.7, 60), tuple(int(v * 0.88) for v in skin), elev=6)  # cou
-    c.add(ell(cx + rx * 0.88, cy + ry * 0.04, 80, 170, wob=0.02), tuple(int(v * 0.9) for v in skin), elev=5)  # oreille
-    face = ell(cx, cy, rx, ry, wob=0.012, seed=seed)
-    c.add(face, skin, elev=9)
-    front = S(I(ell(cx + 40, cy - ry * 0.22, rx * 1.04, ry * 0.95, wob=0.015, seed=seed + 2), rr(0, 0, W, cy - ry * 0.3, 0)),
-              ell(cx + rx * 0.25, cy - ry * 0.02, rx * 0.95, ry * 0.62))
-    c.add(front, hair, elev=7)
+def face_macro(c, cx=520, cy=900, rx=580, ry=740, skin=SK_D, hair=DARK, n=34, seed=5, dotcolor=OR, bigger=1.0, ndots=True, extra=None, dots_g=None):
+    """Joue en gros plan (visage tourné à gauche, oreille et cheveux à droite). Groupes : face, dots."""
+    with c.g("face"):
+        c.add(ell(cx + 140, cy - 60, rx + 110, ry + 70, wob=0.02, seed=seed + 7), hair, elev=7)
+        c.add(rr(cx + 60, cy + ry * 0.55, cx + 480, cy + ry * 1.7, 60), tuple(int(v * 0.88) for v in skin), elev=6)  # cou
+        c.add(ell(cx + rx * 0.88, cy + ry * 0.04, 80, 170, wob=0.02), tuple(int(v * 0.9) for v in skin), elev=5)  # oreille
+        face = ell(cx, cy, rx, ry, wob=0.012, seed=seed)
+        c.add(face, skin, elev=9)
+        front = S(I(ell(cx + 40, cy - ry * 0.22, rx * 1.04, ry * 0.95, wob=0.015, seed=seed + 2), rr(0, 0, W, cy - ry * 0.3, 0)),
+                  ell(cx + rx * 0.25, cy - ry * 0.02, rx * 0.95, ry * 0.62))
+        c.add(front, hair, elev=7)
+        # volume du visage : joue éclairée en haut à gauche, ombre vers l'oreille
+        c.add(I(ell(cx - rx * 0.22, cy + ry * 0.18, rx * 0.55, ry * 0.5).filter(ImageFilter.GaussianBlur(70)), face), tuple(min(255, v + 40) for v in skin), elev=0, edge=False, alpha=0.34, grainy=False)
+        c.add(I(S(ell(cx + rx * 0.2, cy, rx * 1.05, ry * 1.02), ell(cx - rx * 0.18, cy, rx * 0.95, ry * 0.98)).filter(ImageFilter.GaussianBlur(45)), face), tuple(int(v * 0.62) for v in skin), elev=0, edge=False, alpha=0.4, grainy=False)
+    placed = []
     if ndots:
-        dots(c, cx - rx * 0.28, cy + ry * 0.36, rx * 0.5, ry * 0.26, n=n, rmin=11 * bigger, rmax=22 * bigger, seed=seed, color=dotcolor, clip=I(face, ell(cx, cy, rx - 4, ry - 4)))
+        with c.g(dots_g or "dots"):
+            placed = dots(c, cx - rx * 0.28, cy + ry * 0.36, rx * 0.5, ry * 0.26, n=n, rmin=11 * bigger, rmax=22 * bigger, seed=seed, color=dotcolor, clip=I(face, ell(cx, cy, rx - 4, ry - 4)))
     return face
 
 
@@ -192,6 +244,7 @@ def heart(c, cx, cy, s=1.0, color=OR):
             poly([(cx - 66 * s, cy - 5 * s), (cx + 66 * s, cy - 5 * s), (cx, cy + 75 * s)])), color, elev=6)
 
 
+@tagged('sparkle')
 def sparkle(c, cx, cy, r=60, color=CREAM):
     k = 0.28
     c.add(poly([(cx, cy - r), (cx + r * k, cy - r * k), (cx + r, cy), (cx + r * k, cy + r * k), (cx, cy + r), (cx - r * k, cy + r * k), (cx - r, cy), (cx - r * k, cy - r * k)]), color, elev=5)
@@ -260,3 +313,121 @@ def ground(c, y=1640):
         c.add(rr(-30, top, W + 30, top + 80, 6), t, elev=10)
         for x in range(0, W, 26):
             c.add(rr(x, top + 14, x + 8, top + 60, 3), tuple(int(v * 0.88) for v in t), elev=0, edge=False, grainy=False, alpha=0.7)
+
+
+def sweat(c, cx, cy, s=1.0):
+    c.add(U(poly([(cx, cy - 60 * s), (cx + 30 * s, cy + 6 * s), (cx - 30 * s, cy + 6 * s)]), ell(cx, cy + 14 * s, 31 * s)), (150, 196, 214), elev=6)
+    c.add(ell(cx - 9 * s, cy + 6 * s, 8 * s, 12 * s), (214, 238, 246), elev=0, edge=False)
+
+
+def thought(c, cx, cy, rx=220, ry=150, tail=(-120, 200)):
+    """Bulle de pensée avec petits ronds."""
+    c.add(ell(cx, cy, rx, ry, wob=0.03, seed=5), CREAM, elev=12)
+    c.add(ell(cx + tail[0] * 0.55, cy + ry + 20, 34), CREAM, elev=8)
+    c.add(ell(cx + tail[0] * 0.85, cy + ry + 80, 22), CREAM, elev=7)
+    c.add(ell(cx + tail[0], cy + ry + 130, 13), CREAM, elev=6)
+
+
+def mela(c, cx, cy, s=1.0, mood="happy", g="mela", color=(186, 120, 82)):
+    """Mela, le mélanocyte : corps rond, prolongements, grands yeux. Groupes : g (corps), g_eyes, g_face (sourcils, bouche, sueur)."""
+    with c.g(g, (cx, cy + 120 * s)):
+        for a in (200, 330, 20, 150, 90):
+            r = math.radians(a)
+            c.add(line([(cx, cy), (cx + math.cos(r) * 200 * s, cy + math.sin(r) * 170 * s)], 50 * s), color, elev=7)
+        c.add(ell(cx, cy, 140 * s, 120 * s, wob=0.03, seed=4), color, elev=10)
+    with c.g(g + "_eyes", (cx, cy - 20 * s)):
+        big = 1.18 if mood in ("panic", "worried") else 1.0
+        for dx in (-52, 52):
+            c.add(ell(cx + dx * s, cy - 22 * s, 36 * s * big, 44 * s * big), WHITE, elev=4)
+            px = 6 if mood in ("worried", "panic") else 0
+            c.add(ell(cx + (dx + px) * s, cy - 14 * s, 17 * s * big, 21 * s * big), (40, 30, 28), elev=0, edge=False)
+            c.add(ell(cx + (dx + px - 5) * s, cy - 22 * s, 6 * s, 7 * s), WHITE, elev=0, edge=False)
+    with c.g(g + "_face", (cx, cy)):
+        if mood == "happy":
+            c.add(arc_ring(cx, cy + 20 * s, 44 * s, 11 * s, 15, 165), CHOC, elev=0, edge=False)
+            for dx, sg in ((-52, -1), (52, 1)):
+                c.add(line([(cx + (dx - 22) * s, cy - 76 * s), (cx + (dx + 22) * s, cy - 80 * s)], 8 * s), CHOC, elev=0, edge=False)
+        elif mood == "calm":
+            c.add(arc_ring(cx, cy + 20 * s, 44 * s, 11 * s, 15, 165), CHOC, elev=0, edge=False)
+            for dx in (-52, 52):
+                c.add(arc_ring(cx + dx * s, cy - 22 * s, 30 * s, 9 * s, 200, 340), CHOC, elev=0, edge=False)
+        elif mood == "worried":
+            c.add(line([(cx - 36 * s, cy + 52 * s), (cx - 12 * s, cy + 42 * s), (cx + 12 * s, cy + 52 * s), (cx + 36 * s, cy + 42 * s)], 9 * s), CHOC, elev=0, edge=False)
+            c.add(line([(cx - 82 * s, cy - 64 * s), (cx - 26 * s, cy - 84 * s)], 9 * s), CHOC, elev=0, edge=False)
+            c.add(line([(cx + 82 * s, cy - 64 * s), (cx + 26 * s, cy - 84 * s)], 9 * s), CHOC, elev=0, edge=False)
+        elif mood == "panic":
+            c.add(ell(cx, cy + 50 * s, 26 * s, 34 * s), CHOC, elev=0, edge=False)
+            c.add(line([(cx - 86 * s, cy - 70 * s), (cx - 28 * s, cy - 98 * s)], 9 * s), CHOC, elev=0, edge=False)
+            c.add(line([(cx + 86 * s, cy - 70 * s), (cx + 28 * s, cy - 98 * s)], 9 * s), CHOC, elev=0, edge=False)
+            sweat(c, cx + 150 * s, cy - 60 * s, 0.8 * s)
+        elif mood == "flat":
+            c.add(line([(cx - 34 * s, cy + 48 * s), (cx + 34 * s, cy + 48 * s)], 9 * s), CHOC, elev=0, edge=False)
+            for dx in (-52, 52):
+                c.add(line([(cx + (dx - 22) * s, cy - 76 * s), (cx + (dx + 22) * s, cy - 76 * s)], 8 * s), CHOC, elev=0, edge=False)
+
+
+def torn_card(c, cx, cy, w, h, color=CREAM, seed=1, elev=12, rim=(250, 246, 236)):
+    """Carte en papier déchiré : bord irrégulier avec liseré blanc fibreux."""
+    r = random.Random(seed)
+    def edge(inset):
+        pts = []
+        n = 26
+        for i in range(n):
+            pts.append((cx - w / 2 + inset + w * i / n, cy - h / 2 + inset + r.uniform(-7, 7)))
+        for i in range(n):
+            pts.append((cx + w / 2 - inset + r.uniform(-7, 7), cy - h / 2 + inset + h * i / n))
+        for i in range(n):
+            pts.append((cx + w / 2 - inset - w * i / n, cy + h / 2 - inset + r.uniform(-7, 7)))
+        for i in range(n):
+            pts.append((cx - w / 2 + inset + r.uniform(-7, 7), cy + h / 2 - inset - h * i / n))
+        return pts
+    c.add(poly(edge(0)), rim, elev=elev)
+    c.add(poly(edge(7)), color, elev=0, edge=False)
+
+
+def sign(c, cx, cy, lines, w=620, h=300, size=92, seed=1, hang=True, color=CREAM, ink=(58, 46, 40)):
+    """Pancarte suspendue à un fil : texte écrit à la main sur papier déchiré (comme la référence)."""
+    if hang:
+        c.add(line([(cx - w * 0.28, cy - h / 2 + 10), (cx, cy - h / 2 - 300), (cx + w * 0.28, cy - h / 2 + 10)], 5), (92, 70, 52), elev=2, edge=False)
+    torn_card(c, cx, cy, w, h, color, seed)
+    n = len(lines)
+    for i, t in enumerate(lines):
+        c.add(text(t, cx, cy + (i - (n - 1) / 2) * size * 1.02, size), ink, elev=0, edge=False)
+
+
+def gear(c, cx, cy, r, teeth=10, color=(176, 98, 62), hole=0.32):
+    pts = []
+    for i in range(teeth * 4):
+        a = 2 * math.pi * i / (teeth * 4)
+        rad = r if i % 4 in (0, 1) else r * 0.80
+        pts.append((cx + rad * math.cos(a), cy + rad * math.sin(a)))
+    m = S(poly(pts), ell(cx, cy, r * hole))
+    c.add(m, color, elev=10)
+    c.add(S(ell(cx, cy, r * 0.62), ell(cx, cy, r * 0.5)), tuple(int(v * 0.8) for v in color), elev=0, edge=False)
+
+
+def padlock(c, cx, cy, s=1.0, color=YEL):
+    c.add(arc_ring(cx, cy - 20 * s, 74 * s, 30 * s, 180, 360), CHAR, elev=8)
+    c.add(rr(cx - 100 * s, cy - 20 * s, cx + 100 * s, cy + 140 * s, 22 * s), color, elev=12)
+    c.add(ell(cx, cy + 56 * s, 17 * s), CHOC, elev=0, edge=False)
+    c.add(rr(cx - 7 * s, cy + 56 * s, cx + 7 * s, cy + 104 * s, 5), CHOC, elev=0, edge=False)
+
+
+def eraser(c, cx, cy, s=1.0):
+    c.add(rr(cx - 170 * s, cy - 70 * s, cx + 170 * s, cy + 70 * s, 26 * s), (232, 150, 140), elev=14)
+    c.add(rr(cx - 170 * s, cy - 70 * s, cx - 60 * s, cy + 70 * s, 26 * s), (62, 92, 110), elev=0, edge=False)
+    c.add(rr(cx - 62 * s, cy - 70 * s, cx - 50 * s, cy + 70 * s, 2), CREAM, elev=0, edge=False)
+
+
+def drop_shape(c, cx, cy, s=1.0, color=(240, 214, 150)):
+    c.add(U(poly([(cx, cy - 78 * s), (cx + 46 * s, cy + 12 * s), (cx - 46 * s, cy + 12 * s)]), ell(cx, cy + 24 * s, 48 * s)), color, elev=9)
+    c.add(ell(cx - 14 * s, cy + 10 * s, 9 * s, 16 * s), WHITE, elev=0, edge=False)
+
+
+def tile(c, cx, cy, w=380, h=380, color=KRL, r=34):
+    c.add(rr(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2, r), color, elev=14)
+    c.add(rr(cx - w / 2 + 14, cy - h / 2 + 14, cx + w / 2 - 14, cy + h / 2 - 14, r - 10), tuple(min(255, v + 14) for v in color), elev=0, edge=False)
+
+
+def brick(c, cx, cy, w=150, h=70, color=KRL):
+    c.add(rr(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2, 10), color, elev=8)

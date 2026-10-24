@@ -36,6 +36,7 @@ def bubble(c, cx, cy, r, skin=SK_D, n=18, seed=2, bigger=1.0):
     dots(c, cx, cy, r * 0.7, r * 0.7, n=n, rmin=12 * bigger, rmax=24 * bigger, seed=seed, clip=m)
 
 
+@tagged('cloth')
 def cloth(c, cx, cy, s=1.0, ang=0):
     a = math.radians(ang)
     base = [(-170, -90), (60, -130), (190, -40), (170, 100), (-30, 130), (-190, 60)]
@@ -438,8 +439,50 @@ def render(i):
     return c
 
 
+def export_layers(i, outdir):
+    """Écrit bg.jpg + L000.png... + renvoie le manifest de la scène i (couches dans l'ordre de pose)."""
+    import json, paper
+    from PIL import Image
+    paper.REC[0] = True
+    try:
+        c = SCENES[i]()
+        dy = SHIFT.get(i, 0)
+        bg = c.bg
+        if dy:
+            c.a = np.roll(c.a, dy, axis=0)
+            c.a[:dy] = c.a[dy:dy + 1]
+            bg = np.roll(bg, dy, axis=0); bg[:dy] = bg[dy:dy + 1]
+        if i not in NO_GROUND:
+            ground(c, 1660)
+    finally:
+        paper.REC[0] = False
+    d = os.path.join(outdir, "S%02d" % i)
+    os.makedirs(d, exist_ok=True)
+    Image.fromarray(np.clip(bg, 0, 255).astype(np.uint8)).save(os.path.join(d, "bg.jpg"), quality=90)
+    out = []
+    for k, L in enumerate(c.rec):
+        y = L["y"] + dy
+        im = Image.fromarray(L["img"], "RGBA")
+        h = im.size[1]
+        if y >= H:
+            continue
+        fn = "L%03d.png" % k
+        im.save(os.path.join(d, fn), optimize=False)
+        out.append({"f": fn, "x": L["x"], "y": y, "w": im.size[0], "h": h, "tag": L["tag"], "area": round(L["area"] / (W * H), 4)})
+    return out
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
+    if sys.argv[1:2] == ["layers"]:
+        import json
+        outdir = sys.argv[2]
+        man = {}
+        for i in ([int(a) for a in sys.argv[3:]] or list(SCENES)):
+            man["S%02d" % i] = export_layers(i, outdir)
+            print("S%02d" % i, len(man["S%02d" % i]), flush=True)
+        json.dump(man, open(os.path.join(outdir, "manifest.json"), "w"))
+        sys.exit(0)
     ids = [int(a) for a in sys.argv[1:]] or list(SCENES)
     for i in ids:
         render(i).save(os.path.join(OUT, f"S{i:02d}.png"))
