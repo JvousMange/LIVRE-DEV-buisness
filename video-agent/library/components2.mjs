@@ -1,6 +1,6 @@
 // Bibliothèque de composants, suite : objets, instruments et pictogrammes pour les plans « mécanisme / actifs / offre ».
 // Convention : coordonnées absolues (cx, cy = centre), échelle s ; les groupes animables portent un id.
-import { layer, blob, poly, star, rng, arrowPts } from "../engine/paper.mjs";
+import { layer, band, blob, poly, star, rng, arrowPts } from "../engine/paper.mjs";
 
 const F = "Inter, 'DejaVu Sans', sans-serif";
 const f1 = (n) => Math.round(n * 10) / 10;
@@ -181,18 +181,19 @@ export { arrowPts };
 
 // ---------- Usine à pigment (le mélanocyte vu comme une usine sous la peau) ----------
 // Repère local centré sur la façade. Ids internes : "${id}-gear", "${id}-win" (fenêtres allumées), "${id}-red" (fenêtres d'alerte), "${id}-sm0".."${id}-sm7" (fumée).
-export function factory(C, cx, cy, s = 1, id = "fac") {
-  const teeth = [-270, -130, 10].map((x) => layer(poly([[x, -108], [x, -212], [x + 140, -108]], { round: false }), C.problem, 4)).join("");
+export function factory(C, cx, cy, s = 1, id = "fac", K = {}) {
+  const k = { body: "#8A5A3C", roof: C.problem, chimney: "#6b4a2a", cap: C.dark, base: C.dark, gear: "#B5724B", ...K };
+  const teeth = [-270, -130, 10].map((x) => layer(poly([[x, -108], [x, -212], [x + 140, -108]], { round: false }), k.roof, 4)).join("");
   const win = (x, fill, z) => layer(poly([[x - 32, -64], [x + 32, -64], [x + 32, 2], [x - 32, 2]], { round: false }), fill, z);
-  const smoke = Array.from({ length: 8 }, (_, k) => `<g id="${id}-sm${k}" opacity="0">` + layer(blob(200 + (k % 3) * 8, -338, 46, 38, { jitter: 0.2, n: 10, seed: 1500 + k }), "rgba(241,230,210,.92)", 5, { edge: "rgba(0,0,0,0)" }) + `</g>`).join("");
+  const smoke = Array.from({ length: 8 }, (_, i) => `<g id="${id}-sm${i}" opacity="0">` + layer(blob(200 + (i % 3) * 8, -338, 46, 38, { jitter: 0.2, n: 10, seed: 1500 + i }), "rgb(241,230,210)", 5, { edge: "rgba(0,0,0,0)" }) + `</g>`).join("");
   return G(cx, cy, s,
-    layer(poly([[-250, -110], [250, -110], [250, 150], [-250, 150]], { round: false }), "#8A5A3C", 3) + teeth +
-    layer(poly([[170, -300], [230, -300], [230, -110], [170, -110]], { round: false }), "#6b4a2a", 3) + layer(poly([[158, -322], [242, -322], [242, -296], [158, -296]], { round: false }), C.dark, 4) +
+    layer(poly([[-250, -110], [250, -110], [250, 150], [-250, 150]], { round: false }), k.body, 3) + teeth +
+    layer(poly([[170, -300], [230, -300], [230, -110], [170, -110]], { round: false }), k.chimney, 3) + layer(poly([[158, -322], [242, -322], [242, -296], [158, -296]], { round: false }), k.cap, 4) +
     layer(poly([[170, -270], [230, -270], [230, -246], [170, -246]], { round: false }), C.alert, 4) +
     `<g id="${id}-win">${[-180, -70, 40].map((x) => win(x, C.accent, 5)).join("")}</g><g id="${id}-red" opacity="0">${[-180, -70, 40].map((x) => win(x, C.alert, 6)).join("")}</g>` +
     layer(poly([[-240, 30], [-150, 30], [-150, 150], [-240, 150]], { round: false }), C.cream, 4) +
-    layer(poly([[-250, 140], [250, 140], [250, 170], [-250, 170]], { round: false }), C.dark, 4) +
-    `<g id="${id}-gear">` + layer(star(190, 62, 56, 46, 10, { jitter: 0 }), "#B5724B", 5) + layer(blob(190, 62, 20, 20, { n: 10, seed: 1490 }), C.cream, 6) + `</g>` + smoke, id);
+    layer(poly([[-250, 140], [250, 140], [250, 170], [-250, 170]], { round: false }), k.base, 4) +
+    `<g id="${id}-gear">` + layer(star(190, 62, 56, 46, 10, { jitter: 0 }), k.gear, 5) + layer(blob(190, 62, 20, 20, { n: 10, seed: 1490 }), C.cream, 6) + `</g>` + smoke, id);
 }
 
 // Sirène d'alerte (dôme rouge sur socle). Ids : "${id}" (le tout).
@@ -204,6 +205,12 @@ export function siren(C, cx, cy, s = 1, id = "siren") {
 export function pipeLine(C, x, yTop, yBelt, beltX0, id = "pipe") {
   return `<g id="${id}">` +
     layer(poly([[x - 32, yTop], [x + 32, yTop], [x + 32, yBelt + 16], [x - 32, yBelt + 16]], { round: false }), "#E8D0A8", 3) +
-    layer(poly([[beltX0, yBelt - 14], [x + 32, yBelt - 14], [x + 32, yBelt + 16], [beltX0, yBelt + 16]], { round: false }), C.dark, 4) +
-    [0, 1, 2].map((i) => layer(blob(beltX0 + 28 + i * 44, yBelt + 20, 12, 12, { n: 8, seed: 1480 + i }), C.kraftDark, 5)).join("") + `</g>`;
+    layer(poly([[beltX0, yBelt - 14], [x + 32, yBelt - 14], [x + 32, yBelt + 16], [beltX0, yBelt + 16]], { round: false }), "#B5724B", 4) +
+    [0, 1, 2].map((i) => layer(blob(beltX0 + 28 + i * 44, yBelt + 20, 12, 12, { n: 8, seed: 1480 + i }), "#E8D0A8", 5)).join("") + `</g>`;
+}
+
+// Décor sous la peau, volontairement épuré : sol brun très foncé, fine bande de peau en surface (ids : "surf", "surfTint").
+export function underground(C) {
+  const top = band(-80, 1160, 900, 985, { amp: 7, step: 54, seed: 13 });
+  return layer(band(-80, 1160, 960, 3000, { amp: 6, seed: 21 }), "#3A2214", 1) + `<g id="surf">${layer(top, C.cream, 3)}</g>` + `<g id="surfTint">${layer(top, "#9C6544", 4)}</g>`;
 }
