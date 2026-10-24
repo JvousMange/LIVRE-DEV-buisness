@@ -49,23 +49,16 @@
   ],
   "beats": [
     {
-      "scene": "skinHook",
+      "scene": "hookFace",
       "from": [
         0,
         0
       ]
     },
     {
-      "scene": "scrub",
+      "scene": "skinRub",
       "from": [
         1,
-        0
-      ]
-    },
-    {
-      "scene": "make",
-      "from": [
-        3,
         0
       ]
     },
@@ -73,13 +66,6 @@
       "scene": "mirror",
       "from": [
         4,
-        0
-      ]
-    },
-    {
-      "scene": "reveal",
-      "from": [
-        7,
         0
       ]
     }

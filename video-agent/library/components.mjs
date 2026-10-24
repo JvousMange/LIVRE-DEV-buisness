@@ -190,7 +190,7 @@ export function arm(C, { id = "arm", tool = "cloth" } = {}) {
 
 // Taches pour chaque SPOTS[i], id "sp{i}".
 export function spots(C, show = true) {
-  return SPOTS.map((s, i) => `<g id="sp${i}"${show ? "" : ' opacity="0"'}>` + layer(blob(s.x, s.y, s.rx, s.ry, { jitter: 0.22, n: 10, seed: 500 + i }), C.problem, 6, { edge: "rgba(255,225,190,.28)" }) + `</g>`).join("");
+  return SPOTS.map((s, i) => `<g id="sp${i}"${show ? "" : ' opacity="0"'}>` + layer(blob(s.x, s.y, s.rx, s.ry, { jitter: 0.22, n: 10, seed: 500 + i }), C.dark, 6, { edge: "rgba(255,225,190,.3)" }) + `</g>`).join("");
 }
 
 // Fond de teint qui recouvre chaque tache, id "pt{i}".
@@ -241,4 +241,18 @@ export function brush(C, cx, cy, rot = 35, s = 1, id = "brush") {
   return `<g id="${id}"><g transform="translate(${cx} ${cy}) rotate(${rot}) scale(${s})">` +
     layer("M-15 0 L15 0 L9 300 L-9 300Z", C.dark, 3) + layer("M-24 -44 L24 -44 L24 6 L-24 6Z", C.cream, 4) +
     layer(blob(0, -120, 50, 82, { jitter: 0.08, n: 12, seed: 84 }), "#BE8861", 4) + `</g></g>`;
+}
+
+// Main qui frotte la surface de la peau avec un gant crème (vue en coupe, coordonnées absolues autour de la tache).
+export const HAND_SKIN = [540, 850];
+export function skinHand(C, id = "hand") {
+  const fingers = [468, 508, 548, 588].map((x, i) => layer(blob(x, 846, 24, 36, { jitter: 0.1, n: 8, seed: 800 + i }), FACE.skin, 8)).join("");
+  return `<g id="${id}">` +
+    layer(limb(1180, 380, 900, 560, 140), FACE.top, 6) +
+    layer(limb(900, 560, 610, 790, 104), FACE.skin, 7) +
+    layer(blob(540, 878, 175, 46, { jitter: 0.08, n: 14, seed: 801 }), C.cream, 9) +
+    layer(blob(500, 872, 70, 9, { jitter: 0.2, n: 8, seed: 802 }), "#D8C2A0", 10) +
+    layer(blob(590, 886, 60, 8, { jitter: 0.2, n: 8, seed: 803 }), "#D8C2A0", 10) +
+    layer(blob(545, 808, 120, 64, { jitter: 0.08, n: 12, seed: 804 }), FACE.skin, 8) + fingers +
+    layer(blob(430, 826, 34, 26, { jitter: 0.1, n: 8, seed: 805 }), FACE.skin, 8) + `</g>`;
 }

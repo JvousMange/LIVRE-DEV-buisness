@@ -16,8 +16,14 @@
   const $ = (id) => document.getElementById(id);
   const STOP = 12; // cadence « stop-motion » des éléments animés
 
-  function applyCam(el, cam, p) {
-    const c = cam || { from: { s: 1, x: 0, y: 0 }, to: { s: 1, x: 0, y: 0 } };
+  function applyCam(el, cam, p, lt) {
+    let c = cam || { from: { s: 1, x: 0, y: 0 }, to: { s: 1, x: 0, y: 0 } };
+    if (Array.isArray(c)) {                                   // plusieurs mouvements successifs dans un même plan
+      const seg = c.find((k) => lt >= k.t0 && lt < k.t1);
+      if (seg) { c = seg; p = (lt - seg.t0) / (seg.t1 - seg.t0); }
+      else if (lt < c[0].t0) { c = { from: c[0].from, to: c[0].from }; p = 0; }
+      else { const l = c[c.length - 1]; c = { from: l.to, to: l.to }; p = 1; }
+    }
     const e = ease[c.ease || "inOut"](p);
     const g = (k, d) => lerp(c.from[k] ?? d, c.to[k] ?? d, e);
     el.setAttribute("transform", `translate(${g("x", 0)} ${g("y", 0)}) translate(540 960) scale(${g("s", 1)}) translate(-540 -960)`);
@@ -33,6 +39,7 @@
     const S = (id) => (st[id] ||= { ...ID });
     for (const a of b.anims) {
       org[a.id] = a.origin || org[a.id] || [0, 0];
+      if (a.late && q < a.t0) continue;                       // animation de sortie : n'écrase rien avant son départ
       const e = ease[a.ease || "outCubic"](clamp01((q - a.t0) / a.dur));
       const s = S(a.id);
       for (const k of new Set([...Object.keys(a.from || {}), ...Object.keys(a.to || {})])) s[k] = lerp(a.from?.[k] ?? ID[k], a.to?.[k] ?? ID[k], e);
@@ -50,7 +57,7 @@
       el.setAttribute("transform", `translate(${s.x + jx} ${s.y + jy}) translate(${ox} ${oy}) rotate(${s.r + jr}) scale(${s.sx * s.s} ${s.sy * s.s}) translate(${-ox} ${-oy})`);
       el.setAttribute("opacity", s.o);
     }
-    applyCam($("cam-" + bi), b.cam, clamp01(lt / (b.t1 - b.t0)));
+    applyCam($("cam-" + bi), b.cam, clamp01(lt / (b.t1 - b.t0)), lt);
 
     // sous-titres
     const sub = D.subs.find((u) => t >= u.t0 && t < u.t1);

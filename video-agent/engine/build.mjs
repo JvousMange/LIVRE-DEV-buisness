@@ -112,7 +112,7 @@ execFileSync("ffmpeg", [...args, "-filter_complex", fcLavfi, "-map", "0:v", "-ma
 // 7. QA déterministe.
 const dur = Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", mp4]).toString());
 check("durée vidéo = durée cible ± 0,2 s", limit !== Infinity || Math.abs(dur - T) < 0.2, `${dur.toFixed(2)} s`);
-beats.forEach((b) => check(`plan « ${b.name} » entre 0,9 et 4,5 s`, b.t1 - b.t0 >= 0.9 && b.t1 - b.t0 <= 4.5, `${(b.t1 - b.t0).toFixed(2)} s`));
+beats.forEach((b) => check(`plan « ${b.name} » entre 0,9 et 6 s`, b.t1 - b.t0 >= 0.9 && b.t1 - b.t0 <= 6, `${(b.t1 - b.t0).toFixed(2)} s`));
 const allowed = new Set([...Object.values(C), ...(brand.derived || [])].map((x) => x.toLowerCase()));
 const used = new Set(beats.flatMap((b) => b.svg.match(/#[0-9a-fA-F]{6}\b/g) || []).map((x) => x.toLowerCase()));
 const rogue = [...used].filter((x) => !allowed.has(x));
