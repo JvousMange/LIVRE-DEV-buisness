@@ -13,12 +13,12 @@ S.factory = (g, o = {}) => { const x = o.x ?? 540, y = o.y ?? 1080, s = o.s ?? 1
   H.rrect(q, -340, -200, 680, 420, "#B5654A", { r: 6, jit: 0, th: 10 }); for (let r = 0; r < 6; r++) for (let c = 0; c < 9; c++) H.rrect(q, -330 + c * 76 + (r % 2) * 38, -190 + r * 66, 70, 6, "#9C543C", { r: 2, jit: 0, sh: false, th: 0, attr: { opacity: .6 } });
   for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) { H.rrect(q, -290 + c * 150, -150 + r * 130, 100, 90, "#F3E6C8", { r: 6, jit: 0, sh: false, th: 0 }); H.rrect(q, -282 + c * 150, -142 + r * 130, 84, 74, o.alarm ? "#E8833A" : o.idle ? "#252A2E" : "#3A4F5E", { r: 4, jit: 0, sh: false, th: 0 }); }
   H.rrect(q, -60, 90, 120, 130, "#3A2A22", { r: 6, jit: 0, sh: false, th: 0 });
-  const dl = K4.dial(q, -250, 300, 70); H.set(dl.nd, { r: o.dial === undefined ? -60 : o.dial });
-  H.rrect(q, 60, 190, 520, 34, Q.blk, { r: 14, jit: 0, th: 6 }); for (let i = 0; i < 6; i++) H.circ(q, 80 + i * 96, 207, 12, "#4A3C34", { sh: false, th: 0 });
-  for (let i = 0; i < (o.belt || 0); i++) K3.dot(q, 100 + ((i % 9) * 52 + ((S.T || 0) * 70) % 52) + Math.floor(i / 9) * 26, 168 - Math.floor(i / 9) * 30, 20, i + 5, MEL);
+  if (!o.min) { const dl = K4.dial(q, -250, 300, 70); H.set(dl.nd, { r: o.dial === undefined ? -60 : o.dial }); }
+  if (!o.min) { H.rrect(q, 60, 190, 520, 34, Q.blk, { r: 14, jit: 0, th: 6 }); for (let i = 0; i < 6; i++) H.circ(q, 80 + i * 96, 207, 12, "#4A3C34", { sh: false, th: 0 }); }
+  if (!o.min) for (let i = 0; i < (o.belt || 0); i++) K3.dot(q, 100 + ((i % 9) * 52 + ((S.T || 0) * 70) % 52) + Math.floor(i / 9) * 26, 168 - Math.floor(i / 9) * 30, 20, i + 5, MEL);
   const rg = H.rng(o.seed || 2); for (let i = 0; i < (o.smoke || 0); i++) { const t = (i / Math.max(1, o.smoke) + (S.T || 0) * .35) % 1; K3.dot(q, 215 + (rg() - .5) * 120 * (1 + t * 2) - t * 260, -520 - t * ((o.reach || 650)) + (rg() - .5) * 40, 16 + rg() * 8, i + 40, MEL); }
   if (o.alarm) { const si = H.grp(q, -200, -300, { j: 0 }); H.rrect(si, -40, -10, 80, 30, "#6b543a", { r: 6, jit: 0, th: 4 }); H.blob(si, 0, -40, 40, 48, "#C8392B", { n: 16, jit: .03, th: 5 }); for (let i = 0; i < 7; i++) { if (Math.sin((S.T || 0) * 14 + i) < -.3) continue; const a = (-160 + i * 23) * Math.PI / 180; H.poly(si, [[Math.cos(a) * 70, -40 + Math.sin(a) * 70], [Math.cos(a) * 140, -40 + Math.sin(a) * 140], [Math.cos(a + .12) * 70, -40 + Math.sin(a + .12) * 70]], "#E0705A", { jit: 0, sh: false, th: 0 }); } }
-  if (o.button !== false) { const b = H.grp(q, 420, -60, { j: 0 }); H.rrect(b, -50, -20, 100, 120, "#4A3C34", { r: 10, jit: 0, th: 6 }); H.circ(b, 0, 20, o.pressed ? 30 : 36, "#C8392B", { th: o.pressed ? 2 : 8 }); }
+  if (o.button !== false && !o.min) { const b = H.grp(q, 420, -60, { j: 0 }); H.rrect(b, -50, -20, 100, 120, "#4A3C34", { r: 10, jit: 0, th: 6 }); H.circ(b, 0, 20, o.pressed ? 30 : 36, "#C8392B", { th: o.pressed ? 2 : 8 }); }
   if (o.lock) S.lock(q, 215, -560, 1.2);
   if (o.slow) for (let i = 0; i < 3; i++) H.el("path", { d: `M${-120 + i * 120},-340 q30,-30 60,0`, stroke: Q.green, "stroke-width": 10, fill: "none", "stroke-linecap": "round" }, q);
   F.q = q; F.pt = (lx, ly) => [x + lx * s, y + ly * s]; return F; };
