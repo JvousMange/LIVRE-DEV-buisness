@@ -2,13 +2,13 @@
 // Chaque scène : { svg, anims, loops, cam }. Les ids sont préfixés par plan au build.
 import { hangingSign, layer, blob, poly } from "../../engine/paper.mjs";
 import {
-  skin, stain, melanocyte, granuleSpecs, granule, questionMark, tag, badge, cross, sponge,
-  woman, arm, foundation, SPOTS, MEL, foundationBottle, compact, brush,
+  skin, stain, melanocyte, granuleSpecs, granule, questionMark, tag, badge, cross,
+  woman, arm, foundation, SPOTS, MEL, HAND_CLOTH, HAND_BRUSH,
 } from "../../library/components.mjs";
 
 const A = (id, t0, dur, from, to, o = {}) => ({ id, t0, dur, from, to, ...o });
 const POP = (id, t0, origin, o = {}) => A(id, t0, 0.5, { s: 0 }, { s: 1 }, { origin, ease: "outBack", ...o });
-const HAND = [122, 104];                       // origine locale de la main
+const HAND = HAND_CLOTH;                       // origine locale de la main (gant)
 const BADGE = [250, 470];
 
 export function scenes(C) {
@@ -28,46 +28,27 @@ export function scenes(C) {
   };
 
   return {
-    // 1. « Cinq raisons qui font » — le panneau et cinq pastilles numérotées qui se posent.
-    hookDots: {
-      svg: `<g id="sign">${hangingSign(540, 430, 780, 230, ["5 RAISONS"], { palette: C, fontSize: 108, seed: 4 })}</g>` +
-        [1, 2, 3, 4, 5].map((n) => badge(C, 140 + (n - 1) * 200, 960, n, `nb${n}`, C.problem)).join(""),
+    // 1. « Cinq raisons qui font que ton hyperpigmentation ne part pas » — on démarre directement sur la peau.
+    skinHook: {
+      svg: skin(C) + stain(C) + questionMark(C, 540, 740, 400),
       anims: [
-        A("sign", 0.05, 0.6, { y: -700 }, { y: 0 }, { ease: "outBack", origin: [540, 0] }),
-        ...[1, 2, 3, 4, 5].map((n) => POP(`nb${n}`, 0.28 + (n - 1) * 0.1, [140 + (n - 1) * 200, 960])),
+        POP("stain", 0.2, [540, 905]),
+        POP("qmark", 1.1, [540, 600], { from: { s: 0, r: -22 }, to: { s: 1, r: 0 } }),
       ],
-      loops: [{ id: "sign", prop: "r", amp: 1.2, freq: 0.7, start: 0.7, origin: [540, 0] }],
-      cam: { from: { s: 1.25, y: 0 }, to: { s: 1.0, y: 0 } },
+      loops: [{ id: "qmark", prop: "r", amp: 3, freq: 0.5, start: 1.8, origin: [540, 600] }],
+      cam: { from: { s: 1.6, y: 108 }, to: { s: 1.4, y: 100 } },
     },
 
-    // 2. « …ton hyperpigmentation ne part pas » — gros plan serré, les taches apparaissent.
-    hookWoman: {
-      svg: woman(C) + questionMark(C, 770, 640, 260),
-      anims: [...popSpots(0.1, 0.09), POP("qmark", 1.2, [770, 550], { from: { s: 0, r: -25 }, to: { s: 1, r: 0 } })],
-      loops: [],
-      cam: { from: { s: 1.85, y: 215 }, to: { s: 1.6, y: 170 } },
-    },
-
-    // 3. « Un, tu essaies de faire partir tes taches » — elle frotte sa joue.
+    // 2. « Un, tu essaies de faire partir tes taches à la surface » — elle frotte sa joue avec un gant.
     scrub: {
-      svg: woman(C, { extras: arm(C) }) + badge(C, BADGE[0], BADGE[1], 1) + cross(C, 820, 520, 190),
-      anims: [POP("badge", 0.1, BADGE), armIn(0.3), POP("cross", 1.85, [820, 520])],
-      loops: rub(0.8),
+      svg: woman(C, { extras: arm(C, { tool: "cloth" }) }) + badge(C, BADGE[0], BADGE[1], 1) + cross(C, 820, 520, 190) +
+        tag(C, 600, 330, 440, 100, "EN SURFACE", { id: "tag1", fontSize: 44, color: C.alert, seed: 5 }),
+      anims: [POP("badge", 0.1, BADGE), armIn(0.4), POP("cross", 2.2, [820, 520]), POP("tag1", 2.45, [600, 330])],
+      loops: rub(1.0),
       cam: { from: { s: 1.45, y: 110 }, to: { s: 1.3, y: 100 } },
     },
 
-    // 4. « …à la surface » — coupe de peau : l'éponge frotte la tache en surface, ça ne change rien.
-    surface: {
-      svg: skin(C) + stain(C) + sponge(C, 540, 835) + cross(C, 730, 640, 170),
-      anims: [
-        A("sponge", 0.05, 0.35, { y: -330 }, { y: 0 }, { ease: "outCubic", origin: [540, 835] }),
-        POP("cross", 0.6, [730, 640]),
-      ],
-      loops: [{ id: "sponge", prop: "x", amp: 120, freq: 2.2, start: 0.35, origin: [540, 835] }],
-      cam: { from: { s: 1.7, y: 108 }, to: { s: 1.5, y: 100 } },
-    },
-
-    // 5. « …se fabriquent sous ta peau » — plongée sur le mélanocyte, les granules sortent.
+    // 3. « …se fabriquent sous ta peau » — plongée sur le mélanocyte, les granules sortent.
     make: (() => {
       const gr = granuleSpecs();
       return {
@@ -81,47 +62,33 @@ export function scenes(C) {
       };
     })(),
 
-    // 6. « Deux, tu les caches » — son reflet dans le miroir : le fond de teint recouvre les taches.
+    // 4. « Deux, tu les caches, fond de teint, maquillage » — gros plan sur son reflet : le pinceau couvre les taches.
     mirror: {
       svg:
-        tiles(-10, 190) + tiles(890, 1090) +
-        layer(poly([[190, 380], [890, 380], [890, 1370], [190, 1370]], { round: false }), C.kraftDark, 3) +
-        `<clipPath id="mclip"><rect x="225" y="415" width="630" height="920"/></clipPath>` +
-        layer(poly([[225, 415], [855, 415], [855, 1335], [225, 1335]], { round: false }), "#E8D0A8", 4) +
-        `<g clip-path="url(#mclip)">${woman(C, { cx: 540, cy: 860, scale: 0.84, mirrorOn: false, extras: foundation(C) + arm(C) })}` +
-        `<g opacity=".28" filter="url(#paperS1)"><path d="M225 760 L430 415 L520 415 L225 900Z" fill="#FFFFFF"/></g></g>` +
-        badge(C, 150, 260, 2),
+        tiles(-10, 160) + tiles(920, 1090) +
+        layer(poly([[130, 330], [950, 330], [950, 1500], [130, 1500]], { round: false }), C.kraftDark, 3) +
+        `<clipPath id="mclip"><rect x="170" y="370" width="740" height="1090"/></clipPath>` +
+        layer(poly([[170, 370], [910, 370], [910, 1460], [170, 1460]], { round: false }), "#E8D0A8", 4) +
+        `<g clip-path="url(#mclip)">${woman(C, { cx: 540, cy: 900, scale: 0.95, mirrorOn: false, extras: foundation(C) + arm(C, { tool: "brush" }) })}` +
+        `<g opacity=".28" filter="url(#paperS1)"><path d="M170 800 L420 370 L520 370 L170 960Z" fill="#FFFFFF"/></g></g>` +
+        badge(C, 205, 275, 2),
       anims: [
-        POP("badge", 0.1, [150, 260]),
-        armIn(0.15),
-        ...SPOTS.map((sp, i) => POP(`pt${i}`, 0.5 + i * 0.07, [sp.x, sp.y])),
+        POP("badge", 0.1, [205, 275]),
+        A("arm", 0.4, 0.55, { x: 520, y: 320 }, { x: 0, y: 0 }, { ease: "outCubic", origin: HAND_BRUSH }),
+        ...SPOTS.map((sp, i) => POP(`pt${i}`, 1.0 + i * 0.12, [sp.x, sp.y])),
       ],
-      loops: rub(0.7, 18, 12, 2),
-      cam: { from: { s: 1.0, y: 0 }, to: { s: 1.12, y: 0 } },
+      loops: [
+        { id: "arm", prop: "x", amp: 14, freq: 1.3, start: 1.0, origin: HAND_BRUSH },
+        { id: "arm", prop: "y", amp: 10, freq: 1.3, phase: 0.25, start: 1.0, origin: HAND_BRUSH },
+      ],
+      cam: { from: { s: 1.12, y: 0 }, to: { s: 1.28, y: 0 } },
     },
 
-    // 7. « fond de teint, maquillage » — nature morte vue de dessus, les objets se posent sur les mots.
-    props: {
-      svg:
-        brush(C, 790, 470, 38, 1.3) + foundationBottle(C, 300, 830, 1.5) + compact(C, 740, 1010, 1.3) +
-        tag(C, 300, 1130, 470, 100, "FOND DE TEINT", { id: "tag1", fontSize: 40, color: C.alert, seed: 5 }) +
-        tag(C, 740, 1255, 420, 100, "MAQUILLAGE", { id: "tag2", fontSize: 40, color: C.alert, seed: 6 }),
-      anims: [
-        A("fbottle", 0.05, 0.5, { y: -500, r: -12 }, { y: 0, r: 0 }, { ease: "outBack", origin: [300, 830] }),
-        POP("tag1", 0.3, [300, 1130]),
-        A("compact", 0.85, 0.5, { y: -500, r: 20 }, { y: 0, r: 0 }, { ease: "outBack", origin: [740, 1010] }),
-        A("brush", 1.05, 0.5, { x: 400, y: -300 }, { x: 0, y: 0 }, { ease: "outBack", origin: [790, 470] }),
-        POP("tag2", 1.15, [740, 1255]),
-      ],
-      loops: [],
-      cam: { from: { s: 1.0, y: 0 }, to: { s: 1.1, y: 0 } },
-    },
-
-    // 8. « …mais tu ne les fais pas vraiment partir » — le maquillage s'efface, les taches sont toujours là.
+    // 5. « …mais tu ne les fais pas vraiment partir » — le maquillage s'efface, les taches sont toujours là.
     reveal: {
-      svg: woman(C, { extras: foundation(C) + arm(C) }) + badge(C, BADGE[0], BADGE[1], 2) + cross(C, 820, 520, 190),
+      svg: woman(C, { extras: foundation(C) + arm(C, { tool: "brush" }) }) + badge(C, BADGE[0], BADGE[1], 2) + cross(C, 820, 520, 190),
       anims: [
-        A("arm", 0.45, 0.6, { x: 0, y: 0 }, { x: 560, y: 320 }, { ease: "inCubic", origin: HAND }),
+        A("arm", 0.45, 0.6, { x: 0, y: 0 }, { x: 560, y: 320 }, { ease: "inCubic", origin: HAND_BRUSH }),
         ...SPOTS.map((sp, i) => A(`pt${i}`, 0.5 + i * 0.06, 0.5, { o: 1 }, { o: 0 }, { ease: "lin" })),
         POP("cross", 1.55, [820, 520]),
       ],

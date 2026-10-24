@@ -167,13 +167,25 @@ export function mirror(C, id = "mirror") {
     layer(blob(0, -30, 350, 435, { jitter: 0.015, n: 20, seed: 32 }), FACE.mirror, 3) + `</g>`;
 }
 
-// Bras + main + éponge entrant par la droite (repère local).
-export function arm(C, id = "arm") {
+// Bras + main + outil entrant par la droite (repère local). tool : "cloth" (gant crème pour frotter) | "brush" (pinceau de maquillage).
+export const HAND_CLOTH = [122, 104], HAND_BRUSH = [225, 220];
+export function arm(C, { id = "arm", tool = "cloth" } = {}) {
+  if (tool === "brush") {
+    return `<g id="${id}">` +
+      layer(limb(470, 500, 240, 240, 88), FACE.skin, 7) +
+      layer(limb(236, 230, 138, 136, 26), C.dark, 8) +
+      layer(limb(146, 144, 108, 104, 46), C.cream, 8) +
+      layer(blob(82, 84, 70, 60, { jitter: 0.08, n: 12, seed: 66 }), "#BE8861", 9) +
+      layer(blob(62, 66, 30, 18, { jitter: 0.1, n: 8, seed: 67 }), "#D9A47D", 10) +
+      layer(blob(232, 228, 58, 64, { jitter: 0.1, n: 10, seed: 63 }), FACE.skin, 10) + `</g>`;
+  }
   return `<g id="${id}">` +
     layer(limb(640, 700, 470, 500, 120), FACE.top, 6) +
     layer(limb(470, 500, 150, 120, 84), FACE.skin, 7) +
     layer(blob(122, 104, 56, 64, { jitter: 0.1, n: 10, seed: 63 }), FACE.skin, 8) +
-    layer(blob(98, 86, 70, 36, { jitter: 0.08, n: 10, seed: 64 }), C.accent, 9) + `</g>`;
+    layer(blob(98, 86, 80, 56, { jitter: 0.12, n: 12, seed: 64 }), C.cream, 9) +
+    layer(blob(78, 76, 38, 8, { jitter: 0.2, n: 8, seed: 65 }), "#D8C2A0", 10) +
+    layer(blob(118, 98, 32, 7, { jitter: 0.2, n: 8, seed: 68 }), "#D8C2A0", 10) + `</g>`;
 }
 
 // Taches pour chaque SPOTS[i], id "sp{i}".

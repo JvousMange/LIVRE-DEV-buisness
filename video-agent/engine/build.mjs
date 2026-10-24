@@ -49,7 +49,7 @@ let cur = [];
 const flush = () => { if (cur.length) { subs.push({ t0: cur[0].t0, text: cur.map((x) => x.w.replace(/[,.]$/g, "")).join(" "), last: cur[cur.length - 1].t1 }); cur = []; } };
 for (const w of words) { cur.push(w); if (cur.length === 2 || /[,.?!:]$/.test(w.w)) flush(); }
 flush();
-subs.forEach((s, i) => { s.t1 = i < subs.length - 1 ? Math.min(subs[i + 1].t0, s.last + 0.3) : s.last + 0.3; s.em = /\d|MELA|taches?|Cinq|Un|Deux/i.test(s.text) && /\d|Cinq|Deux|^Un$/i.test(s.text); });
+subs.forEach((s, i) => { s.t1 = i < subs.length - 1 ? Math.min(subs[i + 1].t0, s.last + 0.3) : s.last + 0.3; s.em = /\d|Cinq|Deux|^Un$|fond|teint|maquillage|caches/i.test(s.text); });
 
 // 4. Page de rendu.
 const scenesSvg = beats.map((b, i) => `<g id="scene-${i}" style="display:none"><g id="cam-${i}">${kraftBackground(W, H, C, 5 + i)}${b.svg}</g></g>`).join("");
