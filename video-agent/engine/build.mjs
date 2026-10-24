@@ -153,7 +153,10 @@ await Promise.all(Array.from({ length: WORKERS }, async (_, w) => {
   for (let n = w; n < todo.length; n += WORKERS) {
     const [k, i] = todo[n];
     await page.evaluate((t) => window.setFrame(t), k / FPS);
-    await page.screenshot({ path: path.join(framesDir, `f_${String(k).padStart(5, "0")}.jpg`), type: "jpeg", quality: 93 });
+    for (let tryN = 0; ; tryN++) {
+      try { await page.screenshot({ path: path.join(framesDir, `f_${String(k).padStart(5, "0")}.jpg`), type: "jpeg", quality: 93, timeout: 120000 }); break; }
+      catch (e) { if (tryN >= 3) throw e; await page.evaluate((t) => window.setFrame(t), k / FPS); }
+    }
     if (w === 0 && n % 80 === 0) console.log(`  … ${n}/${todo.length}`);
   }
   await page.close();
