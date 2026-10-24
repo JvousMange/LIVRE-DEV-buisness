@@ -37,3 +37,32 @@ R.ribbon = (g, a, b, prog, land = 0) => { if (prog <= 0) return; const c = [(a[0
 /* éponge (blender) et coton */
 R.sponge = (q, squash = 0, y = -214) => { const e = H.el("g", { transform: `translate(0,${y}) scale(${1 + squash * .18},${1 - squash * .22})` }, q); H.paper(e, "M0,-70 C44,-70 58,-20 54,20 C50,60 26,78 0,78 C-26,78 -50,60 -54,20 C-58,-20 -44,-70 0,-70Z", "#E7B28C", { sh: "sh1", th: 4 }); H.blob(e, -12, -20, 16, 22, "#F2CBA9", { n: 10, jit: 0, sh: false, th: 0 }); return e; };
 R.cotton = (q, y = -214) => { const c = H.el("g", { transform: `translate(0,${y})` }, q); H.circ(c, 0, 0, 66, "#F7F2EA", { sh: "sh1", th: 4 }); for (let i = 0; i < 4; i++) H.el("path", { d: `M-50,${-30 + i * 20} h100`, stroke: "#E4DCCD", "stroke-width": 4 }, c); return c; };
+/* ===== v8 : main lisible + avant-bras venant du bas ===== */
+/* main gauche/droite dessinée doigts vers le haut (-y), poignet en (0,0). pose: "grip" (enserre un objet vertical), "pinch" (tient un petit objet entre pouce et index au bout) */
+R.hand2 = (g, x, y, ang, s = 1, pose = "pinch", hold = null, press = 0, o = {}) => { const h = H.el("g", { transform: `translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${ang.toFixed(2)}) scale(${(o.flip ? -1 : 1) * s},${s})` }, g); const sk = o.skin || R.SK, ln = H.shade(sk, .72);
+  const crease = (d) => H.el("path", { d, stroke: ln, "stroke-width": 4, fill: "none", "stroke-linecap": "round", opacity: .8 }, h);
+  if (pose === "grip") { // poing fermé autour d'un objet vertical tenu au-dessus
+    if (hold) hold(h); const sq = press * 6;
+    H.paper(h, `M-58,0 C-66,-40 -64,-90 -54,-120 L56,-124 C64,-90 64,-40 56,0 Z`, sk, { sh: "sh1", th: 5 });
+    H.paper(h, `M-60,-118 C-60,-150 -40,-${170 - sq} 0,-${172 - sq} C40,-${170 - sq} 64,-150 62,-118 C40,-110 -40,-110 -60,-118 Z`, sk, { sh: "sh1", th: 4 });
+    crease(`M-30,-120 L-28,-${160 - sq}`); crease(`M0,-118 L0,-${166 - sq}`); crease(`M30,-120 L28,-${160 - sq}`);
+    H.paper(h, `M-58,-70 C-96,-84 -104,-130 -80,-150 C-66,-160 -50,-146 -48,-128 Z`, sk, { sh: "sh1", th: 4 }); // pouce
+  } else { // pince : paume, doigts repliés, pouce et index qui pincent en haut
+    H.paper(h, `M-54,0 C-64,-40 -62,-92 -46,-118 L50,-120 C64,-92 64,-40 54,0 Z`, sk, { sh: "sh1", th: 5 });
+    H.paper(h, `M-48,-112 C-58,-140 -50,-166 -30,-168 L44,-150 C58,-140 58,-120 50,-110 Z`, sk, { sh: "sh1", th: 4 }); // doigts repliés
+    crease("M-24,-150 L-20,-118"); crease("M2,-152 L6,-118"); crease("M26,-146 L28,-116");
+    H.paper(h, `M-30,-160 C-36,-200 -26,-236 -6,-${244 - press * 8} C10,-${246 - press * 8} 16,-226 10,-196 L-4,-158 Z`, sk, { sh: "sh1", th: 4 }); // index
+    if (hold) hold(h);
+    H.paper(h, `M-50,-70 C-90,-100 -90,-170 -56,-${214 - press * 10} C-40,-${226 - press * 10} -24,-210 -30,-186 C-36,-150 -30,-110 -40,-84 Z`, sk, { sh: "sh1", th: 4 }); // pouce
+  }
+  return h; };
+/* avant-bras : du poignet w vers l'extérieur du cadre (direction dir en degrés, 90 = vers le bas), manche à partir de 260 px */
+R.forearm = (g, w, dir, s = 1, o = {}) => { const a = dir * Math.PI / 180, u = [Math.cos(a), Math.sin(a)], far = V2.add(w, V2.mul(u, 1400 * s)), cuff = V2.add(w, V2.mul(u, 300 * s)); R.limb(g, w, cuff, 96 * s, 112 * s, o.skin || R.SK); R.limb(g, cuff, far, 150 * s, 170 * s, o.cloth || R.CLOTH); H.el("path", { d: `M${(cuff[0] - u[1] * 75 * s).toFixed(1)},${(cuff[1] + u[0] * 75 * s).toFixed(1)} L${(cuff[0] + u[1] * 75 * s).toFixed(1)},${(cuff[1] - u[0] * 75 * s).toFixed(1)}`, stroke: H.shade(o.cloth || R.CLOTH, 1.3), "stroke-width": 10, "stroke-linecap": "round" }, g); };
+/* bras complet v8 : la main est au poignet w, orientée vers l'opposé de dir (doigts vers la cible) */
+R.arm2 = (g, w, dir, o = {}) => { const s = o.s || 1; R.forearm(g, w, dir, s, o); return R.hand2(g, w[0], w[1], dir - 90 + (o.tilt || 0), s, o.pose || "pinch", o.hold || null, o.press || 0, o); };
+/* point local de la main (lp, repère doigts vers -y) vers le monde */
+R.hp = (w, dir, s, lp, tilt = 0) => { const a = (dir - 90 + tilt) * Math.PI / 180, c = Math.cos(a), sn = Math.sin(a); return [w[0] + (lp[0] * c - lp[1] * sn) * s, w[1] + (lp[0] * sn + lp[1] * c) * s]; };
+/* gros plan visage 3/4 lisible (K4.face) + points sur les joues */
+R.FACEDOTS = (() => { const rg = H.rng(31), out = []; let n = 0; while (out.length < 48 && n++ < 6000) { const side = rg() < .62 ? 1 : -1, x = side * (40 + rg() * 105), y = 10 + rg() * 150; if (Math.pow(x / 150, 2) + Math.pow(y / 190, 2) > .82) continue; if (out.some(p => Math.hypot(p[0] - x, p[1] - y) < 17)) continue; out.push([x, y, 6.5 + rg() * 1.8]); } return out.sort((a, b) => b[1] - a[1]); })();
+R.face = (g, o = {}) => { H.rrect(g, -100, -100, 1300, 2200, o.bg || "#C9A271", { r: 0, sh: false, jit: 0 }); return K4.face(g, o.x || 540, o.y || 700, o.s || 2.6, { hair: o.hair || "afro", turn: o.turn ?? .35, cloth: R.CLOTH }); };
+R.fdot = (f, x, y, r, k) => { if (k <= 0) return; const s = H.E.pop(H.clamp(k)); const d = H.el("g", { transform: `translate(${x},${y}) scale(${s.toFixed(3)})` }, f.hd); H.el("circle", { cx: 0, cy: 1.2, r, fill: "#000", opacity: .25 }, d); H.el("circle", { cx: 0, cy: 0, r, fill: R.DOT }, d); H.el("circle", { cx: -r * .3, cy: -r * .32, r: r * .3, fill: "#4A3226" }, d); };
