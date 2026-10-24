@@ -1,5 +1,5 @@
 {
- "title": "Variantes (aperçus)",
+ "title": "Variantes (aperçus) 2",
  "brand": "../../brands/mela-skin/brand.json",
  "voice": "voice-full.mp3",
  "duration": 136.67,
@@ -444,40 +444,41 @@
  ],
  "beats": [
   {
-   "scene": "v3a",
+   "scene": "v3d",
    "at": "Trois",
    "until": "Quatre",
    "reset": true
   },
   {
-   "scene": "v3b",
+   "scene": "v3e",
    "at": "Trois",
    "until": "Quatre",
    "reset": true
   },
   {
-   "scene": "v3c",
+   "scene": "v3f",
    "at": "Trois",
    "until": "Quatre",
    "reset": true
   },
   {
-   "scene": "v8a",
-   "at": "Le problème ne vient",
-   "until": "Voilà ce qui se passe",
+   "scene": "cmpA",
+   "at": "Et sur une peau mate",
+   "until": "C'est pour ça que la tache",
    "reset": true
   },
   {
-   "scene": "v8b",
-   "at": "Le problème ne vient",
-   "until": "Voilà ce qui se passe",
+   "scene": "cmpB",
+   "at": "Et sur une peau mate",
+   "until": "C'est pour ça que la tache",
    "reset": true
   },
   {
-   "scene": "v8c",
-   "at": "Le problème ne vient",
-   "until": "Voilà ce qui se passe",
+   "scene": "cmpC",
+   "at": "Et sur une peau mate",
+   "until": "C'est pour ça que la tache",
    "reset": true
   }
- ]
+ ],
+ "anticipation": 0.45
 }

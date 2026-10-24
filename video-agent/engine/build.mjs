@@ -7,6 +7,7 @@ import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 import { defs, kraftBackground, finish } from "./paper.mjs";
+import { renderSfx, eventsFromBeats } from "./sfx.mjs";
 
 const { chromium } = createRequire(import.meta.url)("playwright");
 const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || "").split("=")[1];
@@ -46,18 +47,19 @@ const startOfBeat = (b) => {
   if (b.reset) cursor = 0;
   const i = findAnchor(b.at, cursor);
   cursor = i + 1;
-  return { wi: i, t: timeOfWord(i) };
+  return { wi: i, t: Math.max(0, timeOfWord(i) + (b.offset || 0)) };
 };
 const starts = script.beats.map(startOfBeat);
 const info = script.beats.map((b, i) => ({ name: b.scene, t0: starts[i].t, t1: b.until ? timeOfWord(findAnchor(b.until, starts[i].wi + 1)) : i < starts.length - 1 ? starts[i + 1].t : T }));
 // ctx.rel(plan, « mots », décalage) : instant (relatif au début du plan) où la voix dit ces mots.
+const ANT = script.anticipation ?? 0.45;   // les éléments arrivent AVANT le mot : le temps que l'œil les lise
 const ctx = {
   rel(name, phrase, offset = 0) {
     const bi = info.find((x) => x.name === name);
     if (!bi) throw new Error(`plan inconnu : ${name}`);
     const toks = phrase.split(/\s+/).map(norm).filter(Boolean);
     for (let i = 0; i + toks.length <= words.length; i++) {
-      if (words[i].t0 >= bi.t0 - 0.06 && words[i].t0 < bi.t1 && toks.every((tk, k) => words[i + k].n === tk)) return Math.max(0, words[i].t0 - bi.t0 - 0.05 + offset);
+      if (words[i].t0 >= bi.t0 - 0.06 && words[i].t0 < bi.t1 && toks.every((tk, k) => words[i + k].n === tk)) return Math.max(0, words[i].t0 - bi.t0 - ANT + offset);
     }
     throw new Error(`mots introuvables dans le plan « ${name} » : « ${phrase} »`);
   },
@@ -73,7 +75,8 @@ const beats = script.beats.map((b, i) => {
     svg: sc.svg.replace(/ id="([^"]+)"/g, (m, id) => ` id="${pre}${id}"`).replace(/url\(#(?!paper|kraft|vignette|light)([^)]+)\)/g, (m, id) => `url(#${pre}${id})`),
     anims: sc.anims.map((a) => ({ ...a, id: pre + a.id })),
     loops: (sc.loops || []).map((l) => ({ ...l, id: pre + l.id })),
-    cam: sc.cam, bgY: sc.bgY ?? -300, bgH: sc.bgH ?? 2520,
+    cam: sc.cam, bgY: sc.bgY ?? -300, bgH: sc.bgH ?? 2520, punches: sc.punches || [], sfx: sc.sfx || [],
+    overlay: (sc.overlay || "").replace(/ id="([^"]+)"/g, (m, id) => ` id="${pre}${id}"`),
   };
 });
 
@@ -87,7 +90,7 @@ const emRe = new RegExp(script.emphasis || "$^", "i");
 subs.forEach((s, i) => { s.t1 = i < subs.length - 1 ? Math.min(subs[i + 1].t0, s.last + 0.3) : s.last + 0.3; s.em = emRe.test(s.text); });
 
 // 4. Page de rendu.
-const scenesSvg = beats.map((b, i) => `<g id="scene-${i}" style="display:none"><g id="cam-${i}"><g transform="translate(0 ${b.bgY})">${kraftBackground(W, b.bgH, C, 5 + (i % 7))}</g>${b.svg}</g></g>`).join("");
+const scenesSvg = beats.map((b, i) => `<g id="scene-${i}" style="display:none"><g id="cam-${i}"><g transform="translate(0 ${b.bgY})">${kraftBackground(W, b.bgH, C, 5 + (i % 7))}</g>${b.svg}</g>${b.overlay}</g>`).join("");
 const html = `<!doctype html><meta charset="utf-8"><body style="margin:0;background:#000">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${defs()}${scenesSvg}${finish(W, H)}
 <g id="subs" style="display:none"><text id="subtxt" x="540" y="1480" text-anchor="middle" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="900" font-size="104" fill="#fff" stroke="${C.dark}" stroke-width="16" stroke-linejoin="round" paint-order="stroke"></text></g></svg>
@@ -160,13 +163,17 @@ todo.forEach(([k, i, h]) => writeFileSync(path.join(framesDir, `hash_${i}.txt`),
 const renderS = (Date.now() - t0) / 1000;
 console.log(`rendu : ${todo.length} images en ${renderS.toFixed(1)} s`);
 
-// 6. Audio : voix + bruit de papier à chaque coupe, puis assemblage.
-const cuts = beats.slice(1).map((b) => b.t0);
-const args = ["-y", "-v", "error", "-framerate", String(FPS), "-i", path.join(framesDir, "f_%05d.jpg"), "-i", path.join(dir, script.voice)];
+// 6. Audio : voix + bruitages synthétisés (déduits des animations), puis assemblage.
+const events = eventsFromBeats(beats);
+const sfxFile = path.join(out, "sfx.wav");
+renderSfx(events, T, sfxFile);
+writeFileSync(path.join(out, "sfx_events.json"), JSON.stringify(events));
+console.log(`bruitages : ${events.length} événements`);
+const args = ["-y", "-v", "error", "-framerate", String(FPS), "-i", path.join(framesDir, "f_%05d.jpg"), "-i", path.join(dir, script.voice), "-i", sfxFile];
 const fc = [
   `[1:a]atrim=0:${T},asetpts=PTS-STARTPTS,afade=t=out:st=${T - 0.4}:d=0.4[v]`,
-  ...cuts.map((c, i) => `anoisesrc=d=0.28:c=pink:r=44100:a=0.7,highpass=f=900,lowpass=f=7000,afade=t=in:d=0.02,afade=t=out:st=0.06:d=0.22,volume=0.4,adelay=${Math.round(c * 1000 - 40)}|${Math.round(c * 1000 - 40)}[s${i}]`),
-  `[v]${cuts.map((_, i) => `[s${i}]`).join("")}amix=inputs=${cuts.length + 1}:normalize=0:duration=first,loudnorm=I=-14:TP=-1.5:LRA=11[a]`,
+  `[2:a]atrim=0:${T},asetpts=PTS-STARTPTS,volume=${script.sfxVolume ?? 0.5}[fx]`,
+  `[v][fx]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-14:TP=-1.5:LRA=11[a]`,
 ].join(";");
 const mp4 = path.join(out, "final_9x16.mp4");
 execFileSync("ffmpeg", [...args, "-filter_complex", fc, "-map", "0:v", "-map", "[a]", "-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "23", "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-t", String(T), mp4], { stdio: "inherit" });
@@ -174,7 +181,7 @@ execFileSync("ffmpeg", [...args, "-filter_complex", fc, "-map", "0:v", "-map", "
 // 7. QA déterministe + avertissements d'allégations.
 const dur = Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", mp4]).toString());
 check("durée vidéo = durée cible ± 0,2 s", limit !== Infinity || Math.abs(dur - T) < 0.2, `${dur.toFixed(2)} s`);
-beats.forEach((b) => check(`plan « ${b.name} » entre 0,9 et 8 s`, b.t1 - b.t0 >= 0.9 && b.t1 - b.t0 <= 8, `${(b.t1 - b.t0).toFixed(2)} s`));
+beats.forEach((b) => check(`plan « ${b.name} » entre 0,6 et 8 s`, b.t1 - b.t0 >= 0.6 && b.t1 - b.t0 <= 8, `${(b.t1 - b.t0).toFixed(2)} s`));
 const allowed = new Set([...Object.values(C), ...(brand.derived || [])].map((x) => x.toLowerCase()));
 const used = new Set(beats.flatMap((b) => b.svg.match(/#[0-9a-fA-F]{6}\b/g) || []).map((x) => x.toLowerCase()));
 const rogue = [...used].filter((x) => !allowed.has(x));

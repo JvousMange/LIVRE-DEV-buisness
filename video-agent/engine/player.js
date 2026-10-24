@@ -16,7 +16,7 @@
   const $ = (id) => document.getElementById(id);
   const STOP = 12; // cadence « stop-motion » des éléments animés
 
-  function applyCam(el, cam, p, lt) {
+  function applyCam(el, cam, p, lt, punch = 1) {
     let c = cam || { from: { s: 1, x: 0, y: 0 }, to: { s: 1, x: 0, y: 0 } };
     if (Array.isArray(c)) {                                   // plusieurs mouvements successifs dans un même plan
       const seg = c.find((k) => lt >= k.t0 && lt < k.t1);
@@ -26,7 +26,7 @@
     }
     const e = ease[c.ease || "inOut"](p);
     const g = (k, d) => lerp(c.from[k] ?? d, c.to[k] ?? d, e);
-    el.setAttribute("transform", `translate(${g("x", 0)} ${g("y", 0)}) translate(540 960) scale(${g("s", 1)}) translate(-540 -960)`);
+    el.setAttribute("transform", `translate(${g("x", 0)} ${g("y", 0)}) translate(540 960) scale(${g("s", 1) * punch}) translate(-540 -960)`);
   }
 
   window.setFrame = function (t, forceBeat) {
@@ -57,7 +57,8 @@
       el.setAttribute("transform", `translate(${s.x + jx} ${s.y + jy}) translate(${ox} ${oy}) rotate(${s.r + jr}) scale(${s.sx * s.s} ${s.sy * s.s}) translate(${-ox} ${-oy})`);
       el.setAttribute("opacity", s.o);
     }
-    applyCam($("cam-" + bi), b.cam, clamp01(lt / (b.t1 - b.t0)), lt);
+    const punch = 1 + (b.punches || []).reduce((acc, k) => (lt >= k.t ? acc + k.amp * Math.exp(-(lt - k.t) * 9) : acc), 0);   // « coup » de zoom sur les impacts
+    applyCam($("cam-" + bi), b.cam, clamp01(lt / (b.t1 - b.t0)), lt, punch);
 
     // sous-titres
     const sub = D.subs.find((u) => t >= u.t0 && t < u.t1);

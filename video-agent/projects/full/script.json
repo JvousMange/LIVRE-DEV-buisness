@@ -464,28 +464,31 @@
    "at": "Quatre"
   },
   {
-   "scene": "triggers5",
+   "scene": "fiveSun",
    "at": "Et cinq"
+  },
+  {
+   "scene": "fiveRazor",
+   "at": "rasage",
+   "offset": -0.5
+  },
+  {
+   "scene": "fiveElbows",
+   "at": "frottements",
+   "offset": -0.25
+  },
+  {
+   "scene": "triggers5",
+   "at": "rien ne protège",
+   "offset": -0.35
   },
   {
    "scene": "notYou",
    "at": "Le problème ne vient"
   },
   {
-   "scene": "melanin",
+   "scene": "usine",
    "at": "Voilà ce qui se passe"
-  },
-  {
-   "scene": "aggressed",
-   "at": "Quand elle est agressée"
-  },
-  {
-   "scene": "toomuch",
-   "at": "elle en fabrique trop"
-  },
-  {
-   "scene": "trapped",
-   "at": "Cette mélanine reste"
   },
   {
    "scene": "compare",
@@ -567,5 +570,6 @@
    "scene": "cta",
    "at": "Clique sur le bouton"
   }
- ]
+ ],
+ "anticipation": 0.45
 }
