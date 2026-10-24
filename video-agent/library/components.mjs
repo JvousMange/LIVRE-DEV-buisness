@@ -198,28 +198,43 @@ export function foundation(C) {
   return SPOTS.map((s, i) => `<g id="pt${i}">` + layer(blob(s.x, s.y, s.rx * 1.55, s.ry * 1.6, { jitter: 0.1, n: 10, seed: 600 + i }), "#BE8861", 7) + `</g>`).join("");
 }
 
-// Femme : miroir, cheveux, cou, haut sombre, visage, boucle d'oreille, taches. `extras` = SVG local (bras, fond de teint…).
-export function woman(C, { cx = 540, cy = 760, scale = 1, spotsOn = true, extras = "", mirrorOn = true } = {}) {
-  const hair = [];
-  for (let i = 0; i < 15; i++) {
-    const a = Math.PI * (0.78 + (i / 14) * 1.44);         // arc au-dessus et sur les côtés de la tête
-    const r = 215 + (i % 3) * 12;
-    hair.push(layer(blob(Math.cos(a) * r, Math.sin(a) * r * 0.98 - 20, 92 + (i % 2) * 14, 92 + (i % 2) * 14, { jitter: 0.1, n: 9, seed: 700 + i }), i % 2 ? FACE.hair : FACE.hair2, 3));
+// Femme : miroir, cheveux, cou, haut, visage, taches. tone : "deep" | "light" ; hair : "puff" | "bob". `extras` = SVG local (bras, fond de teint…).
+const TONES = {
+  deep: { skin: FACE.skin, neck: FACE.neck, top: FACE.top, hair: FACE.hair, hair2: FACE.hair2, hoops: true },
+  light: { skin: "#EBC1A0", neck: "#D9A783", top: "#6B4A2A", hair: "#3A2214", hair2: "#4A2C1C", hoops: false },
+};
+export function woman(C, { cx = 540, cy = 760, scale = 1, spotsOn = true, extras = "", mirrorOn = true, tone = "deep", hair = "puff" } = {}) {
+  const T = TONES[tone];
+  const hp = [];
+  if (hair === "bob") {
+    hp.push(layer(blob(0, 70, 242, 312, { jitter: 0.03, n: 16, seed: 710 }), T.hair, 3));
+    hp.push(layer(blob(-190, 120, 62, 190, { jitter: 0.05, n: 10, seed: 711 }), T.hair2, 4), layer(blob(190, 120, 62, 190, { jitter: 0.05, n: 10, seed: 712 }), T.hair2, 4));
+  } else {
+    for (let i = 0; i < 15; i++) {
+      const a = Math.PI * (0.78 + (i / 14) * 1.44), r = 215 + (i % 3) * 12;
+      hp.push(layer(blob(Math.cos(a) * r, Math.sin(a) * r * 0.98 - 20, 92 + (i % 2) * 14, 92 + (i % 2) * 14, { jitter: 0.1, n: 9, seed: 700 + i }), i % 2 ? T.hair : T.hair2, 3));
+    }
   }
   const parts = [
     mirrorOn ? mirror(C) : "",
-    hair.join(""),
-    layer("M-420 1000 L-410 470 Q-390 340 -250 305 Q-130 270 -64 250 L64 250 Q130 270 250 305 Q390 340 410 470 L420 1000Z", FACE.top, 3),
-    layer("M-62 130 L62 130 L66 300 Q0 345 -66 300Z", FACE.neck, 4),
-    layer("M-118 262 Q0 372 118 262 Q70 330 0 335 Q-70 330 -118 262Z", FACE.skin, 5),
-    layer(blob(-176, 28, 27, 46, { n: 8, seed: 71 }), FACE.skin, 4) + layer(blob(176, 28, 27, 46, { n: 8, seed: 72 }), FACE.skin, 4),
-    `<g filter="url(#paper3)"><circle cx="-180" cy="84" r="27" fill="none" stroke="${C.accent}" stroke-width="9"/><circle cx="180" cy="84" r="27" fill="none" stroke="${C.accent}" stroke-width="9"/></g>`,
-    layer(blob(0, 0, 168, 212, { jitter: 0.015, n: 16, seed: 73 }), FACE.skin, 5),
-    layer(blob(0, -172, 184, 74, { jitter: 0.05, n: 12, seed: 74 }), FACE.hair, 6, { edge: "rgba(0,0,0,0)" }),
+    hp.join(""),
+    layer("M-420 1000 L-410 470 Q-390 340 -250 305 Q-130 270 -64 250 L64 250 Q130 270 250 305 Q390 340 410 470 L420 1000Z", T.top, 3),
+    layer("M-62 130 L62 130 L66 300 Q0 345 -66 300Z", T.neck, 4),
+    layer("M-118 262 Q0 372 118 262 Q70 330 0 335 Q-70 330 -118 262Z", T.skin, 5),
+    layer(blob(-176, 28, 27, 46, { n: 8, seed: 71 }), T.skin, 4) + layer(blob(176, 28, 27, 46, { n: 8, seed: 72 }), T.skin, 4),
+    T.hoops ? `<g filter="url(#paper3)"><circle cx="-180" cy="84" r="27" fill="none" stroke="${C.accent}" stroke-width="9"/><circle cx="180" cy="84" r="27" fill="none" stroke="${C.accent}" stroke-width="9"/></g>` : "",
+    layer(blob(0, 0, 168, 212, { jitter: 0.015, n: 16, seed: 73 }), T.skin, 5),
+    layer(blob(0, -172, 184, 74, { jitter: 0.05, n: 12, seed: 74 }), T.hair, 6, { edge: "rgba(0,0,0,0)" }),
     spotsOn ? spots(C) : "",
     extras,
   ];
   return `<g id="woman"><g transform="translate(${cx} ${cy}) scale(${scale})">${parts.join("")}</g></g>`;
+}
+
+// Rougeurs d'irritation (repère local de la femme), ids fl0..fl2.
+export function flush() {
+  const P = [[-98, 78, 66, 48], [98, 74, 66, 48], [0, 150, 44, 28]];
+  return P.map((p, i) => `<g id="fl${i}">` + layer(blob(p[0], p[1], p[2], p[3], { jitter: 0.12, n: 10, seed: 900 + i }), "rgba(196,85,47,.62)", 6, { edge: "rgba(0,0,0,0)" }) + `</g>`).join("");
 }
 
 // ---------- Objets de maquillage (vue de dessus) ----------

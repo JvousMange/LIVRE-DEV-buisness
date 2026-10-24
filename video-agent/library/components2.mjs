@@ -1,0 +1,143 @@
+// Bibliothèque de composants, suite : objets, instruments et pictogrammes pour les plans « mécanisme / actifs / offre ».
+// Convention : coordonnées absolues (cx, cy = centre), échelle s ; les groupes animables portent un id.
+import { layer, blob, poly, star, rng, arrowPts } from "../engine/paper.mjs";
+
+const F = "Inter, 'DejaVu Sans', sans-serif";
+const f1 = (n) => Math.round(n * 10) / 10;
+const G = (cx, cy, s, inner, id) => `<g id="${id}"><g transform="translate(${cx} ${cy}) scale(${s})">${inner}</g></g>`;
+const txt = (x, y, size, fill, t, w = 900, extra = "") => `<g filter="url(#paper1)"><text x="${x}" y="${y}" text-anchor="middle" font-family="${F}" font-weight="${w}" font-size="${size}" fill="${fill}" ${extra}>${t}</text></g>`;
+
+export function check(C, cx, cy, size = 170, id = "check", color) {
+  const k = size / 190;
+  return G(cx, cy, k, layer(poly([[-86, 5], [-52, -28], [-18, 8], [62, -86], [96, -52], [-18, 76]], { round: false }), color || C.solution, 6), id);
+}
+
+export function tube(C, cx, cy, { s = 1, body, label = "", id = "tube", labelSize = 30 } = {}) {
+  const col = body || C.cream;
+  return G(cx, cy, s,
+    layer("M-50 -190 L50 -190 L50 -168 L-50 -168Z", "#B5724B", 3) +
+    layer("M-50 -168 L50 -168 L42 152 L-42 152Z", col, 3) +
+    layer("M-42 152 L42 152 L36 208 L-36 208Z", C.dark, 3) +
+    layer("M-47 -50 L47 -50 L43 50 L-43 50Z", "#E8D0A8", 4) +
+    txt(0, 14, labelSize, C.dark, label), id);
+}
+
+export function jar(C, cx, cy, { s = 1, body, label = "", id = "jar", labelSize = 28 } = {}) {
+  return G(cx, cy, s,
+    layer("M-96 -90 L96 -90 L96 -40 L-96 -40Z", C.dark, 4) +
+    layer("M-90 -40 L90 -40 L84 112 Q84 130 66 130 L-66 130 Q-84 130 -84 112Z", body || C.cream, 3) +
+    layer("M-80 -10 L80 -10 L76 80 L-76 80Z", "#E8D0A8", 4) + txt(0, 52, labelSize, C.dark, label), id);
+}
+
+export function flame(C, cx, cy, s = 1, id = "flame") {
+  return G(cx, cy, s,
+    layer("M0 -130 Q70 -40 46 34 Q26 90 0 90 Q-34 90 -46 34 Q-70 -34 0 -130Z", C.alert, 5) +
+    layer("M0 -50 Q36 -4 24 40 Q14 66 0 66 Q-20 66 -26 38 Q-34 -2 0 -50Z", C.accent, 6), id);
+}
+
+export function sparkle(C, cx, cy, s = 1, id = "sparkle") {
+  return G(cx, cy, s, layer(star(0, 0, 70, 14, 4, { jitter: 0 }), C.accent, 6) + layer(star(60, -50, 28, 6, 4, { jitter: 0 }), "#F2C56A", 6), id);
+}
+
+export function razor(C, cx, cy, s = 1, id = "razor") {
+  return G(cx, cy, s,
+    layer("M-24 20 L24 20 L18 300 L-18 300Z", C.dark, 3) +
+    layer("M-100 -70 L100 -70 L100 20 L-100 20Z", C.cream, 4) +
+    layer("M-86 -52 L86 -52 L86 -34 L-86 -34Z", C.kraftDark, 5) + layer("M-86 -26 L86 -26 L86 -10 L-86 -10Z", C.kraftDark, 5), id);
+}
+
+export function pimple(C, cx, cy, s = 1, id = "pimple") {
+  return G(cx, cy, s, layer(blob(0, 0, 62, 62, { jitter: 0.06, n: 12, seed: 33 }), C.alert, 5) + layer(blob(-10, -14, 18, 18, { jitter: 0.1, n: 8, seed: 34 }), C.cream, 6), id);
+}
+
+export function padlock(C, cx, cy, s = 1, id = "padlock") {
+  return G(cx, cy, s,
+    `<g filter="url(#paper3)"><path d="M-46 -20 L-46 -70 Q-46 -120 0 -120 Q46 -120 46 -70 L46 -20" fill="none" stroke="${C.kraftDark}" stroke-width="22" stroke-linecap="round"/></g>` +
+    layer("M-76 -30 L76 -30 L76 90 L-76 90Z", C.dark, 5) + layer(blob(0, 28, 14, 14, { n: 8, seed: 35 }), C.accent, 6), id);
+}
+
+// Bouclier. noCheck : sans coche ; crack : fissure (rien ne protège).
+export function shield2(C, cx, cy, s = 1, id = "shield", { check = true, crack = false } = {}) {
+  const d = "M0 -190 L160 -140 L160 20 Q160 150 0 210 Q-160 150 -160 20 L-160 -140Z";
+  return G(cx, cy, s,
+    layer(d, C.kraftDark, 3) + `<g transform="scale(.86)">` + layer(d, C.cream, 4) + `</g>` +
+    (check ? layer(poly([[-86, 5], [-52, -28], [-18, 8], [62, -86], [96, -52], [-18, 76]], { round: false }), C.solution, 6) : "") +
+    (crack ? layer(poly([[-10, -150], [26, -80], [-18, -30], [30, 40], [-8, 100], [4, 150], [-24, 100], [18, 30], [-30, -30], [10, -90]], { round: false }), C.alert, 6) : ""), id);
+}
+
+export function calendar(C, cx, cy, s = 1, id = "cal", { mark = 9, month = "" } = {}) {
+  let grid = "";
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 5; c++) grid += `<rect x="${-140 + c * 58}" y="${10 + r * 58}" width="46" height="46" fill="none" stroke="${C.kraftDark}" stroke-width="4" opacity=".7"/>`;
+  const mc = mark % 5, mr = Math.floor(mark / 5);
+  return G(cx, cy, s,
+    layer("M-170 -170 L170 -170 L170 190 L-170 190Z", C.cream, 4) + layer("M-170 -170 L170 -170 L170 -90 L-170 -90Z", C.alert, 5) +
+    layer(blob(-100, -170, 16, 16, { n: 8, seed: 36 }), C.dark, 6) + layer(blob(100, -170, 16, 16, { n: 8, seed: 37 }), C.dark, 6) +
+    txt(0, -112, 44, C.cream, month) + `<g filter="url(#paper1)">${grid}</g>` +
+    `<g filter="url(#paper3)"><circle cx="${-117 + mc * 58}" cy="${33 + mr * 58}" r="34" fill="none" stroke="${C.alert}" stroke-width="8"/></g>`, id);
+}
+
+export function coin(C, cx, cy, r = 44, id = "coin") {
+  return `<g id="${id}">` + layer(blob(cx, cy, r, r, { jitter: 0.02, n: 14, seed: 38 }), C.accent, 5) + layer(blob(cx, cy, r * 0.62, r * 0.62, { jitter: 0.02, n: 12, seed: 39 }), "#F2C56A", 6) + `</g>`;
+}
+
+export function wallet(C, cx, cy, s = 1, id = "wallet") {
+  return G(cx, cy, s,
+    layer("M-200 -110 L200 -110 L200 120 L-200 120Z", "#7A4E32", 4) + layer("M-200 -110 L200 -110 L200 -30 L-200 -30Z", "#3A2214", 5) +
+    layer(blob(170, 40, 30, 30, { n: 10, seed: 40 }), C.accent, 6), id);
+}
+
+// Jauge : zone verte au centre, rouge à droite. Aiguille id "${id}-needle" (0° = vers le haut, sens horaire), origine locale (0,0).
+export function gauge(C, cx, cy, s = 1, id = "gauge") {
+  const arc = (r0, r1, a0, a1, fill) => {
+    const pts = [];
+    for (let a = a0; a <= a1; a += 8) pts.push([Math.sin((a * Math.PI) / 180) * r1, -Math.cos((a * Math.PI) / 180) * r1]);
+    for (let a = a1; a >= a0; a -= 8) pts.push([Math.sin((a * Math.PI) / 180) * r0, -Math.cos((a * Math.PI) / 180) * r0]);
+    return layer(poly(pts, { round: false }), fill, 5);
+  };
+  let ticks = "";
+  for (let a = -120; a <= 120; a += 20) ticks += `<line x1="${f1(Math.sin((a * Math.PI) / 180) * 280)}" y1="${f1(-Math.cos((a * Math.PI) / 180) * 280)}" x2="${f1(Math.sin((a * Math.PI) / 180) * 250)}" y2="${f1(-Math.cos((a * Math.PI) / 180) * 250)}" stroke="${C.dark}" stroke-width="6" stroke-linecap="round"/>`;
+  return G(cx, cy, s,
+    layer(blob(0, 0, 330, 330, { jitter: 0.01, n: 20, seed: 41 }), C.kraftDark, 3) + layer(blob(0, 0, 298, 298, { jitter: 0.01, n: 20, seed: 42 }), C.cream, 4) +
+    arc(170, 240, -120, -45, "#D8C2A0") + arc(170, 240, -40, 40, C.solution) + arc(170, 240, 45, 120, C.alert) + `<g filter="url(#paper1)">${ticks}</g>` +
+    `<g id="${id}-needle">` + layer(poly([[-16, 20], [0, -250], [16, 20], [0, 56]], { round: false }), C.dark, 6) + `</g>` + layer(blob(0, 0, 40, 40, { n: 10, seed: 43 }), C.dark, 7), id);
+}
+
+// Engrenage.
+export function gear(C, cx, cy, r = 150, teeth = 12, id = "gear", fill = "#B5724B") {
+  return `<g id="${id}">` + layer(star(cx, cy, r, r * 0.84, teeth, { jitter: 0 }), fill, 4) + layer(blob(cx, cy, r * 0.5, r * 0.5, { jitter: 0.02, n: 14, seed: 44 }), "#7A4E32", 5) + layer(blob(cx, cy, r * 0.2, r * 0.2, { n: 10, seed: 45 }), C.cream, 6) + `</g>`;
+}
+
+// Vanne sur un tuyau vertical, repère local (échelle k). Ids : "${id}-wheel" (volant, origine locale [130,0]) et "${id}-gate" (clapet, glisse en x local).
+export function valve(C, cx, cy, id = "valve", k = 1.35) {
+  return `<g id="${id}"><g transform="translate(${cx} ${cy}) scale(${k})">` +
+    layer("M-50 -90 L50 -90 L50 95 L-50 95Z", "#E8D0A8", 3) +
+    layer("M-80 -46 L80 -46 L80 46 L-80 46Z", C.dark, 4) + layer("M80 -10 L130 -10 L130 10 L80 10Z", C.dark, 4) +
+    `<g id="${id}-wheel">` + layer(blob(130, 0, 70, 70, { jitter: 0.02, n: 14, seed: 46 }), C.alert, 5) + layer(blob(130, 0, 44, 44, { jitter: 0.02, n: 12, seed: 47 }), C.cream, 6) +
+    layer("M124 -70 L136 -70 L136 70 L124 70Z", C.dark, 7) + layer("M60 -6 L200 -6 L200 6 L60 6Z", C.dark, 7) + `</g>` +
+    `<g id="${id}-gate">` + layer("M-66 -14 L66 -14 L66 14 L-66 14Z", C.solution, 6) + `</g></g></g>`;
+}
+
+export function button(C, cx, cy, w, h, text, id = "button", color) {
+  return `<g id="${id}">` + layer(blob(cx, cy, w / 2, h / 2, { jitter: 0.025, n: 16, seed: 48 }), color || C.solution, 5) + txt(cx, f1(cy + h * 0.17), Math.round(h * 0.46), C.cream, text) + `</g>`;
+}
+
+// Grille de points (ex. 100 personnes dont 94 en vert). Ids de lignes : "${id}-r0".."${id}-r{rows-1}".
+export function dotsGrid(C, cx, cy, { cols = 10, rows = 10, gap = 78, r = 28, on = 94, id = "dots" } = {}) {
+  let out = "";
+  for (let rw = 0; rw < rows; rw++) {
+    let row = "";
+    for (let c = 0; c < cols; c++) {
+      const i = rw * cols + c;
+      row += layer(blob(cx + (c - (cols - 1) / 2) * gap, cy + (rw - (rows - 1) / 2) * gap, r, r, { jitter: 0.05, n: 10, seed: 1000 + i }), i < on ? C.solution : "#D8C2A0", 4);
+    }
+    out += `<g id="${id}-r${rw}">${row}</g>`;
+  }
+  return `<g id="${id}">${out}</g>`;
+}
+
+// Étagère en carton (support de produits).
+export function shelf(C, cx, y, w = 960, id = "shelf") {
+  return `<g id="${id}">` + layer(`M${cx - w / 2} ${y} L${cx + w / 2} ${y} L${cx + w / 2} ${y + 40} L${cx - w / 2} ${y + 40}Z`, "#A9845A", 3) + `</g>`;
+}
+
+export { arrowPts };
