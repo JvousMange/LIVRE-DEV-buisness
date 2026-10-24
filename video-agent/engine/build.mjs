@@ -87,7 +87,7 @@ const flush = () => { if (cur.length) { subs.push({ t0: cur[0].t0, text: cur.map
 for (const w of words) { cur.push(w); if (cur.length === 2 || /[,.?!:;]$/.test(w.w)) flush(); }
 flush();
 const emRe = new RegExp(script.emphasis || "$^", "i");
-subs.forEach((s, i) => { s.t1 = i < subs.length - 1 ? Math.min(subs[i + 1].t0, s.last + 0.3) : s.last + 0.3; s.em = emRe.test(s.text); });
+subs.forEach((s, i) => { s.t1 = i < subs.length - 1 ? Math.min(subs[i + 1].t0, s.last + 0.2) : s.last + 0.3; s.em = emRe.test(s.text); });
 
 // 4. Page de rendu.
 const scenesSvg = beats.map((b, i) => `<g id="scene-${i}" style="display:none"><g id="cam-${i}"><g transform="translate(0 ${b.bgY})">${kraftBackground(W, b.bgH, C, 5 + (i % 7))}</g>${b.svg}</g>${b.overlay}</g>`).join("");
@@ -174,8 +174,10 @@ writeFileSync(path.join(out, "sfx_events.json"), JSON.stringify(events));
 console.log(`bruitages : ${events.length} événements`);
 const args = ["-y", "-v", "error", "-framerate", String(FPS), "-i", path.join(framesDir, "f_%05d.jpg"), "-i", path.join(dir, script.voice), "-i", sfxFile];
 const fc = [
-  `[1:a]atrim=0:${T},asetpts=PTS-STARTPTS,afade=t=out:st=${T - 0.4}:d=0.4[v]`,
-  `[2:a]atrim=0:${T},asetpts=PTS-STARTPTS,volume=${script.sfxVolume ?? 0.5}[fx]`,
+  `[1:a]atrim=0:${T},asetpts=PTS-STARTPTS,afade=t=out:st=${T - 0.4}:d=0.4,asplit=2[v][vs]`,
+  `[2:a]atrim=0:${T},asetpts=PTS-STARTPTS,highpass=f=110,lowpass=f=5500,volume=${script.sfxVolume ?? 0.4}[fx0]`,
+  // les bruitages s'effacent sous la voix (side-chain) : on entend toujours le texte
+  `[fx0][vs]sidechaincompress=threshold=0.012:ratio=14:attack=6:release=260:makeup=1[fx]`,
   `[v][fx]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-14:TP=-1.5:LRA=11[a]`,
 ].join(";");
 const mp4 = path.join(out, "final_9x16.mp4");

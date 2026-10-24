@@ -47,8 +47,9 @@ export function scenesG(C, X) {
         ],
         loops: [{ id: "fl0", prop: "s", amp: 0.05, freq: 3, start: tWorse, origin: [-98, 78] }, { id: "fl1", prop: "s", amp: 0.05, freq: 3, start: tWorse, origin: [98, 74] }],
         cam: [
-          { t0: 0, t1: Math.max(0.2, tWorse - 0.5), from: { s: 1.0, y: 0 }, to: { s: 1.03, y: 0 }, ease: "lin" },
-          { t0: Math.max(0.2, tWorse - 0.5), t1: dur, from: { s: 1.03, y: 0 }, to: { s: 1.9, y: -399 }, ease: "inOut" },
+          { t0: 0, t1: Math.max(0.2, tWorse - 0.9), from: { s: 1.0, y: 0 }, to: { s: 1.03, y: 0 }, ease: "lin" },
+          { t0: Math.max(0.2, tWorse - 0.9), t1: tWorse + 0.7, from: { s: 1.03, y: 0 }, to: { s: 1.9, y: -399 }, ease: "inOut" },
+          { t0: tWorse + 0.7, t1: Math.max(tWorse + 0.8, dur), from: { s: 1.9, y: -399 }, to: { s: 1.95, y: -405 }, ease: "lin" },
         ],
         punches: [{ t: tWorse, amp: 0.05 }],
       };
@@ -140,25 +141,35 @@ export function scenesG(C, X) {
     // Le rideau de taches se retire (même motif, en espace écran), une loupe cherche la cause, puis on zoome DANS la loupe.
     notYou: (() => {
       const fl = flood(C), dur = X.dur("notYou"), tZoom = R("notYou", "mais", -0.1);
-      const LX = 700, LY = 800, rLens = 150;
-      const view = `<clipPath id="lensclip"><circle cx="${LX}" cy="${LY}" r="${rLens - 4}"/></clipPath><g id="lv" clip-path="url(#lensclip)"><g transform="translate(${LX} ${LY}) scale(.48) translate(-540 -1170)">${skin(C)}${melanocyte(C)}</g></g>`;
-      const both = (t0, d, from, to, o = {}) => ["lp", "lv"].map((id) => A(id, t0, d, from, to, o));
+      const LX = 700, LY = 800, rLens = 150, M = 1.9, DX = 230;
+      // Le verre montre CE QU'IL SURVOLE, agrandi (la peau de la femme, qui défile quand la loupe bouge), puis la coupe sous la peau.
+      const section = `<g transform="translate(${LX} ${LY}) scale(.48) translate(-540 -1170)">${skin(C)}${melanocyte(C)}</g>`;
+      const view = `<clipPath id="lensclip"><circle cx="${LX}" cy="${LY}" r="${rLens - 4}"/></clipPath><g id="lv" clip-path="url(#lensclip)">` +
+        `<g id="lvin"><g transform="translate(${LX} ${LY}) scale(${M}) translate(${-LX} ${-LY})">${woman(C)}</g></g><g id="lvc">${section}</g></g>`;
+      const tToi = R("notYou", "toi", -0.1), tPeau = R("notYou", "ta peau", -0.1);
+      const xs = (id, t, to) => [A(id, t, 0.5, { s: 2.3, o: 0 }, { s: 1, o: 1 }, { origin: to, ease: "outCubic", sfx: "stamp" })];
+      const move = (t0, d, a, b, o = {}) => [
+        A("lp", t0, d, { x: a }, { x: b }, { ease: "inOut", ...o }), A("lv", t0, d, { x: a }, { x: b }, { ease: "inOut", sfx: false, ...o }),
+        A("lvin", t0, d, { x: -M * a }, { x: -M * b }, { ease: "inOut", sfx: false, ...o }),
+      ];
       return {
-        svg: woman(C) + cross(C, 540, 1110, 250, "x1") + cross(C, 640, 780, 220, "x2") + view + loupe(C, LX, LY, rLens, "lp"),
+        svg: woman(C) + view + loupe(C, LX, LY, rLens, "lp") + cross(C, LX - DX, LY, 340, "x1") + cross(C, LX, LY, 340, "x2"),
         overlay: fl.svg,
         anims: [
           ...fl.order.slice().reverse().map((idx, k) => A(`fd${idx}`, 0.08 + k * 0.014, 0.3, { s: 1 }, { s: 0 }, { origin: [fl.cells[idx].x, fl.cells[idx].y], ease: "inCubic", sfx: k % 6 === 0 ? "whoosh" : false })),
           POP("lp", 0.7, [LX, LY]), POP("lv", 0.7, [LX, LY], { sfx: false }),
-          ...both(R("notYou", "toi", -0.1), 0.8, { x: 0 }, { x: -230 }, { ease: "inOut" }), POP("x1", R("notYou", "toi", 0.35), [540, 1110]),
-          ...both(R("notYou", "ta peau", -0.1), 0.8, { x: -230 }, { x: 0 }, { ease: "inOut", late: true }), POP("x2", R("notYou", "ta peau", 0.35), [640, 780]),
+          ...move(tToi, 0.8, 0, -DX), ...xs("x1", tToi + 0.8, [LX - DX, LY]),
+          FADEOUT("x1", tPeau - 0.05, 0.2),
+          ...move(tPeau, 0.8, -DX, 0, { late: true }), ...xs("x2", tPeau + 0.8, [LX, LY]),
+          FADEOUT("lvin", tZoom, 0.5), FADEIN("lvc", tZoom, 0.5), FADEOUT("x2", tZoom - 0.1, 0.25),
         ],
-        loops: [],
+        loops: [{ id: "x1", prop: "r", amp: 5, freq: 5, start: tToi + 1.0, origin: [LX - DX, LY] }, { id: "x2", prop: "r", amp: 5, freq: 5, start: tPeau + 1.0, origin: [LX, LY] }],
         // pas de descente : la caméra reste sur elle puis entre dans le verre de la loupe
         cam: [
           { t0: 0, t1: tZoom, from: { s: 1.3, x: 0, y: 100 }, to: { s: 1.3, x: 0, y: 100 }, ease: "lin" },
           { t0: tZoom, t1: dur, from: { s: 1.3, x: 0, y: 100 }, to: { s: 6.5, x: -1040, y: 1040 }, ease: "inCubic" },
         ],
-        sfx: [{ t: tZoom + 0.2, type: "rise" }], punches: [{ t: R("notYou", "toi", 0.35), amp: 0.04 }, { t: R("notYou", "ta peau", 0.35), amp: 0.04 }],
+        sfx: [{ t: tZoom + 0.2, type: "rise" }], punches: [{ t: tToi + 0.8, amp: 0.05 }, { t: tPeau + 0.8, amp: 0.05 }],
       };
     })(),
 
@@ -166,17 +177,18 @@ export function scenesG(C, X) {
     // Le calendrier EST l'image : il défile de janvier à décembre, la tache reste sur chaque page ; un produit n'y change rien.
     months: (() => {
       const names = ["JANVIER", "FÉVRIER", "MARS", "AVRIL", "MAI", "JUIN", "JUILLET", "AOÛT", "SEPTEMBRE", "OCTOBRE", "NOVEMBRE", "DÉCEMBRE"];
-      const t0 = R("months", "reste", -0.1), gap = 0.12, tP = R("months", "produit"), tRien = R("months", "rien");
-      const pages = `<g id="cal">` + names.map((m, i) => calendar(C, 540, 780, 2.55, `pg${i}`, { mark: (i * 7 + 3) % 18, month: m, stain: true })).reverse().join("") + `</g>`;
+      const tRien = R("months", "rien", 0.2), gap = 0.27, t0 = Math.max(0.35, tRien - 0.3 - gap * 11);
+      const pages = `<g id="cal">` + names.map((m, i) => calendar(C, 540, 760, 2.55, `pg${i}`, { mark: (i * 7 + 3) % 18, month: m })).reverse().join("") + `</g>`;
       return {
-        svg: pages + tube(C, 700, 1030, { s: 0.95, label: "SOIN", id: "tb" }) + `<g id="cream">${layer(blob(362, 940, 120, 70, { jitter: 0.12, n: 12, seed: 3800 }), "rgb(250,245,235)", 8)}</g>` + cross(C, 362, 940, 300, "x1"),
+        svg: pages + cross(C, 540, 800, 900, "x1"),
         anims: [
-          POP("cal", 0.0, [540, 780]),
-          ...names.slice(0, 11).map((_, i) => A(`pg${i}`, t0 + 0.2 + i * gap, 0.15, { y: 0, r: 0, o: 1 }, { y: -900, r: -14, o: 0 }, { ease: "inCubic", late: i > 0, sfx: "flip", origin: [540, 330] })),
-          DROP("tb", tP), A("cream", tP + 0.5, 0.35, { s: 0, o: 0 }, { s: 1, o: 1 }, { origin: [362, 940], ease: "outBack", sfx: "pop" }),
-          POP("x1", tRien, [362, 940]), FADEOUT("cream", tRien + 0.5, 0.5),
+          POP("cal", 0.0, [540, 760]),
+          // un mois toutes les ~0,27 s : chaque nom reste lisible, la feuille s'envole puis la suivante apparaît
+          ...names.slice(0, 11).map((_, i) => A(`pg${i}`, t0 + i * gap, 0.16, { y: 0, r: 0, o: 1 }, { y: -950, r: i % 2 ? 12 : -12, o: 0 }, { ease: "inCubic", late: i > 0, sfx: "flip", origin: [540, 330] })),
+          A("x1", tRien, 0.3, { s: 2.2, o: 0 }, { s: 1, o: 1 }, { origin: [540, 800], ease: "outCubic", sfx: "stamp" }),
         ],
-        loops: [], cam: SLOW(1.0, 1.05, 0, 0), punches: [{ t: tRien, amp: 0.05 }],
+        loops: [{ id: "x1", prop: "r", amp: 3, freq: 4, start: tRien + 0.5, origin: [540, 800] }],
+        cam: SLOW(1.0, 1.04, 0, 0), punches: [{ t: tRien + 0.3, amp: 0.06 }],
       };
     })(),
   };

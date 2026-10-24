@@ -19,6 +19,7 @@ const SOUNDS = {
   whoosh:{ d: 0.34, gain: 0.5, make: () => { const n = lcg(7); let f = 0; return (t) => { const k = 0.03 + 0.4 * Math.sin(Math.PI * Math.min(1, t / 0.34)); f += k * (n() - f); return f * Math.sin(Math.PI * Math.min(1, t / 0.34)) * 2.2; }; } },
   swish: { d: 0.26, gain: 0.55, make: () => { const n = lcg(9); let f = 0; return (t) => { const k = 0.05 + 0.35 * (t / 0.26); f += k * (n() - f); return f * Math.sin(Math.PI * Math.min(1, t / 0.26)) * 2.4; }; } },
   rise:  { d: 1.1, gain: 0.45, make: () => { const n = lcg(13); let f = 0; return (t) => { const u = Math.min(1, t / 1.1); f += (0.02 + 0.5 * u * u) * (n() - f); return (f * 2.2 + Math.sin(2 * Math.PI * (200 + 1500 * u * u) * t) * 0.35) * Math.sin(Math.PI * Math.min(1, u * 0.95)); }; } },
+  zap:   { d: 0.42, gain: 0.55, make: () => { const n = lcg(21); let f = 0; return (t) => { f += (0.3 + 0.5 * Math.exp(-t * 14)) * (n() - f); return (f * 1.6 + Math.sin(2 * Math.PI * (1400 * Math.exp(-t * 9) + 140) * t) * 0.5) * env(t, 0.001, 9); }; } },
   flip:  { d: 0.12, gain: 0.45, make: () => { const n = lcg(17); let f = 0; return (t) => { f += 0.25 * (n() - f); return f * env(t, 0.002, 38) * 2.4; }; } },
 };
 
@@ -66,10 +67,18 @@ export function eventsFromBeats(beats) {
   }
   // fusionne les doublons trop proches (même type à moins de 45 ms) et limite la densité
   ev.sort((x, y) => x.t - y.t);
-  const out = [], last = {};
+  const out = [], last = {}, recent = [];
+  const SOFT = new Set(["pop", "blop", "tick", "coin", "flip"]);
   for (const e of ev) {
     const gap = e.type === "blop" ? 0.05 : 0.045;
     if (last[e.type] !== undefined && e.t - last[e.type] < gap) continue;
+    // rafales : au-delà de 2 petits sons en 0,4 s, on ne garde que le premier, puis un sur trois
+    if (SOFT.has(e.type)) {
+      while (recent.length && e.t - recent[0] > 0.4) recent.shift();
+      recent.push(e.t);
+      if (recent.length > 2 && (recent.length % 3)) continue;
+      e.gain = (e.gain ?? 1) * 0.8;
+    }
     last[e.type] = e.t; out.push(e);
   }
   return out;

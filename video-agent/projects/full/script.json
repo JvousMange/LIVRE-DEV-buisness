@@ -465,17 +465,18 @@
   },
   {
    "scene": "fiveSun",
-   "at": "Et cinq"
+   "at": "Et cinq",
+   "offset": 0.25
   },
   {
    "scene": "fiveRazor",
    "at": "rasage",
-   "offset": -0.15
+   "offset": 0
   },
   {
    "scene": "fiveElbows",
    "at": "frottements",
-   "offset": -0.15
+   "offset": 0
   },
   {
    "scene": "triggers5",

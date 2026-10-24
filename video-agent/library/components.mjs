@@ -202,6 +202,8 @@ export function foundation(C) {
 // Femme : miroir, cheveux, cou, haut, visage, taches. tone : "deep" | "light" ; hair : "puff" | "bob". `extras` = SVG local (bras, fond de teint…).
 const TONES = {
   deep: { skin: FACE.skin, neck: FACE.neck, top: FACE.top, hair: FACE.hair, hair2: FACE.hair2, hoops: true },
+  mixed: { skin: "#C28E69", neck: "#9C6544", top: "#7E9A6B", hair: "#3A2214", hair2: "#4A2C1C", hoops: false },
+  dark: { skin: "#5E3A27", neck: "#4A2C1C", top: "#E0A030", hair: "#2E2019", hair2: "#3D2B22", hoops: true },
   light: { skin: "#EBC1A0", neck: "#D9A783", top: "#6B4A2A", hair: "#3A2214", hair2: "#4A2C1C", hoops: false },
 };
 export function woman(C, { cx = 540, cy = 760, scale = 1, spotsOn = true, extras = "", mirrorOn = true, tone = "deep", hair = "puff" } = {}) {

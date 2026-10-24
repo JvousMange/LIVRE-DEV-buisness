@@ -223,3 +223,76 @@ export function bolt(C, x1, y1, x2, y2, id = "bolt", w = 34) {
   const back = pts.slice().reverse().map((p, i, a) => [p[0] + (i === 0 || i === a.length - 1 ? 0 : 16), p[1] + 6]);
   return `<g id="${id}">` + layer(poly(pts.concat(back), { round: false }), C.alert, 7) + layer(poly(pts.slice(1, -1).concat(back.slice(1, -1)), { round: false }), C.accent, 8) + `</g>`;
 }
+
+// ───── Nouveaux accessoires (illustrations d'actifs, STOP, ticket de caisse, panier) ─────
+
+// Panneau STOP octogonal sur son poteau. Repère local : centre du panneau (0,0), poteau vers le bas.
+export function stopSign(C, cx, cy, s = 1, id = "stop", post = true) {
+  const oct = (r) => Array.from({ length: 8 }, (_, k) => { const a = ((22.5 + k * 45) * Math.PI) / 180; return [Math.cos(a) * r, Math.sin(a) * r]; });
+  return G(cx, cy, s,
+    (post ? layer(poly([[-24, 120], [24, 120], [24, 980], [-24, 980]], { round: false }), "#3D2B22", 3) : "") +
+    layer(poly(oct(200), { round: false }), C.cream, 5) + layer(poly(oct(172), { round: false }), C.alert, 6) +
+    txt(0, 34, 104, C.cream, "STOP", 900), id);
+}
+
+// Robinet : tuyau venant de la gauche, bec au-dessus du point (0,0)=bec. Poignée "${id}-h" (origine locale [0,-150]).
+export function faucet(C, cx, cy, s = 1, id = "faucet") {
+  return G(cx, cy, s,
+    layer(poly([[-900, -190], [-30, -190], [-30, -100], [-900, -100]], { round: false }), "#E8D0A8", 3) +
+    layer(poly([[-90, -230], [90, -230], [90, -60], [-90, -60]], { round: false }), "#D8C2A0", 4) +
+    layer(poly([[-34, -60], [34, -60], [34, 20], [-34, 20]], { round: false }), "#B5724B", 5) +
+    `<g id="${id}-h">` + layer(poly([[-12, -330], [12, -330], [12, -230], [-12, -230]], { round: false }), C.dark, 5) +
+    layer(poly([[-110, -372], [110, -372], [110, -330], [-110, -330]], { round: false }), C.alert, 6) + `</g>`, id);
+}
+
+// Ciseaux ouverts, pivot en (0,0), pointes vers le haut. Lames "${id}-a" / "${id}-b" (origine locale [0,0]).
+export function scissors(C, cx, cy, s = 1, id = "scissors") {
+  const blade = (sign, nm) => `<g id="${id}-${nm}"><g transform="scale(${sign} 1)">` +
+    layer(poly([[-8, 10], [22, 10], [16, -420], [-2, -440]], { round: false }), "#E8D0A8", 6) +
+    layer(poly([[-8, 10], [-40, 120], [-12, 190], [32, 120], [22, 10]], { round: false }), C.dark, 5) +
+    layer(blob(-14, 230, 66, 66, { jitter: 0.03, n: 12, seed: 4100 + (sign > 0 ? 0 : 1) }), C.solution, 6) +
+    layer(blob(-14, 230, 34, 34, { jitter: 0.03, n: 10, seed: 4102 }), C.cream, 7) + `</g></g>`;
+  return G(cx, cy, s, blade(1, "a") + blade(-1, "b") + layer(blob(0, 0, 22, 22, { n: 8, seed: 4103 }), C.alert, 8), id);
+}
+
+// Enzyme (grosse cellule croquée côté droit) + « bouchon » vert qui se loge dans l'encoche. Ids : id, "${id}-plug" (glisse en x local).
+export function enzyme(C, cx, cy, s = 1, id = "enzyme") {
+  const pts = [];
+  for (let a = 32; a <= 328; a += 16) pts.push([Math.cos((a * Math.PI) / 180) * 200, Math.sin((a * Math.PI) / 180) * 200]);
+  pts.push([40, 20], [40, -20]);
+  return G(cx, cy, s,
+    layer(poly(pts), "#CF9068", 4) + layer(blob(-60, -10, 110, 100, { jitter: 0.1, n: 10, seed: 4110 }), "#B5724B", 5) + layer(blob(-70, -30, 36, 30, { jitter: 0.1, n: 8, seed: 4111 }), "#E3B08C", 6) +
+    `<g id="${id}-plug">` + layer(poly([[48, 0], [190, -96], [350, -96], [350, 96], [190, 96]], { round: false }), C.solution, 7) + layer(poly([[200, -50], [330, -50], [330, 50], [200, 50]], { round: false }), "#A8B58F", 8) + `</g>`, id);
+}
+
+// Panier : arrière (poignée) et avant (corps tressé). Repère local : bord supérieur en y=0, fond en y=300.
+export function basketBack(C, cx, cy, s = 1, id = "bkb") {
+  return G(cx, cy, s, `<g filter="url(#paper2)"><path d="M-300 0 Q0 -520 300 0" fill="none" stroke="#7A4E32" stroke-width="30" stroke-linecap="round"/></g>` + layer(poly([[-370, -10], [370, -10], [350, 40], [-350, 40]], { round: false }), "#5E3A27", 3), id);
+}
+export function basketFront(C, cx, cy, s = 1, id = "bkf") {
+  let weave = "";
+  for (let i = 1; i < 6; i++) weave += `<line x1="${-340 + i * 40}" y1="${30 + i * 0}" x2="${-270 + i * 28}" y2="300" stroke="#7A4E32" stroke-width="6" opacity=".6"/>`;
+  for (let r = 0; r < 4; r++) weave += `<line x1="-340" y1="${70 + r * 60}" x2="340" y2="${70 + r * 60}" stroke="#7A4E32" stroke-width="6" opacity=".55"/>`;
+  return G(cx, cy, s, layer(poly([[-370, 20], [370, 20], [290, 300], [-290, 300]], { round: false }), "#B5724B", 4) + `<g filter="url(#paper1)">${weave}</g>` + layer(poly([[-384, 0], [384, 0], [372, 46], [-372, 46]], { round: false }), "#7A4E32", 5), id);
+}
+
+// Ticket de caisse, bord inférieur en dents de scie. (cx, top) = milieu du haut ; w × h.
+export function receipt(C, cx, top, w, h, id = "receipt", total = "120,00 €") {
+  const x0 = cx - w / 2, pts = [[x0, top], [x0 + w, top]];
+  const n = 14; for (let i = 0; i <= n; i++) pts.push([x0 + w - (w * i) / n, top + h + (i % 2 ? 0 : 26)]);
+  const rows = [[250, 70], [190, 70], [300, 70], [150, 70], [230, 70], [280, 70], [170, 70]];
+  let body = txt(cx, top + 92, 52, C.dark, "CAISSE", 900) + `<g filter="url(#paper1)"><line x1="${x0 + 40}" y1="${top + 130}" x2="${x0 + w - 40}" y2="${top + 130}" stroke="${C.dark}" stroke-width="5" stroke-dasharray="16 12"/></g>`;
+  rows.forEach(([bw], i) => {
+    const y = top + 190 + i * 78;
+    body += layer(poly([[x0 + 48, y], [x0 + 48 + bw, y], [x0 + 48 + bw, y + 28], [x0 + 48, y + 28]], { round: false }), C.dark, 2, { edge: "rgba(0,0,0,0)" }) +
+      layer(poly([[x0 + w - 48 - 90, y], [x0 + w - 48, y], [x0 + w - 48, y + 28], [x0 + w - 48 - 90, y + 28]], { round: false }), C.dark, 2, { edge: "rgba(0,0,0,0)" });
+  });
+  const yt = top + 190 + rows.length * 78 + 20;
+  body += `<g filter="url(#paper1)"><line x1="${x0 + 40}" y1="${yt - 30}" x2="${x0 + w - 40}" y2="${yt - 30}" stroke="${C.dark}" stroke-width="5" stroke-dasharray="16 12"/></g>` +
+    `<g filter="url(#paper1)"><text x="${x0 + 48}" y="${yt + 50}" font-family="${F}" font-weight="900" font-size="54" fill="${C.dark}">TOTAL</text></g>` + txt(cx, yt + 175, 112, C.alert, total, 900);
+  return `<g id="${id}">` + layer(poly(pts, { round: false }), C.cream, 5) + body + `</g>`;
+}
+
+export function equals(C, cx, cy, id = "equals") {
+  return `<g id="${id}">` + [-28, 28].map((dy) => layer(poly([[cx - 62, cy + dy - 13], [cx + 62, cy + dy - 13], [cx + 62, cy + dy + 13], [cx - 62, cy + dy + 13]], { round: false }), C.alert, 5)).join("") + `</g>`;
+}

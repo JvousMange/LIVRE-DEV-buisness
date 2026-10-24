@@ -1,7 +1,7 @@
 // Le mécanisme : mélanine, agression, « trop », coincée, peau claire/foncée, des mois, réguler, imaginer, source.
 import { hangingSign, layer, band, blob, star, poly, arrowPts } from "../../engine/paper.mjs";
 import { skin, stain, melanocyte, granuleSpecs, granule, badge, cross, tag, woman, sun, skinHand, questionMark, SPOTS, MEL, HAND_SKIN } from "../../library/components.mjs";
-import { razor, pimple, padlock, calendar, gauge, flame, sparkle, tube, jar, valve, check, shelf } from "../../library/components2.mjs";
+import { razor, pimple, padlock, calendar, gauge, flame, sparkle, tube, jar, valve, check, shelf, stopSign } from "../../library/components2.mjs";
 import { A, POP, FADEIN, FADEOUT, DROP, SLOW } from "./kit.mjs";
 
 export function scenesB(C, X) {
@@ -33,11 +33,11 @@ export function scenesB(C, X) {
     regulate: (() => {
       const tReg = R("regulate", "réguler"), tAgr = R("regulate", "agression"), tDays = R("regulate", "tous les jours");
       return {
-        svg: gauge(C, 540, 800, 1.2, "gauge") +
+        svg: gauge(C, 540, 800, 1.2, "gauge") + tag(C, 540, 300, 520, 100, "MÉLANINE", { id: "tgM", fontSize: 56, color: C.solution, seed: 13 }) +
           pimple(C, 160, 460, 1.0, "pim") + razor(C, 930, 440, 0.55, "rz") + check(C, 860, 1100, 200, "ok") +
           Array.from({ length: 7 }, (_, i) => `<g id="d${i}">` + layer(blob(150 + i * 130, 1330, 42, 42, { jitter: 0.04, n: 10, seed: 1200 + i }), C.solution, 5) + `</g>`).join(""),
         anims: [
-          
+          POP("tgM", R("regulate", "mélanine", -0.2), [540, 300]),
           A("gauge-needle", tReg + 0.15, 1.2, { r: 100 }, { r: 0 }, { ease: "outBack", origin: [0, 0] }),
           POP("pim", tAgr, [160, 460]), POP("rz", tAgr + 0.25, [930, 440]),
           POP("ok", R("regulate", "plus trop"), [860, 1100]),
@@ -72,7 +72,25 @@ export function scenesB(C, X) {
     },
 
     // « mais avec une solution qui freine la fabrication de pigment à la source. »
-    source: sourceScene(C, R, "source", { cue: "freine", ring: "source" }),
+    // Le flux de pigment monte depuis le mélanocyte ; un énorme panneau STOP s'abat en travers et tout s'arrête.
+    source: (() => {
+      const tg = R("source", "freine"), tSrc = R("source", "source"), X0 = 540;
+      const gran = []; for (let k = 0; k < 12; k++) { const t = 0.1 + k * 0.28; if (t < tg - 0.2) gran.push({ id: `fl${k}`, t }); }
+      return {
+        svg: skin(C) + melanocyte(C) +
+          gran.map((g) => `<g id="${g.id}">` + layer(blob(X0 + (g.t * 37) % 60 - 30, 1190, 24, 24, { jitter: 0.1, n: 8, seed: 1300 }), C.problem, 5) + `</g>`).join("") +
+          stopSign(C, 540, 1010, 0.95, "stop", false).replace(/<g transform="translate\(540 1010\) scale\(0.85\)">/, '<g transform="translate(540 1010) scale(0.85)">') +
+          ringAt(MEL[0], MEL[1], 245, 210, "ring", 14),
+        anims: [
+          ...gran.flatMap((g) => [A(g.id, g.t, 0.25, { s: 0 }, { s: 1 }, { origin: [X0, 1190], ease: "outBack", sfx: "pop" }), A(g.id, g.t, 1.3, { y: 0 }, { y: -330 }, { ease: "lin", origin: [X0, 1190], late: true, sfx: false }), FADEOUT(g.id, tg + 0.05, 0.2, { sfx: false })]),
+          A("stop", tg - 0.15, 0.4, { y: -1500, r: -10 }, { y: 0, r: 0 }, { ease: "outBack", origin: [540, 1010], sfx: [{ type: "whoosh", gain: 0.6 }, { type: "stamp", dt: 0.32, gain: 1 }] }),
+          POP("ring", tSrc, MEL),
+        ],
+        loops: [{ id: "mel", prop: "s", amp: 0.04, freq: 2.4, start: 0.2, origin: MEL }, { id: "stop", prop: "r", amp: 2.2, freq: 7, start: tg + 0.5, origin: [540, 1010] }],
+        punches: [{ t: tg + 0.2, amp: 0.07 }],
+        cam: { from: { s: 1.6, y: -215 }, to: { s: 1.55, y: -190 }, ease: "lin" },
+      };
+    })(),
   };
 }
 

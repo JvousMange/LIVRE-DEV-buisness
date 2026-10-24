@@ -27,20 +27,21 @@ export function scenesOpen(C, X) {
     skinRub: (() => {
       const gr = granuleSpecs();
       const tDive = R("skinRub", "alors"), tCross = R("skinRub", "taches"), tTag = R("skinRub", "surface"), tFab = R("skinRub", "fabriquent");
+      const tFab0 = Math.min(tFab, tDive + 0.35);   // la mélanine se forme dès la plongée et a le temps d'arriver à la tache
       return {
-        svg: skin(C) + stain(C) + melanocyte(C) + gr.map((g) => granule(C, g)).join("") + badge(C, 300, 420, 1) + cross(C, 730, 640, 170) +
-          skinHand(C),
+        svg: skin(C) + stain(C) + melanocyte(C) + gr.map((g) => granule(C, g)).join("") + badge(C, 300, 420, 1) +
+          skinHand(C) + cross(C, 540, 850, 300, "cross"),
         anims: [
           POP("badge", 0.05, [300, 420]),
           A("hand", 0.1, 0.5, { x: 520, y: -430 }, { x: 0, y: 0 }, { ease: "outCubic", origin: HAND_SKIN }),
-          POP("cross", tCross, [730, 640]), 
+          POP("cross", tDive - 0.55, [540, 850]),
           A("hand", tDive - 0.15, 0.45, { x: 0, y: 0 }, { x: 560, y: -430 }, { ease: "inCubic", origin: HAND_SKIN, late: true }),
           A("mel", tDive, 0.5, { o: 0 }, { o: 1 }, { ease: "lin", origin: MEL }),
           ...gr.flatMap((g, i) => {
             const off = { x: g.from[0] - g.to[0], y: g.from[1] - g.to[1] };
             return [
-              A(g.id, tFab + i * 0.06, 0.3, { ...off, s: 0 }, { ...off, s: 1 }, { origin: g.to, ease: "outBack" }),
-              A(g.id, tFab + 1.0 + i * 0.025, 0.6, { ...off }, { x: 0, y: 0 }, { origin: g.to, ease: "inOut", late: true }),
+              A(g.id, tFab0 + i * 0.035, 0.25, { ...off, s: 0 }, { ...off, s: 1 }, { origin: g.to, ease: "outBack" }),
+              A(g.id, tFab0 + 0.55 + i * 0.025, 0.5, { ...off }, { x: 0, y: 0 }, { origin: g.to, ease: "inOut", late: true }),
             ];
           }),
         ],
@@ -50,7 +51,7 @@ export function scenesOpen(C, X) {
           { t0: tDive - 0.2, t1: tDive + 1.0, from: { s: 1.55, y: 104 }, to: { s: 1.5, y: -450 }, ease: "inOut" },
           { t0: tDive + 1.0, t1: X.dur("skinRub"), from: { s: 1.5, y: -450 }, to: { s: 1.6, y: -470 }, ease: "lin" },
         ],
-        punches: [{ t: tCross, amp: 0.04 }],
+        punches: [{ t: tDive - 0.55, amp: 0.04 }],
       };
     })(),
 
@@ -66,21 +67,20 @@ export function scenesOpen(C, X) {
           layer(poly([[170, 370], [910, 370], [910, 1460], [170, 1460]], { round: false }), "#E8D0A8", 4) +
           `<g clip-path="url(#mclip)">${woman(C, { cx: 540, cy: 900, scale: 0.95, mirrorOn: false, extras: foundation(C) + arm(C, { tool: "brush" }) })}` +
           `<g opacity=".28" filter="url(#paperS1)"><path d="M170 800 L420 370 L520 370 L170 960Z" fill="#FFFFFF"/></g></g>` +
-          badge(C, 205, 275, 2) + cross(C, 790, 650, 190),
+          badge(C, 205, 275, 2),
         anims: [
           POP("badge", 0.05, [205, 275]),
           A("arm", 0.1, 0.55, { x: 520, y: 320 }, { x: 0, y: 0 }, { ease: "outCubic", origin: HAND_BRUSH }),
           ...SPOTS.map((sp, i) => POP(`pt${i}`, tCover + i * 0.1, [sp.x, sp.y])),
           A("arm", tEnd, 0.6, { x: 0, y: 0 }, { x: 560, y: 320 }, { ease: "inCubic", origin: HAND_BRUSH, late: true }),
           ...SPOTS.map((sp, i) => A(`pt${i}`, tEnd + 0.1 + i * 0.05, 0.45, { o: 1 }, { o: 0 }, { ease: "lin", late: true })),
-          POP("cross", tX, [790, 650]),
         ],
         loops: [
           { id: "arm", prop: "x", amp: 14, freq: 1.3, start: 0.7, origin: HAND_BRUSH },
           { id: "arm", prop: "y", amp: 10, freq: 1.3, phase: 0.25, start: 0.7, origin: HAND_BRUSH },
         ],
         cam: { from: { s: 1.12, y: 0 }, to: { s: 1.34, y: 0 }, ease: "lin" },
-        punches: [{ t: tX, amp: 0.05 }],
+        punches: [{ t: tEnd + 0.1, amp: 0.04 }],
       };
     })(),
   };
