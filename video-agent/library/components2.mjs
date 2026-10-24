@@ -140,4 +140,41 @@ export function shelf(C, cx, y, w = 960, id = "shelf") {
   return `<g id="${id}">` + layer(`M${cx - w / 2} ${y} L${cx + w / 2} ${y} L${cx + w / 2} ${y + 40} L${cx - w / 2} ${y + 40}Z`, "#A9845A", 3) + `</g>`;
 }
 
+function limb2(x1, y1, x2, y2, w) {
+  const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy), nx = -dy / len, ny = dx / len;
+  return poly([[x1 + nx * w / 2, y1 + ny * w / 2], [x2 + nx * w / 2, y2 + ny * w / 2], [x2 - nx * w / 2, y2 - ny * w / 2], [x1 - nx * w / 2, y1 - ny * w / 2]], { round: false });
+}
+
+// Loupe : verre translucide, anneau et manche (repère local centré sur le verre).
+export function loupe(C, cx, cy, r = 150, id = "loupe") {
+  return G(cx, cy, 1,
+    layer(limb2(r * 0.7, r * 0.7, r * 1.7, r * 1.7, r * 0.22), C.dark, 5) +
+    layer(blob(0, 0, r + 22, r + 22, { jitter: 0.01, n: 20, seed: 51 }), C.kraftDark, 5) +
+    layer(blob(0, 0, r, r, { jitter: 0.01, n: 20, seed: 52 }), "rgba(255,247,230,.35)", 6) +
+    layer(blob(-r * 0.35, -r * 0.4, r * 0.28, r * 0.12, { jitter: 0.05, n: 10, seed: 53 }), "rgba(255,255,255,.55)", 7), id);
+}
+
+// Clé en carton (tête ronde + dents), repère local centré sur la tête.
+export function keyItem(C, cx, cy, s = 1, id = "key", label = "") {
+  return G(cx, cy, s,
+    layer(limb2(40, 0, 330, 0, 36), C.accent, 5) + layer(blob(0, 0, 66, 66, { jitter: 0.02, n: 14, seed: 54 }), C.accent, 5) + layer(blob(0, 0, 26, 26, { jitter: 0.02, n: 10, seed: 55 }), "#7A4E32", 6) +
+    layer("M250 18 L290 18 L290 70 L250 70Z", C.accent, 5) + layer("M300 18 L330 18 L330 56 L300 56Z", C.accent, 5) + (label ? txt(190, -34, 30, C.dark, label) : ""), id);
+}
+
+// Plaque de serrure : fond carton, pastille de teint, trou de serrure.
+export function lockPlate(C, cx, cy, w, h, swatch, id = "plate") {
+  return G(cx, cy, 1,
+    layer(`M${-w / 2} ${-h / 2} L${w / 2} ${-h / 2} L${w / 2} ${h / 2} L${-w / 2} ${h / 2}Z`, "#E8D0A8", 3) +
+    layer(blob(-w * 0.27, 0, h * 0.34, h * 0.34, { jitter: 0.02, n: 16, seed: 56 }), swatch, 4) +
+    layer(blob(w * 0.22, -h * 0.08, 46, 46, { jitter: 0.02, n: 12, seed: 57 }), C.dark, 5) + layer("M" + (w * 0.22 - 22) + " " + (-h * 0.08 + 10) + " L" + (w * 0.22 + 22) + " " + (-h * 0.08 + 10) + " L" + (w * 0.22 + 34) + " " + (h * 0.22) + " L" + (w * 0.22 - 34) + " " + (h * 0.22) + "Z", C.dark, 5), id);
+}
+
+// Main qui pointe un doigt (vers la gauche ; dir = -1 pour la retourner). Repère local : bout du doigt vers x négatif.
+export function pointer(C, cx, cy, dir = 1, id = "pointer", skin = "#9C6544", sleeve = "#2E2019") {
+  return `<g id="${id}"><g transform="translate(${cx} ${cy}) scale(${dir} 1)">` +
+    layer(limb2(560, 120, 380, 40, 150), sleeve, 6) + layer(limb2(380, 40, 120, 10, 96), skin, 7) +
+    layer(blob(90, 10, 70, 62, { jitter: 0.08, n: 12, seed: 58 }), skin, 8) + layer(limb2(70, -6, -150, -10, 36), skin, 9) + layer(blob(-156, -10, 24, 22, { jitter: 0.05, n: 8, seed: 59 }), skin, 9) +
+    layer(blob(70, 54, 34, 26, { jitter: 0.1, n: 8, seed: 60 }), skin, 9) + `</g></g>`;
+}
+
 export { arrowPts };

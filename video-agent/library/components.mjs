@@ -8,24 +8,25 @@ export const MEL = [540, 1265];       // position du mélanocyte
 const f1 = (n) => Math.round(n * 10) / 10;
 
 // Coupe de peau complète (statique) : derme, épiderme, cellules, couche cornée.
-export function skin(C) {
+export function skin(C, { tone = "deep" } = {}) {
+  const K = tone === "light" ? { dermis: "#C99A78", fiber: "#E8D0A8", epi: "#EBC1A0", basal: "#D9A783", cell: "#E3B091" } : { dermis: C.skinDeep, fiber: "#C79A74", epi: C.skinLight, basal: "#B5724B", cell: "#CF9068" };
   const r = rng(42);
   const p = [];
-  p.push(layer(band(-60, W + 60, 1330, H + 80, { amp: 14, seed: 11 }), C.skinDeep, 1));
+  p.push(layer(band(-60, W + 60, 1330, H + 80, { amp: 14, seed: 11 }), K.dermis, 1));
   for (let i = 0; i < 6; i++) {
     const y = 1450 + i * 72, x = -40 + r() * 420;
-    p.push(layer(band(x, x + 420 + r() * 380, y, y + 20, { amp: 16, step: 36, seed: 20 + i }), "#C79A74", 2));
+    p.push(layer(band(x, x + 420 + r() * 380, y, y + 20, { amp: 16, step: 36, seed: 20 + i }), K.fiber, 2));
   }
   for (let i = 0; i < 5; i++) {
     const x = 120 + i * 210 + r() * 50, y = 1560 + r() * 240;
     p.push(layer(blob(x, y, 30, 30, { jitter: 0.1, n: 9, seed: 300 + i }), C.alert, 3));
     p.push(layer(blob(x, y, 13, 13, { jitter: 0.1, n: 8, seed: 320 + i }), "#7A2E1A", 4));
   }
-  p.push(layer(band(-60, W + 60, 1010, 1380, { amp: 16, seed: 12 }), C.skinLight, 2));
-  for (let x = 10; x < W + 60; x += 96) p.push(layer(blob(x + 46, 1330, 42, 38, { jitter: 0.1, n: 9, seed: x }), "#B5724B", 3));
+  p.push(layer(band(-60, W + 60, 1010, 1380, { amp: 16, seed: 12 }), K.epi, 2));
+  for (let x = 10; x < W + 60; x += 96) p.push(layer(blob(x + 46, 1330, 42, 38, { jitter: 0.1, n: 9, seed: x }), K.basal, 3));
   for (let row = 0; row < 2; row++)
     for (let x = row ? 70 : 20; x < W; x += 104)
-      p.push(layer(blob(x + 40, 1100 + row * 78, 40, 30, { jitter: 0.1, n: 9, seed: x * 7 + row }), "#CF9068", 2));
+      p.push(layer(blob(x + 40, 1100 + row * 78, 40, 30, { jitter: 0.1, n: 9, seed: x * 7 + row }), K.cell, 2));
   p.push(layer(band(-60, W + 60, SURFACE, 1030, { amp: 9, step: 54, seed: 13 }), C.cream, 3));
   for (let i = 0; i < 9; i++) p.push(layer(blob(70 + i * 120 + r() * 30, SURFACE - 8, 36, 11, { seed: 60 + i }), C.cream, 2));
   return `<g id="skin">${p.join("")}</g>`;

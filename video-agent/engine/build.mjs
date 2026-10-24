@@ -35,20 +35,21 @@ const mid = (i) => (script.segments[i].t1 + script.segments[i + 1].t0) / 2;
 
 // 2. Débuts de plans : ancre textuelle (« at ») → coupe au milieu du silence précédent, ou juste avant le mot.
 let cursor = 0;
+const findAnchor = (text, from) => {
+  const toks = text.split(/\s+/).map(norm).filter(Boolean);
+  for (let i = from; i + toks.length <= words.length; i++) if (toks.every((tk, k) => words[i + k].n === tk)) return i;
+  throw new Error(`ancre introuvable dans la voix : « ${text} »`);
+};
+const timeOfWord = (i) => { const w = words[i]; return i === 0 ? 0 : segFirst[w.seg] === i && w.seg > 0 ? mid(w.seg - 1) : w.t0 - 0.04; };
 const startOfBeat = (b) => {
   if (b.from) { const [sg, wd] = b.from; const wi = segFirst[sg] + wd; return { wi, t: sg === 0 && wd === 0 ? 0 : wd === 0 ? mid(sg - 1) : words[wi].t0 - 0.04 }; }
-  const toks = b.at.split(/\s+/).map(norm).filter(Boolean);
-  for (let i = cursor; i + toks.length <= words.length; i++) {
-    if (toks.every((tk, k) => words[i + k].n === tk)) {
-      cursor = i + 1;
-      const w = words[i];
-      return { wi: i, t: i === 0 ? 0 : segFirst[w.seg] === i && w.seg > 0 ? mid(w.seg - 1) : w.t0 - 0.04 };
-    }
-  }
-  throw new Error(`ancre introuvable dans la voix : « ${b.at} »`);
+  if (b.reset) cursor = 0;
+  const i = findAnchor(b.at, cursor);
+  cursor = i + 1;
+  return { wi: i, t: timeOfWord(i) };
 };
 const starts = script.beats.map(startOfBeat);
-const info = script.beats.map((b, i) => ({ name: b.scene, t0: starts[i].t, t1: i < starts.length - 1 ? starts[i + 1].t : T }));
+const info = script.beats.map((b, i) => ({ name: b.scene, t0: starts[i].t, t1: b.until ? timeOfWord(findAnchor(b.until, starts[i].wi + 1)) : i < starts.length - 1 ? starts[i + 1].t : T }));
 // ctx.rel(plan, « mots », décalage) : instant (relatif au début du plan) où la voix dit ces mots.
 const ctx = {
   rel(name, phrase, offset = 0) {
@@ -106,9 +107,9 @@ if (at.length || peek.length) {
   for (const name of peek) {
     const b = info.find((x) => x.name === name);
     if (!b) throw new Error(`plan inconnu : ${name}`);
-    [0.12, 0.38, 0.64, 0.92].forEach((f, k) => jobs.push([`${name}_${k}`, b.t0 + f * (b.t1 - b.t0)]));
+    [0.12, 0.38, 0.64, 0.92].forEach((f, k) => jobs.push([`${name}_${k}`, b.t0 + f * (b.t1 - b.t0), info.indexOf(b)]));
   }
-  for (const [label, t] of jobs) { await page.evaluate((x) => window.setFrame(x), t); await page.screenshot({ path: path.join(out, `preview_${label}.png`) }); }
+  for (const [label, t, bi] of jobs) { await page.evaluate(([x, i]) => window.setFrame(x, i), [t, bi]); await page.screenshot({ path: path.join(out, `preview_${label}.png`) }); }
   await browser.close();
   console.log("aperçus :", jobs.map((j) => j[0]).join(", "));
   process.exit(0);

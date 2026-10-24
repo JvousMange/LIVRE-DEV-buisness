@@ -29,8 +29,8 @@
     el.setAttribute("transform", `translate(${g("x", 0)} ${g("y", 0)}) translate(540 960) scale(${g("s", 1)}) translate(-540 -960)`);
   }
 
-  window.setFrame = function (t) {
-    let bi = D.beats.findIndex((b) => t >= b.t0 && t < b.t1);
+  window.setFrame = function (t, forceBeat) {
+    let bi = forceBeat ?? D.beats.findIndex((b) => t >= b.t0 && t < b.t1);
     if (bi < 0) bi = D.beats.length - 1;
     D.beats.forEach((_, i) => { $("scene-" + i).style.display = i === bi ? "inline" : "none"; });
     const b = D.beats[bi];
