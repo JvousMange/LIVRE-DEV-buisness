@@ -121,8 +121,8 @@ export function shield(C, cx, cy, s = 1, id = "shield") {
 }
 
 // Pastille numérotée (« 1 », « 2 »…) : motif répété pour chaque raison.
-export function badge(C, cx, cy, n, id = "badge") {
-  return `<g id="${id}">` + layer(blob(cx, cy, 88, 88, { jitter: 0.05, n: 14, seed: 90 + n }), C.alert, 5) +
+export function badge(C, cx, cy, n, id = "badge", color) {
+  return `<g id="${id}">` + layer(blob(cx, cy, 88, 88, { jitter: 0.05, n: 14, seed: 90 + n }), color || C.alert, 5) +
     `<g filter="url(#paper6)"><text x="${cx}" y="${cy + 40}" text-anchor="middle" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="900" font-size="118" fill="${C.cream}">${n}</text></g></g>`;
 }
 
@@ -145,4 +145,88 @@ export function sponge(C, cx, cy, id = "sponge") {
 export function coverPatch(C, id = "patch") {
   return `<g id="${id}">` + layer(blob(540, 893, 300, 44, { jitter: 0.06, n: 14, seed: 52 }), C.skinLight, 6) +
     layer(blob(500, 884, 170, 12, { jitter: 0.1, n: 10, seed: 53 }), "#E3B08C", 6) + `</g>`;
+}
+
+// ---------- Personnage : femme sans visage, peau mate à foncée, cheveux naturels ----------
+// Coordonnées LOCALES : (0,0) = centre du visage. Les ids internes sont animés en repère local.
+export const FACE = { skin: "#9C6544", neck: "#7C4C33", hair: "#2E2019", hair2: "#3D2B22", top: "#2E2019", mirror: "#E8D0A8" };
+export const SPOTS = [
+  { x: -104, y: 104, rx: 23, ry: 17 }, { x: -130, y: 140, rx: 13, ry: 10 }, { x: -80, y: 132, rx: 12, ry: 9 }, { x: -122, y: 76, rx: 11, ry: 9 },
+  { x: 108, y: 98, rx: 25, ry: 18 }, { x: 132, y: 136, rx: 14, ry: 10 }, { x: 84, y: 128, rx: 12, ry: 9 }, { x: 126, y: 72, rx: 11, ry: 9 },
+  { x: -22, y: 122, rx: 20, ry: 12 }, { x: 22, y: 118, rx: 18, ry: 11 }, { x: 6, y: 180, rx: 20, ry: 13 },
+];
+
+function limb(x1, y1, x2, y2, w) {
+  const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy), nx = -dy / len, ny = dx / len;
+  return poly([[x1 + nx * w / 2, y1 + ny * w / 2], [x2 + nx * w / 2, y2 + ny * w / 2], [x2 - nx * w / 2, y2 - ny * w / 2], [x1 - nx * w / 2, y1 - ny * w / 2]], { round: false });
+}
+
+// Miroir de salle de bain derrière elle.
+export function mirror(C, id = "mirror") {
+  return `<g id="${id}">` + layer(blob(0, -30, 385, 470, { jitter: 0.015, n: 20, seed: 31 }), C.kraftDark, 2) +
+    layer(blob(0, -30, 350, 435, { jitter: 0.015, n: 20, seed: 32 }), FACE.mirror, 3) + `</g>`;
+}
+
+// Bras + main + éponge entrant par la droite (repère local).
+export function arm(C, id = "arm") {
+  return `<g id="${id}">` +
+    layer(limb(640, 700, 470, 500, 120), FACE.top, 6) +
+    layer(limb(470, 500, 150, 120, 84), FACE.skin, 7) +
+    layer(blob(122, 104, 56, 64, { jitter: 0.1, n: 10, seed: 63 }), FACE.skin, 8) +
+    layer(blob(98, 86, 70, 36, { jitter: 0.08, n: 10, seed: 64 }), C.accent, 9) + `</g>`;
+}
+
+// Taches pour chaque SPOTS[i], id "sp{i}".
+export function spots(C, show = true) {
+  return SPOTS.map((s, i) => `<g id="sp${i}"${show ? "" : ' opacity="0"'}>` + layer(blob(s.x, s.y, s.rx, s.ry, { jitter: 0.22, n: 10, seed: 500 + i }), C.problem, 6, { edge: "rgba(255,225,190,.28)" }) + `</g>`).join("");
+}
+
+// Fond de teint qui recouvre chaque tache, id "pt{i}".
+export function foundation(C) {
+  return SPOTS.map((s, i) => `<g id="pt${i}">` + layer(blob(s.x, s.y, s.rx * 1.55, s.ry * 1.6, { jitter: 0.1, n: 10, seed: 600 + i }), "#BE8861", 7) + `</g>`).join("");
+}
+
+// Femme : miroir, cheveux, cou, haut sombre, visage, boucle d'oreille, taches. `extras` = SVG local (bras, fond de teint…).
+export function woman(C, { cx = 540, cy = 760, scale = 1, spotsOn = true, extras = "", mirrorOn = true } = {}) {
+  const hair = [];
+  for (let i = 0; i < 15; i++) {
+    const a = Math.PI * (0.78 + (i / 14) * 1.44);         // arc au-dessus et sur les côtés de la tête
+    const r = 215 + (i % 3) * 12;
+    hair.push(layer(blob(Math.cos(a) * r, Math.sin(a) * r * 0.98 - 20, 92 + (i % 2) * 14, 92 + (i % 2) * 14, { jitter: 0.1, n: 9, seed: 700 + i }), i % 2 ? FACE.hair : FACE.hair2, 3));
+  }
+  const parts = [
+    mirrorOn ? mirror(C) : "",
+    hair.join(""),
+    layer("M-420 1000 L-410 470 Q-390 340 -250 305 Q-130 270 -64 250 L64 250 Q130 270 250 305 Q390 340 410 470 L420 1000Z", FACE.top, 3),
+    layer("M-62 130 L62 130 L66 300 Q0 345 -66 300Z", FACE.neck, 4),
+    layer("M-118 262 Q0 372 118 262 Q70 330 0 335 Q-70 330 -118 262Z", FACE.skin, 5),
+    layer(blob(-176, 28, 27, 46, { n: 8, seed: 71 }), FACE.skin, 4) + layer(blob(176, 28, 27, 46, { n: 8, seed: 72 }), FACE.skin, 4),
+    `<g filter="url(#paper3)"><circle cx="-180" cy="84" r="27" fill="none" stroke="${C.accent}" stroke-width="9"/><circle cx="180" cy="84" r="27" fill="none" stroke="${C.accent}" stroke-width="9"/></g>`,
+    layer(blob(0, 0, 168, 212, { jitter: 0.015, n: 16, seed: 73 }), FACE.skin, 5),
+    layer(blob(0, -172, 184, 74, { jitter: 0.05, n: 12, seed: 74 }), FACE.hair, 6, { edge: "rgba(0,0,0,0)" }),
+    spotsOn ? spots(C) : "",
+    extras,
+  ];
+  return `<g id="woman"><g transform="translate(${cx} ${cy}) scale(${scale})">${parts.join("")}</g></g>`;
+}
+
+// ---------- Objets de maquillage (vue de dessus) ----------
+export function foundationBottle(C, cx, cy, s = 1, id = "fbottle") {
+  const g = (d, fill, z) => layer(d, fill, z);
+  return `<g id="${id}"><g transform="translate(${cx} ${cy}) scale(${s})">` +
+    g("M-14 -190 L14 -190 L14 -150 L-14 -150Z", C.dark, 3) + g("M-14 -204 L62 -204 L62 -182 L-14 -182Z", C.dark, 3) +
+    g("M-24 -152 L24 -152 L24 -108 L-24 -108Z", C.dark, 3) +
+    g("M-55 130 Q-55 152 -33 152 L33 152 Q55 152 55 130 L55 -88 Q55 -108 35 -108 L-35 -108 Q-55 -108 -55 -88Z", FACE.mirror, 3) +
+    g("M-45 134 L45 134 L45 -42 L-45 -42Z", "#BE8861", 4) + g("M-38 -30 L-28 -30 L-28 120 L-38 120Z", "#D9A47D", 5) + `</g></g>`;
+}
+export function compact(C, cx, cy, s = 1, id = "compact") {
+  return `<g id="${id}"><g transform="translate(${cx} ${cy}) scale(${s})">` +
+    layer(blob(0, 0, 132, 132, { jitter: 0.02, n: 18, seed: 81 }), C.kraftDark, 3) +
+    layer(blob(0, 0, 102, 102, { jitter: 0.02, n: 18, seed: 82 }), "#BE8861", 4) +
+    layer(blob(-34, -30, 36, 24, { jitter: 0.1, n: 10, seed: 83 }), "#D9A47D", 5) + `</g></g>`;
+}
+export function brush(C, cx, cy, rot = 35, s = 1, id = "brush") {
+  return `<g id="${id}"><g transform="translate(${cx} ${cy}) rotate(${rot}) scale(${s})">` +
+    layer("M-15 0 L15 0 L9 300 L-9 300Z", C.dark, 3) + layer("M-24 -44 L24 -44 L24 6 L-24 6Z", C.cream, 4) +
+    layer(blob(0, -120, 50, 82, { jitter: 0.08, n: 12, seed: 84 }), "#BE8861", 4) + `</g></g>`;
 }

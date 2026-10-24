@@ -40,7 +40,7 @@
     for (const l of b.loops || []) {
       org[l.id] = org[l.id] || l.origin || [0, 0];
       const k = clamp01((q - (l.start || 0)) / 0.3);
-      S(l.id)[l.prop] += k * l.amp * Math.sin(2 * Math.PI * l.freq * q);
+      S(l.id)[l.prop] += k * l.amp * Math.sin(2 * Math.PI * (l.freq * q + (l.phase || 0)));
     }
     for (const id in st) {
       const s = st[id], h = hash(id);

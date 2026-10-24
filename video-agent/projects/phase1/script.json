@@ -6,20 +6,103 @@
   "fps": 15,
   "_alignment": "t0/t1 = parole détectée entre deux silences de la voix (ffmpeg silencedetect). Les mots sont répartis au prorata de leur longueur dans chaque segment.",
   "segments": [
-    { "text": "Cinq raisons qui font que ton hyperpigmentation ne part pas.", "t0": 0.0, "t1": 2.98 },
-    { "text": "Un,", "t0": 3.58, "t1": 3.73 },
-    { "text": "tu essaies de faire partir tes taches à la surface,", "t0": 4.16, "t1": 6.42 },
-    { "text": "alors qu'elles se fabriquent sous ta peau.", "t0": 6.55, "t1": 8.10 },
-    { "text": "Deux,", "t0": 8.58, "t1": 8.85 },
-    { "text": "tu les caches,", "t0": 9.28, "t1": 10.0 },
-    { "text": "fond de teint, maquillage,", "t0": 10.15, "t1": 11.54 },
-    { "text": "mais tu ne les fais pas vraiment partir.", "t0": 11.68, "t1": 13.26 }
+    {
+      "text": "Cinq raisons qui font que ton hyperpigmentation ne part pas.",
+      "t0": 0.0,
+      "t1": 2.98
+    },
+    {
+      "text": "Un,",
+      "t0": 3.58,
+      "t1": 3.73
+    },
+    {
+      "text": "tu essaies de faire partir tes taches à la surface,",
+      "t0": 4.16,
+      "t1": 6.42
+    },
+    {
+      "text": "alors qu'elles se fabriquent sous ta peau.",
+      "t0": 6.55,
+      "t1": 8.1
+    },
+    {
+      "text": "Deux,",
+      "t0": 8.58,
+      "t1": 8.85
+    },
+    {
+      "text": "tu les caches,",
+      "t0": 9.28,
+      "t1": 10.0
+    },
+    {
+      "text": "fond de teint, maquillage,",
+      "t0": 10.15,
+      "t1": 11.54
+    },
+    {
+      "text": "mais tu ne les fais pas vraiment partir.",
+      "t0": 11.68,
+      "t1": 13.26
+    }
   ],
   "beats": [
-    { "scene": "hook",   "segments": [0, 0] },
-    { "scene": "scrub",  "segments": [1, 2] },
-    { "scene": "make",   "segments": [3, 3] },
-    { "scene": "cover",  "segments": [4, 6] },
-    { "scene": "reveal", "segments": [7, 7] }
+    {
+      "scene": "hookDots",
+      "from": [
+        0,
+        0
+      ]
+    },
+    {
+      "scene": "hookWoman",
+      "from": [
+        0,
+        4
+      ]
+    },
+    {
+      "scene": "scrub",
+      "from": [
+        1,
+        0
+      ]
+    },
+    {
+      "scene": "surface",
+      "from": [
+        2,
+        6
+      ]
+    },
+    {
+      "scene": "make",
+      "from": [
+        3,
+        0
+      ]
+    },
+    {
+      "scene": "mirror",
+      "from": [
+        4,
+        0
+      ]
+    },
+    {
+      "scene": "props",
+      "from": [
+        6,
+        0
+      ]
+    },
+    {
+      "scene": "reveal",
+      "from": [
+        7,
+        0
+      ]
+    }
   ]
 }

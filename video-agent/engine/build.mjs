@@ -8,6 +8,7 @@ import { defs, kraftBackground, finish } from "./paper.mjs";
 
 const { chromium } = createRequire(import.meta.url)("playwright");
 const dir = path.resolve(process.argv[2]);
+const at = ((process.argv.find((a) => a.startsWith("--at=")) || "").split("=")[1] || "").split(",").filter(Boolean).map(Number);
 const limit = Number((process.argv.find((a) => a.startsWith("--frames=")) || "").split("=")[1]) || Infinity;
 const script = JSON.parse(readFileSync(path.join(dir, "script.json")));
 const brand = JSON.parse(readFileSync(path.resolve(dir, script.brand)));
@@ -16,12 +17,13 @@ const out = path.join(dir, "out"), framesDir = path.join(dir, "frames");
 rmSync(framesDir, { recursive: true, force: true }); mkdirSync(framesDir, { recursive: true }); mkdirSync(out, { recursive: true });
 
 // 1. Alignement : mots répartis au prorata de leur longueur dans chaque segment de parole.
-const words = [];
+const words = [], segWords = [];
 script.segments.forEach((seg, si) => {
+  segWords[si] = [];
   const ws = seg.text.split(/\s+/).filter(Boolean);
   const wt = ws.map((w) => w.replace(/[^\p{L}\p{N}]/gu, "").length + 1.5), tot = wt.reduce((a, b) => a + b, 0);
   let t = seg.t0;
-  ws.forEach((w, i) => { const d = ((seg.t1 - seg.t0) * wt[i]) / tot; words.push({ w, t0: t, t1: t + d, seg: si, last: i === ws.length - 1 }); t += d; });
+  ws.forEach((w, i) => { const d = ((seg.t1 - seg.t0) * wt[i]) / tot; const o = { w, t0: t, t1: t + d, seg: si, last: i === ws.length - 1 }; words.push(o); segWords[si].push(o); t += d; });
 });
 
 // 2. Plans : les coupes tombent au milieu des silences entre segments.
@@ -29,12 +31,12 @@ const mid = (i) => (script.segments[i].t1 + script.segments[i + 1].t0) / 2;
 const { scenes } = await import(pathToFileURL(path.join(dir, "scenes.mjs")).href);
 const lib = scenes(C);
 const beats = script.beats.map((b, i) => {
-  const [s0, s1] = b.segments;
-  const t0 = i === 0 ? 0 : mid(s0 - 1), t1 = i === script.beats.length - 1 ? T : mid(s1);
+  const startOf = (bb) => { const [sg, wd] = bb.from; return sg === 0 && wd === 0 ? 0 : wd === 0 ? mid(sg - 1) : segWords[sg][wd].t0 - 0.04; };
+  const t0 = startOf(b), t1 = i === script.beats.length - 1 ? T : startOf(script.beats[i + 1]);
   const sc = lib[b.scene], pre = `b${i}-`;
   return {
     name: b.scene, t0, t1,
-    svg: sc.svg.replace(/ id="([^"]+)"/g, (m, id) => ` id="${pre}${id}"`),
+    svg: sc.svg.replace(/ id="([^"]+)"/g, (m, id) => ` id="${pre}${id}"`).replace(/url\(#(?!paper|kraft|vignette|light)([^)]+)\)/g, (m, id) => `url(#${pre}${id})`),
     anims: sc.anims.map((a) => ({ ...a, id: pre + a.id })),
     loops: (sc.loops || []).map((l) => ({ ...l, id: pre + l.id })),
     cam: sc.cam,
@@ -73,6 +75,14 @@ const check = (name, ok, detail = "") => qa.checks.push({ name, ok, detail });
   check("sous-titres dans la zone sûre verticale (1300–1580)", m.every((x) => x.y0 >= 1300 && x.y1 <= 1580), JSON.stringify(m[0]));
   await page.close();
 }
+if (at.length) {
+  const page = await browser.newPage({ viewport: { width: W, height: H } });
+  await page.setContent(html);
+  for (const t of at) { await page.evaluate((x) => window.setFrame(x), t); await page.screenshot({ path: path.join(out, `preview_${t}.png`) }); }
+  await browser.close();
+  console.log("aperçus :", at.join(", "));
+  process.exit(0);
+}
 const WORKERS = 4;
 await Promise.all(Array.from({ length: WORKERS }, async (_, w) => {
   const page = await browser.newPage({ viewport: { width: W, height: H } });
@@ -102,7 +112,7 @@ execFileSync("ffmpeg", [...args, "-filter_complex", fcLavfi, "-map", "0:v", "-ma
 // 7. QA déterministe.
 const dur = Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", mp4]).toString());
 check("durée vidéo = durée cible ± 0,2 s", limit !== Infinity || Math.abs(dur - T) < 0.2, `${dur.toFixed(2)} s`);
-beats.forEach((b) => check(`plan « ${b.name} » entre 1,5 et 4,5 s`, b.t1 - b.t0 >= 1.5 && b.t1 - b.t0 <= 4.5, `${(b.t1 - b.t0).toFixed(2)} s`));
+beats.forEach((b) => check(`plan « ${b.name} » entre 0,9 et 4,5 s`, b.t1 - b.t0 >= 0.9 && b.t1 - b.t0 <= 4.5, `${(b.t1 - b.t0).toFixed(2)} s`));
 const allowed = new Set([...Object.values(C), ...(brand.derived || [])].map((x) => x.toLowerCase()));
 const used = new Set(beats.flatMap((b) => b.svg.match(/#[0-9a-fA-F]{6}\b/g) || []).map((x) => x.toLowerCase()));
 const rogue = [...used].filter((x) => !allowed.has(x));
