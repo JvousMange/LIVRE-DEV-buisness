@@ -58,32 +58,26 @@ export function scenesF(C, X, opts = {}) {
       const rot = (t0, t1, from, speed) => A("fac-gear", t0, Math.max(0.1, t1 - t0), { r: from }, { r: from + (t1 - t0) * speed }, { ease: "lin", origin: [190, 62], late: t0 > 0, sfx: false });
       const r1 = tAgr * 40, r2 = r1 + (tTrop - tAgr) * 360, r3 = r2 + (dur - tTrop) * 700;
       const roof = FY - 200 * FS;
-      const hit = (id, x1, y1, x2, t) => [POP(id, t - 0.05, [x2, roof], { from: { s: 0 }, to: { s: 1 }, sfx: "stamp", ease: "outBack" }), FADEOUT(id, t + 0.35, 0.25)];
+      const hit = (id, x1, y1, x2, t) => [POP(id, t - 0.05, [x1, y1], { from: { s: 0 }, to: { s: 1 }, sfx: "stamp", ease: "outBack" }), FADEOUT(id, t + 0.35, 0.25)];
       return {
         svg: decor(C) + pipeLine(C, PX, 940, OUT[1], 565, "pipe") + stainW +
           `<g id="facw">${factory(C, FX, FY, FS, "fac")}${siren(C, FX - 40, FY - 215 * FS - 18, 0.55, "siren")}</g>` +
           allIds.map((id, i) => grain(id, 1600 + i)).join("") +
-          pimple(C, 260, 850, 1.2, "pim") + razor(C, 560, 620, 0.85, "razor") + sun(C, 820, 520) + tag(C, 300, 470, 420, 100, "HORMONES", { id: "hor", fontSize: 46, color: C.alert, seed: 8 }) +
-          bolt(C, 260, 880, FX - 70, roof, "bl1") + bolt(C, 560, 760, FX - 10, roof, "bl2") + bolt(C, 820, 640, FX + 60, roof, "bl3") + bolt(C, 300, 540, FX + 20, roof, "bl4") +
-          `<g id="sign">${hangingSign(540, 640, 600, 180, ["MÉLANINE"], { palette: C, fontSize: 88, seed: 4 })}</g>` +
-          ringAt(PX, 905, 300, 70, "ring", 12) + tag(C, PX, 690, 300, 100, "ICI", { id: "ici", fontSize: 60, color: C.alert, seed: 9 }) + padlock(C, PX, 1010, 0.8, "lock") +
+          bolt(C, 230, 330, FX - 70, roof, "bl1") + bolt(C, 520, 300, FX - 10, roof, "bl2") + bolt(C, 800, 340, FX + 60, roof, "bl3") + bolt(C, 130, 380, FX + 20, roof, "bl4") +
+          ringAt(PX, 905, 300, 70, "ring", 12) + padlock(C, PX, 1010, 0.8, "lock") +
           `<g id="veil"><rect x="-300" y="-400" width="1700" height="2800" fill="rgb(255,247,230)"/></g>`,
         anims: [
           A("veil", 0, 0.4, { o: 1 }, { o: 0 }, { ease: "lin", sfx: false }), POP("fac", 0.1, [FX, FY]),
           ...puffs, ...grow,
           rot(0, tAgr, 0, 40), rot(tAgr, tTrop, r1, 360), rot(tTrop, dur, r2, 700),
-          DROP("sign", tMel, [540, 0]), FADEOUT("sign", tAgr - 0.1, 0.35), FADEIN("surfTint", tCol, 0.9),
+          FADEIN("surfTint", tCol, 0.9),
           ...slow.flatMap((t, i) => grainAnims(ids.s[i], t, 955, true)),
           ...busy.flatMap((t, i) => grainAnims(ids.b[i], t, 955, true)),
           ...over.flatMap((t, i) => grainAnims(ids.o[i], t, STACK0 + i * STEP, false)),
           // chaque cause : le déclencheur arrive, un éclair frappe l'usine, qui grossit
           POP("siren", tAgr, [FX - 40, FY - 215 * FS - 18], { sfx: "beep" }), A("fac-red", tAgr, 0.3, { o: 0 }, { o: 1 }, { ease: "lin", sfx: false }),
-          POP("pim", tBou - 0.1, [260, 850]), ...hit("bl1", 260, 880, FX - 70, tBou),
-          DROP("razor", tRas - 0.1, [560, 620]), ...hit("bl2", 560, 760, FX - 10, tRas),
-          POP("sun", tSol - 0.1, [820, 520]), POP("sun-rays", tSol - 0.1, [820, 520], { sfx: false }), ...hit("bl3", 820, 640, FX + 60, tSol),
-          POP("hor", tHor - 0.1, [300, 470]), ...hit("bl4", 300, 540, FX + 20, tHor),
-          ...["pim", "razor", "sun", "sun-rays", "hor"].map((id) => FADEOUT(id, tTrop - 0.1, 0.35)),
-          POP("stainW", tEnd - 0.3, [PX, 905]), POP("ring", tEnd, [PX, 905]), POP("ici", tPre, [PX, 690]),
+          ...hit("bl1", 230, 330, FX - 70, tBou), ...hit("bl2", 520, 300, FX - 10, tRas), ...hit("bl3", 800, 340, FX + 60, tSol), ...hit("bl4", 130, 380, FX + 20, tHor),
+          POP("stainW", tEnd - 0.3, [PX, 905]), POP("ring", tEnd, [PX, 905]),
           DROP("lock", tCoin, [PX, 1010]),
         ],
         loops: [
@@ -102,10 +96,10 @@ export function scenesF(C, X, opts = {}) {
       const tM = R("compare", "mate"), tS = R("compare", "plus fort");
       return {
         svg: gauge(C, 268, 960, 0.78, "gA") + gauge(C, 812, 960, 0.78, "gB") +
-          tag(C, 268, 600, 440, 90, "PEAU CLAIRE", { id: "tgA", fontSize: 40, color: C.solution, seed: 3 }) + tag(C, 812, 600, 520, 90, "MATE OU NOIRE", { id: "tgB", fontSize: 40, color: C.alert, seed: 4 }) + flame(C, 812, 1340, 0.7, "fire"),
+          flame(C, 812, 1340, 0.7, "fire"),
         anims: [
-          POP("gA", 0.05, [268, 960]), POP("tgA", 0.1, [268, 600]), A("gA-needle", 0.3, 0.9, { r: -90 }, { r: -35 }, { ease: "outBack", origin: [0, 0] }),
-          POP("gB", tM, [812, 960]), POP("tgB", tM + 0.1, [812, 600]), A("gB-needle", Math.max(tM + 0.3, tS - 0.5), 0.9, { r: -90 }, { r: 95 }, { ease: "outBack", origin: [0, 0] }),
+          POP("gA", 0.05, [268, 960]), A("gA-needle", 0.3, 0.9, { r: -90 }, { r: -35 }, { ease: "outBack", origin: [0, 0] }),
+          POP("gB", tM, [812, 960]), A("gB-needle", Math.max(tM + 0.3, tS - 0.5), 0.9, { r: -90 }, { r: 95 }, { ease: "outBack", origin: [0, 0] }),
           POP("fire", tS, [812, 1340]),
         ],
         loops: [{ id: "gB-needle", prop: "r", amp: 6, freq: 5, start: tS, origin: [0, 0] }],

@@ -68,12 +68,12 @@ export function scenesG(C, X) {
         [[700, 1235], [820, 1290], [610, 1160], [930, 1340], [760, 1345]].map((p, i) => `<g id="as${i}">${layer(blob(p[0], p[1], 34 + (i % 2) * 12, 26, { jitter: 0.25, n: 10, seed: 3540 + i }), C.dark, 7)}</g>`).join("") + badge(C, 150, 200, 5),
       anims: [
         POP("badge", 0.0, [150, 200]), A("armS", 0.1, 0.3, { x: 700, y: 200 }, { x: 0, y: 0 }, { ease: "outCubic", sfx: "whoosh" }),
-        POP("sun", 0.25, [760, 430]), POP("sun-rays", 0.25, [760, 430], { sfx: false }),
-        A("beam", 0.42, 0.3, { s: 0 }, { s: 1 }, { origin: [760, 450], ease: "outCubic", sfx: "whoosh" }),
-        ...[0, 1, 2, 3, 4].map((i) => POP(`as${i}`, 0.6 + i * 0.06, [[700, 1235], [820, 1290], [610, 1160], [930, 1340], [760, 1345]][i], { sfx: i === 0 ? "pop" : false })),
+        POP("sun", 0.35, [760, 430]), POP("sun-rays", 0.35, [760, 430], { sfx: false }),
+        A("beam", 0.62, 0.3, { s: 0 }, { s: 1 }, { origin: [760, 450], ease: "outCubic", sfx: "whoosh" }),
+        ...[0, 1, 2, 3, 4].map((i) => POP(`as${i}`, 0.85 + i * 0.07, [[700, 1235], [820, 1290], [610, 1160], [930, 1340], [760, 1345]][i], { sfx: i === 0 ? "pop" : false })),
       ],
       loops: [{ id: "sun-rays", prop: "r", amp: 6, freq: 2, start: 0.3, origin: [760, 430] }],
-      cam: SLOW(1.0, 1.06, 0, 0), punches: [{ t: 0.42, amp: 0.05 }],
+      cam: SLOW(1.0, 1.06, 0, 0), punches: [{ t: 0.62, amp: 0.05 }],
     },
 
     // Rasage : gros plan sur la mousse et le rasoir qui balaie deux bandes de peau lisse, puis la peau irritée.
@@ -169,7 +169,7 @@ export function scenesG(C, X) {
       const t0 = R("months", "reste", -0.1), gap = 0.12, tP = R("months", "produit"), tRien = R("months", "rien");
       const pages = `<g id="cal">` + names.map((m, i) => calendar(C, 540, 780, 2.55, `pg${i}`, { mark: (i * 7 + 3) % 18, month: m, stain: true })).reverse().join("") + `</g>`;
       return {
-        svg: pages + tube(C, 880, 300, { s: 0.95, label: "SOIN", id: "tb" }) + `<g id="cream">${layer(blob(362, 940, 120, 70, { jitter: 0.12, n: 12, seed: 3800 }), "rgb(250,245,235)", 8)}</g>` + cross(C, 362, 940, 300, "x1"),
+        svg: pages + tube(C, 700, 1030, { s: 0.95, label: "SOIN", id: "tb" }) + `<g id="cream">${layer(blob(362, 940, 120, 70, { jitter: 0.12, n: 12, seed: 3800 }), "rgb(250,245,235)", 8)}</g>` + cross(C, 362, 940, 300, "x1"),
         anims: [
           POP("cal", 0.0, [540, 780]),
           ...names.slice(0, 11).map((_, i) => A(`pg${i}`, t0 + 0.2 + i * gap, 0.15, { y: 0, r: 0, o: 1 }, { y: -900, r: -14, o: 0 }, { ease: "inCubic", late: i > 0, sfx: "flip", origin: [540, 330] })),

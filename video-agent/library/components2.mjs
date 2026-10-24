@@ -67,13 +67,13 @@ export function shield2(C, cx, cy, s = 1, id = "shield", { check = true, crack =
 
 export function calendar(C, cx, cy, s = 1, id = "cal", { mark = 9, month = "", stain = false } = {}) {
   let grid = "";
-  for (let r = 0; r < 4; r++) for (let c = 0; c < 5; c++) grid += `<rect x="${-140 + c * 58}" y="${10 + r * 58}" width="46" height="46" fill="none" stroke="${C.kraftDark}" stroke-width="4" opacity=".7"/>`;
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 5; c++) grid += `<rect x="${-140 + c * 58}" y="${-70 + r * 66}" width="50" height="52" fill="none" stroke="${C.kraftDark}" stroke-width="4" opacity=".7"/>`;
   const mc = mark % 5, mr = Math.floor(mark / 5);
   return G(cx, cy, s,
     layer("M-170 -170 L170 -170 L170 190 L-170 190Z", C.cream, 4) + layer("M-170 -170 L170 -170 L170 -90 L-170 -90Z", C.alert, 5) +
     layer(blob(-100, -170, 16, 16, { n: 8, seed: 36 }), C.dark, 6) + layer(blob(100, -170, 16, 16, { n: 8, seed: 37 }), C.dark, 6) +
     txt(0, -112, 44, C.cream, month) + `<g filter="url(#paper1)">${grid}</g>` +
-    `<g filter="url(#paper3)"><circle cx="${-117 + mc * 58}" cy="${33 + mr * 58}" r="34" fill="none" stroke="${C.alert}" stroke-width="8"/></g>` +
+    `<g filter="url(#paper3)"><circle cx="${-117 + mc * 58}" cy="${-44 + mr * 66}" r="34" fill="none" stroke="${C.alert}" stroke-width="8"/></g>` +
     (stain ? layer(blob(-60, 70, 62, 42, { jitter: 0.25, n: 12, seed: 77 }), C.problem, 6) + layer(blob(-70, 62, 34, 22, { jitter: 0.25, n: 10, seed: 78 }), "#5E3A27", 7) : ""), id);
 }
 

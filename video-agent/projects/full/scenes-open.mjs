@@ -29,11 +29,11 @@ export function scenesOpen(C, X) {
       const tDive = R("skinRub", "alors"), tCross = R("skinRub", "taches"), tTag = R("skinRub", "surface"), tFab = R("skinRub", "fabriquent");
       return {
         svg: skin(C) + stain(C) + melanocyte(C) + gr.map((g) => granule(C, g)).join("") + badge(C, 300, 420, 1) + cross(C, 730, 640, 170) +
-          tag(C, 540, 500, 440, 100, "EN SURFACE", { id: "tag1", fontSize: 44, color: C.alert, seed: 5 }) + skinHand(C),
+          skinHand(C),
         anims: [
           POP("badge", 0.05, [300, 420]),
           A("hand", 0.1, 0.5, { x: 520, y: -430 }, { x: 0, y: 0 }, { ease: "outCubic", origin: HAND_SKIN }),
-          POP("cross", tCross, [730, 640]), POP("tag1", tTag, [540, 500]),
+          POP("cross", tCross, [730, 640]), 
           A("hand", tDive - 0.15, 0.45, { x: 0, y: 0 }, { x: 560, y: -430 }, { ease: "inCubic", origin: HAND_SKIN, late: true }),
           A("mel", tDive, 0.5, { o: 0 }, { o: 1 }, { ease: "lin", origin: MEL }),
           ...gr.flatMap((g, i) => {

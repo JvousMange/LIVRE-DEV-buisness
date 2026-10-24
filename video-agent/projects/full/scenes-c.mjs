@@ -32,14 +32,13 @@ export function scenesC(C, X) {
       const tb = R("arbutin", "bloque"), w = 130;
       return {
         svg: sign(540, 300, 660, 200, ["ALPHA-ARBUTINE"], 62) + gear(C, 540, 1000, 250, 14, "gear") + gear(C, 250, 1310, 130, 8, "gear2", "#A9845A") +
-          `<g id="wedge">${layer(poly([[740, 700], [880, 700], [810, 860]], { round: false }), C.alert, 7)}</g>` +
-          tag(C, 540, 1330, 560, 110, "TYROSINASE", { id: "tg", fontSize: 56, color: C.alert, seed: 15 }),
+          `<g id="wedge">${layer(poly([[740, 700], [880, 700], [810, 860]], { round: false }), C.alert, 7)}</g>`,
         anims: [
           DROP("sign", 0.1, [540, 0], -700),
           POP("gear", 0.2, [540, 1000]), POP("gear2", 0.35, [250, 1310]),
           A("gear", 0.2, tb - 0.2, { r: 0 }, { r: Math.round((tb - 0.2) * w) }, { ease: "lin", origin: [540, 1000] }),
           A("gear2", 0.35, tb - 0.35, { r: 0 }, { r: -Math.round((tb - 0.35) * w * 1.75) }, { ease: "lin", origin: [250, 1310] }),
-          POP("tg", R("arbutin", "tyrosinase", -0.1), [540, 1330]),
+          
           A("wedge", tb, 0.4, { x: 160, y: -300 }, { x: -170, y: -10 }, { ease: "outBack", origin: [810, 780] }),
         ],
         loops: [],
@@ -124,8 +123,7 @@ export function scenesC(C, X) {
       const tU = R("meet", "réunit");
       return {
         svg: sign(540, 150, 760, 180, ["SÉRUM ANTI-TACHES"], 56) + bottle(C, 540, 940, 1.2, "bottle") +
-          chips.map((c) => tag(C, c.x, c.y, 340, 90, c.t, { id: c.id, fontSize: 30, color: C.solution, seed: 20 })).join("") +
-          tag(C, 540, 1290, 560, 110, "1 SEUL FLACON", { id: "one", fontSize: 54, color: C.solution, seed: 21 }),
+          chips.map((c) => tag(C, c.x, c.y, 340, 90, c.t, { id: c.id, fontSize: 30, color: C.solution, seed: 20 })).join(""),
         anims: [
           DROP("sign", R("meet", "sérum", -0.1), [540, 0], -700),
           POP("bottle", R("meet", "mela", -0.1), [540, 940]),
@@ -134,7 +132,7 @@ export function scenesC(C, X) {
             A(c.id, tU + i * 0.22, 0.6, { x: 0, y: 0, s: 1 }, { x: 540 - c.x, y: 940 - c.y, s: 0.2 }, { ease: "inCubic", origin: [c.x, c.y], late: true }),
             FADEOUT(c.id, tU + i * 0.22 + 0.5, 0.2),
           ]),
-          POP("one", R("meet", "seul"), [540, 1290]),
+          
         ],
         loops: [{ id: "bottle", prop: "s", amp: 0.025, freq: 1.5, start: tU + 1.2, origin: [540, 940] }],
         cam: SLOW(1.0, 1.1, 0, 0),

@@ -470,17 +470,17 @@
   {
    "scene": "fiveRazor",
    "at": "rasage",
-   "offset": -0.5
+   "offset": -0.15
   },
   {
    "scene": "fiveElbows",
    "at": "frottements",
-   "offset": -0.25
+   "offset": -0.15
   },
   {
    "scene": "triggers5",
    "at": "rien ne protège",
-   "offset": -0.35
+   "offset": -0.15
   },
   {
    "scene": "notYou",

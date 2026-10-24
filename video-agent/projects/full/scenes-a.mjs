@@ -20,17 +20,17 @@ export function scenesA(C, X) {
       };
       const t1 = R("soinPeau", "soins"), tCl = R("soinPeau", "claires"), tSur = R("soinPeau", "sur"), tMate = R("soinPeau", "mate"), tAg = R("soinPeau", "agressent"), tRien = R("soinPeau", "rien");
       return {
-        svg: cols.map(card).join("") + tag(C, 540, 300, 600, 84, "PEAUX CLAIRES", { id: "tgA", fontSize: 44, color: C.solution, seed: 3 }) + tag(C, 540, 850, 720, 84, "PEAU MATE OU NOIRE", { id: "tgB", fontSize: 44, color: C.alert, seed: 4 }) +
+        svg: cols.map(card).join("") +
           [0, 1, 2, 3].map((i) => check(C, P[i].x, P[i].y - 40, 170, `ck${i}`)).join("") +
           [4, 5].map((i) => `<g id="fl${i}">${layer(blob(P[i].x, P[i].y - 50, 86, 120, { jitter: 0.12, n: 10, seed: 960 + i }), "rgba(196,85,47,.72)", 6, { edge: "rgba(0,0,0,0)" })}</g>`).join("") +
           [4, 5].map((i) => flame(C, P[i].x, P[i].y - 90, 0.7, `fire${i}`)).join("") +
           [6, 7].map((i) => cross(C, P[i].x, P[i].y - 40, 150, `xx${i}`)).join("") + badge(C, 130, 120, 3),
         anims: [
           POP("badge", 0.05, [130, 120]),
-          ...[0, 1, 2, 3].map((i) => DROP(`cd${i}`, t1 + i * 0.09, [P[i].x, P[i].y])), POP("tgA", t1 - 0.05, [540, 300]),
+          ...[0, 1, 2, 3].map((i) => DROP(`cd${i}`, t1 + i * 0.09, [P[i].x, P[i].y])), 
           ...[0, 1, 2, 3].map((i) => POP(`ck${i}`, tCl + i * 0.09, [P[i].x, P[i].y - 40])),
           ...[4, 5, 6, 7].map((i) => A(`cd${i}`, tSur + (i - 4) * 0.1, 0.45, { x: i % 2 ? 1300 : -1300, r: i % 2 ? 18 : -18 }, { x: 0, r: 0 }, { ease: "outBack", origin: [P[i].x, P[i].y], sfx: "whoosh" })),
-          POP("tgB", tMate, [540, 850]),
+          
           ...[4, 5].map((i) => FADEIN(`fl${i}`, tAg + (i - 4) * 0.12, 0.3)), ...[4, 5].map((i) => POP(`fire${i}`, tAg + (i - 4) * 0.12, [P[i].x, P[i].y - 90])),
           ...[6, 7].map((i) => POP(`xx${i}`, tRien + (i - 6) * 0.1, [P[i].x, P[i].y - 40])),
         ],

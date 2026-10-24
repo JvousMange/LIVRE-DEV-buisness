@@ -13,13 +13,13 @@ export function scenesB(C, X) {
     whiten: (() => {
       const sw = [[300, "#7C4C33"], [540, "#9C6544"], [780, "#EBC1A0"]];
       return {
-        svg: tag(C, 540, 330, 520, 100, "ÉCLAIRCIR", { id: "tgE", fontSize: 54, color: C.alert, seed: 12 }) +
+        svg:
           sw.map(([x, c], i) => `<g id="sw${i}">` + layer(poly([[x - 100, 430], [x + 100, 430], [x + 100, 630], [x - 100, 630]], { round: false }), c, 4) + `</g>`).join("") +
           `<g id="arr">${layer(poly(arrowPts(180, 700, 900, 700, 36, 100, 90), { round: false }), C.dark, 5)}</g>` + cross(C, 540, 540, 520, "bigx") +
           woman(C, { cy: 1200, scale: 0.85, mirrorOn: false }),
         anims: [
           POP("sw0", 0.05, [300, 530]), POP("sw1", 0.2, [540, 530]), POP("sw2", 0.35, [780, 530]),
-          POP("tgE", R("whiten", "d'éclaircir", -0.1), [540, 330]),
+          
           A("arr", R("whiten", "d'éclaircir"), 0.6, { s: 0 }, { s: 1 }, { origin: [180, 700], ease: "outCubic" }),
           POP("bigx", R("whiten", "ta peau"), [540, 540]),
         ],
@@ -33,11 +33,11 @@ export function scenesB(C, X) {
     regulate: (() => {
       const tReg = R("regulate", "réguler"), tAgr = R("regulate", "agression"), tDays = R("regulate", "tous les jours");
       return {
-        svg: gauge(C, 540, 800, 1.2, "gauge") + tag(C, 540, 1210, 520, 100, "MÉLANINE", { id: "tgM", fontSize: 56, color: C.solution, seed: 13 }) +
+        svg: gauge(C, 540, 800, 1.2, "gauge") +
           pimple(C, 160, 460, 1.0, "pim") + razor(C, 930, 440, 0.55, "rz") + check(C, 860, 1100, 200, "ok") +
           Array.from({ length: 7 }, (_, i) => `<g id="d${i}">` + layer(blob(150 + i * 130, 1330, 42, 42, { jitter: 0.04, n: 10, seed: 1200 + i }), C.solution, 5) + `</g>`).join(""),
         anims: [
-          POP("tgM", tReg + 0.3, [540, 1210]),
+          
           A("gauge-needle", tReg + 0.15, 1.2, { r: 100 }, { r: 0 }, { ease: "outBack", origin: [0, 0] }),
           POP("pim", tAgr, [160, 460]), POP("rz", tAgr + 0.25, [930, 440]),
           POP("ok", R("regulate", "plus trop"), [860, 1100]),
