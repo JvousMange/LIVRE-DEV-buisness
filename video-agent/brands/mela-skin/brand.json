@@ -6,11 +6,26 @@
     "name": "Sérum anti-taches",
     "format": "flacon verre ambré 30 ml, compte-gouttes, bouchon brun chocolat, étiquette brun chaud mat, lettrage crème",
     "actives": [
-      { "name": "Acide azélaïque", "dose": "10 %" },
-      { "name": "Niacinamide", "dose": "5 %" },
-      { "name": "Acide tranexamique", "dose": "2 %" },
-      { "name": "Alpha-arbutine", "dose": "2 %" },
-      { "name": "Vitamine C stable", "dose": "3 %" }
+      {
+        "name": "Acide azélaïque",
+        "dose": "10 %"
+      },
+      {
+        "name": "Niacinamide",
+        "dose": "5 %"
+      },
+      {
+        "name": "Acide tranexamique",
+        "dose": "2 %"
+      },
+      {
+        "name": "Alpha-arbutine",
+        "dose": "2 %"
+      },
+      {
+        "name": "Vitamine C stable",
+        "dose": "3 %"
+      }
     ],
     "guarantee": "90 jours",
     "accessory": "pochette en coton crème, zip brun, emblème terracotta"
@@ -38,5 +53,21 @@
     "Aucune promesse de guérison ou de traitement",
     "Aucun pourcentage de résultat sans source",
     "Les dosages d'actifs sont ceux de la fiche produit"
+  ],
+  "derived": [
+    "#B5724B",
+    "#CF9068",
+    "#C79A74",
+    "#7A2E1A",
+    "#5E3A27",
+    "#F2C56A",
+    "#6b4a2a",
+    "#E8D0A8",
+    "#3A2214",
+    "#D98E2B",
+    "#F0B552",
+    "#7A4E32",
+    "#E3B08C",
+    "#FFFFFF"
   ]
 }
