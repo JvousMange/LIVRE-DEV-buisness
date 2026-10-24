@@ -6,16 +6,16 @@ const top = () => band(-80, 1160, 900, 985, { amp: 7, step: 54, seed: 13 });
 const surface = (C) => `<g id="surf">${layer(top(), C.cream, 3)}</g><g id="surfTint">${layer(top(), "#9C6544", 4)}</g>`;
 const P = (pts) => poly(pts, { round: false });
 
-// B. Plan technique : papier foncé quadrillé, cotes et tampon.
+// B. Plan technique : papier foncé quadrillé, cotes (dont la profondeur sous la peau) et tampon.
 export function decorB(C) {
+  const ink = "#F1E6D2", font = "font-family=\"Inter, 'DejaVu Sans', sans-serif\"";
   let grid = "";
-  for (let x = 0; x <= 1080; x += 90) grid += `<line x1="${x}" y1="990" x2="${x}" y2="2400" stroke="#F1E6D2" stroke-width="2" opacity=".13"/>`;
-  for (let y = 1080; y <= 2400; y += 90) grid += `<line x1="0" y1="${y}" x2="1080" y2="${y}" stroke="#F1E6D2" stroke-width="2" opacity=".13"/>`;
-  const dim = (x1, x2, y, label) => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#F1E6D2" stroke-width="3" opacity=".5" stroke-dasharray="14 10"/>` +
-    `<line x1="${x1}" y1="${y - 16}" x2="${x1}" y2="${y + 16}" stroke="#F1E6D2" stroke-width="3" opacity=".5"/><line x1="${x2}" y1="${y - 16}" x2="${x2}" y2="${y + 16}" stroke="#F1E6D2" stroke-width="3" opacity=".5"/>` +
-    `<text x="${(x1 + x2) / 2}" y="${y + 44}" text-anchor="middle" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="700" font-size="30" fill="#F1E6D2" opacity=".55" letter-spacing="3">${label}</text>`;
-  return layer(band(-80, 1160, 960, 3000, { amp: 6, seed: 21 }), "#2E2019", 1) + `<g>${grid}${dim(215, 645, 1470, "USINE À PIGMENT")}${dim(742, 742, 1100, "")}</g>` +
-    `<g filter="url(#paper1)"><rect x="700" y="1560" width="320" height="86" fill="none" stroke="#F1E6D2" stroke-width="4" opacity=".55"/><text x="860" y="1616" text-anchor="middle" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="900" font-size="34" fill="#F1E6D2" opacity=".6" letter-spacing="2">PLAN N° 1</text></g>` + surface(C);
+  for (let x = 0; x <= 1080; x += 90) grid += `<line x1="${x}" y1="990" x2="${x}" y2="2600" stroke="${ink}" stroke-width="2" opacity=".13"/>`;
+  for (let y = 1080; y <= 2600; y += 90) grid += `<line x1="0" y1="${y}" x2="1080" y2="${y}" stroke="${ink}" stroke-width="2" opacity=".13"/>`;
+  const hdim = (x1, x2, y, label) => `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${ink}" stroke-width="3" opacity=".5" stroke-dasharray="14 10"/><line x1="${x1}" y1="${y - 16}" x2="${x1}" y2="${y + 16}" stroke="${ink}" stroke-width="3" opacity=".5"/><line x1="${x2}" y1="${y - 16}" x2="${x2}" y2="${y + 16}" stroke="${ink}" stroke-width="3" opacity=".5"/><text x="${(x1 + x2) / 2}" y="${y + 46}" text-anchor="middle" ${font} font-weight="700" font-size="30" fill="${ink}" opacity=".6" letter-spacing="3">${label}</text>`;
+  const vdim = (x, y1, y2, label) => `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${ink}" stroke-width="3" opacity=".5" stroke-dasharray="14 10"/><line x1="${x - 16}" y1="${y1}" x2="${x + 16}" y2="${y1}" stroke="${ink}" stroke-width="3" opacity=".5"/><line x1="${x - 16}" y1="${y2}" x2="${x + 16}" y2="${y2}" stroke="${ink}" stroke-width="3" opacity=".5"/><text transform="translate(${x + 44} ${(y1 + y2) / 2}) rotate(90)" text-anchor="middle" ${font} font-weight="700" font-size="30" fill="${ink}" opacity=".6" letter-spacing="3">${label}</text>`;
+  return layer(band(-80, 1160, 960, 3200, { amp: 6, seed: 21 }), "#2E2019", 1) + `<g>${grid}${hdim(215, 600, 1215, "USINE À PIGMENT")}${vdim(960, 985, 1288, "PROFONDEUR")}</g>` +
+    `<g filter="url(#paper1)"><rect x="120" y="1030" width="290" height="86" fill="none" stroke="${ink}" stroke-width="4" opacity=".55"/><text x="265" y="1086" text-anchor="middle" ${font} font-weight="900" font-size="34" fill="${ink}" opacity=".6" letter-spacing="2">PLAN N° 1</text></g>` + surface(C);
 }
 
 // C. Diorama : l'usine dans une boîte en carton ouverte, en perspective, éclairée par une lampe.
