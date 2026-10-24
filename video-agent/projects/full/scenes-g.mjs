@@ -1,5 +1,5 @@
 // Raison 4 dynamique, raison 5 en trois plans rapides + rideau de taches, transition à la loupe, calendrier des mois.
-import { layer, band, blob, poly, arrowPts } from "../../engine/paper.mjs";
+import { layer, band, blob, poly, star, arrowPts } from "../../engine/paper.mjs";
 import { skin, stain, melanocyte, badge, cross, tag, woman, flush, sun, skinHand, SPOTS, MEL, HAND_SKIN } from "../../library/components.mjs";
 import { tube, jar, razor, shield2, shelf, calendar, loupe } from "../../library/components2.mjs";
 import { A, POP, FADEIN, FADEOUT, DROP, SLOW } from "./kit.mjs";
@@ -54,44 +54,70 @@ export function scenesG(C, X) {
       };
     })(),
 
-    // ───── Raison 5 : un plan rapide par déclencheur ─────
-    // Soleil qui tape sur la peau.
+    // ───── Raison 5 : un plan rapide par déclencheur, chacun dans un décor différent ─────
+    // Soleil qui tape sur la peau : EXTÉRIEUR (colline, arbre, nuages), sans le personnage.
     fiveSun: {
-      svg: woman(C) + `<g id="beam">${[[590, 830, 650, 900], [640, 800, 700, 880], [700, 790, 760, 860]].map(([x1, y1, x2, y2]) => layer(poly([[800, 430], [x1, y1], [x2, y2]]), "rgba(240,176,82,.6)", 4)).join("")}</g>` + sun(C, 800, 400) + badge(C, 150, 200, 5),
+      svg: layer(blob(760, 330, 330, 330, { jitter: 0.02, n: 18, seed: 3500 }), "rgba(255,243,214,.5)", 1, { edge: "rgba(0,0,0,0)" }) +
+        [[560, 240, 90, 50], [700, 215, 120, 60], [840, 250, 85, 48]].map((p, i) => layer(blob(p[0], p[1], p[2], p[3], { jitter: 0.12, n: 10, seed: 3510 + i }), "#F1E6D2", 2)).join("") +
+        sun(C, 760, 430) +
+        layer(band(-80, 1160, 1020, 1500, { amp: 70, step: 180, seed: 31 }), "#A8B58F", 2) + layer(band(-80, 1160, 1230, 1800, { amp: 60, step: 160, seed: 32 }), "#8E9F78", 3) +
+        layer(poly([[150, 940], [215, 940], [225, 1280], [140, 1280]]), "#7A4E32", 4) + [[185, 860, 150], [100, 930, 105], [275, 930, 110], [185, 780, 105]].map((p, i) => layer(blob(p[0], p[1], p[2], p[2] * 0.9, { jitter: 0.1, n: 10, seed: 3520 + i }), C.solution, 5)).join("") +
+        layer(band(-80, 1160, 1560, 2300, { amp: 18, seed: 33 }), "#7E9A6B", 4) +
+        `<g id="beam">${[[640, 1130, 720, 1210], [720, 1120, 800, 1200], [800, 1130, 880, 1215]].map(([x1, y1, x2, y2]) => layer(poly([[760, 450], [x1, y1], [x2, y2]]), "rgba(240,176,82,.62)", 5)).join("")}</g>` +
+        `<g id="armS">${layer(poly([[1200, 1560], [1200, 1320], [560, 1090], [470, 1190], [1000, 1560]]), "#9C6544", 6)}${layer(blob(500, 1130, 110, 80, { jitter: 0.1, n: 10, seed: 3530 }), "#9C6544", 6)}</g>` +
+        [[700, 1235], [820, 1290], [610, 1160], [930, 1340], [760, 1345]].map((p, i) => `<g id="as${i}">${layer(blob(p[0], p[1], 34 + (i % 2) * 12, 26, { jitter: 0.25, n: 10, seed: 3540 + i }), C.dark, 7)}</g>`).join("") + badge(C, 150, 200, 5),
       anims: [
-        POP("badge", 0.0, [150, 200]), POP("sun", 0.38, [800, 400]), POP("sun-rays", 0.38, [800, 400], { sfx: false }),
-        A("beam", 0.55, 0.3, { s: 0 }, { s: 1 }, { origin: [800, 430], ease: "outCubic", sfx: "whoosh" }),
-        ...[4, 5, 6, 7].map((i) => A(`sp${i}`, 0.8, 0.4, { s: 1 }, { s: 1.6 }, { origin: [SPOTS[i].x, SPOTS[i].y], ease: "outBack", sfx: i === 4 ? "pop" : false })),
+        POP("badge", 0.0, [150, 200]), A("armS", 0.1, 0.3, { x: 700, y: 200 }, { x: 0, y: 0 }, { ease: "outCubic", sfx: "whoosh" }),
+        POP("sun", 0.25, [760, 430]), POP("sun-rays", 0.25, [760, 430], { sfx: false }),
+        A("beam", 0.42, 0.3, { s: 0 }, { s: 1 }, { origin: [760, 450], ease: "outCubic", sfx: "whoosh" }),
+        ...[0, 1, 2, 3, 4].map((i) => POP(`as${i}`, 0.6 + i * 0.06, [[700, 1235], [820, 1290], [610, 1160], [930, 1340], [760, 1345]][i], { sfx: i === 0 ? "pop" : false })),
       ],
-      loops: [{ id: "sun-rays", prop: "r", amp: 6, freq: 2, start: 0.4, origin: [800, 400] }],
-      cam: SLOW(1.4, 1.45, 120, 120), punches: [{ t: 0.55, amp: 0.05 }],
+      loops: [{ id: "sun-rays", prop: "r", amp: 6, freq: 2, start: 0.3, origin: [760, 430] }],
+      cam: SLOW(1.0, 1.06, 0, 0), punches: [{ t: 0.42, amp: 0.05 }],
     },
 
-    // Rasage sur une aisselle.
+    // Rasage : gros plan sur la mousse et le rasoir qui balaie deux bandes de peau lisse, puis la peau irritée.
     fiveRazor: (() => {
-      const patch = `<g id="pat">${layer(blob(560, 980, 120, 70, { jitter: 0.25, n: 12, seed: 3100 }), C.dark, 6)}${layer(blob(640, 940, 60, 40, { jitter: 0.25, n: 10, seed: 3101 }), C.dark, 6)}</g>`;
+      const SK = "#9C6544";
+      const foam = [[300, 700, 130], [470, 640, 150], [650, 700, 140], [810, 770, 120], [380, 830, 140], [560, 830, 150], [730, 890, 130], [300, 930, 120], [480, 970, 130], [660, 990, 120]];
       return {
-        svg: layer(poly([[-60, 1950], [-60, 800], [330, 760], [470, 960], [580, 1060], [700, 1950]]), "#2E2019", 3) +
-          `<g id="armp">${layer(poly([[480, 1000], [560, 880], [780, 520], [900, 330], [1010, 420], [960, 560], [790, 760], [700, 960]]), SKIN, 4)}${layer(blob(420, 880, 150, 110, { jitter: 0.1, n: 12, seed: 3102 }), SKIN, 4)}</g>` +
-          patch + razor(C, 640, 900, 0.9, "rz") + badge(C, 150, 200, 5),
+        svg: layer(poly([[-80, -80], [1160, -80], [1160, 2000], [-80, 2000]]), SK, 1) +
+          `<g filter="url(#paper2)"><path d="M-60 1500 Q330 1000 130 250" fill="none" stroke="#7C4C33" stroke-width="46" opacity=".5" stroke-linecap="round"/></g>` +
+          `<g id="foam">${foam.map((f, i) => layer(blob(f[0], f[1], f[2], f[2] * 0.8, { jitter: 0.12, n: 12, seed: 3600 + i }), "rgb(250,245,235)", 4, { edge: "rgba(255,255,255,.8)" })).join("")}</g>` +
+          `<g id="sw1">${layer(poly([[140, 600], [940, 600], [940, 770], [140, 770]]), SK, 5, { edge: "rgba(0,0,0,0)" })}</g><g id="sw2">${layer(poly([[140, 800], [940, 800], [940, 970], [140, 970]]), SK, 5, { edge: "rgba(0,0,0,0)" })}</g>` +
+          [[260, 690], [420, 880], [600, 700], [760, 900], [330, 900], [680, 820]].map((p, i) => `<g id="ir${i}">${layer(blob(p[0], p[1], 26, 22, { jitter: 0.2, n: 8, seed: 3620 + i }), C.alert, 7)}</g>`).join("") +
+          `<g id="rz"><g transform="translate(540 700) rotate(-90) scale(1.7)">${razor(C, 0, 0, 1, "rzi")}</g></g>`,
         anims: [
-          A("armp", 0.0, 0.25, { x: 300, y: -200 }, { x: 0, y: 0 }, { ease: "outCubic", sfx: "whoosh" }), DROP("rz", 0.12, [640, 900]),
-          POP("pat", 0.55, [590, 960], { sfx: "pop" }),
+          POP("foam", 0.0, [540, 820], { sfx: "pop" }),
+          A("rz", 0.05, 0.16, { x: -330, y: -1500 }, { x: -330, y: 0 }, { ease: "outCubic", sfx: "whoosh" }),
+          A("rz", 0.22, 0.25, { x: -330, y: 0 }, { x: 330, y: 0 }, { ease: "inOut", late: true, sfx: "flip" }),
+          A("rz", 0.5, 0.1, { x: 330, y: 0 }, { x: 330, y: 190 }, { ease: "inOut", late: true, sfx: false }),
+          A("rz", 0.6, 0.25, { x: 330, y: 190 }, { x: -330, y: 190 }, { ease: "inOut", late: true, sfx: "flip" }),
+          A("sw1", 0.22, 0.25, { sx: 0 }, { sx: 1 }, { origin: [140, 685], ease: "inOut", sfx: false }), A("sw2", 0.6, 0.25, { sx: 0 }, { sx: 1 }, { origin: [940, 885], ease: "inOut", sfx: false }),
+          ...[0, 1, 2, 3, 4, 5].map((i) => POP(`ir${i}`, 0.82 + i * 0.03, [[260, 690], [420, 880], [600, 700], [760, 900], [330, 900], [680, 820]][i], { sfx: i === 0 ? "pop" : false })),
         ],
-        loops: [{ id: "rz", prop: "x", amp: 60, freq: 3.5, start: 0.45, origin: [640, 900] }, { id: "rz", prop: "r", amp: 8, freq: 3.5, start: 0.45, origin: [640, 900] }],
-        cam: SLOW(1.1, 1.18, 0, 0), punches: [{ t: 0.55, amp: 0.05 }],
+        loops: [], cam: SLOW(1.0, 1.08, 0, 0), punches: [{ t: 0.22, amp: 0.03 }, { t: 0.6, amp: 0.03 }],
       };
     })(),
 
-    // Frottement des coudes sur une table.
+    // Frottement : le coude qui frotte sur un bureau, lignes de vitesse, étincelles et peau qui s'assombrit.
     fiveElbows: (() => {
-      const elbow = (x, id) => `<g id="${id}">${layer(poly([[x - 85, 280], [x + 85, 280], [x + 80, 1010], [x - 80, 1010]]), SKIN, 4)}${layer(blob(x, 1050, 105, 80, { jitter: 0.06, n: 12, seed: 3200 + x }), SKIN, 5)}${layer(blob(x, 1060, 62, 44, { jitter: 0.25, n: 10, seed: 3300 + x }), C.problem, 6)}</g>`;
+      const SK = "#9C6544";
+      const lines = [0, 1, 2].map((i) => layer(poly([[40 + i * 30, 1120 + i * 28], [200 + i * 30, 1120 + i * 28], [200 + i * 30, 1136 + i * 28], [40 + i * 30, 1136 + i * 28]]), C.alert, 6)).join("") +
+        [0, 1, 2].map((i) => layer(poly([[760 - i * 30, 1120 + i * 28], [920 - i * 30, 1120 + i * 28], [920 - i * 30, 1136 + i * 28], [760 - i * 30, 1136 + i * 28]]), C.alert, 6)).join("");
       return {
-        svg: layer(poly([[-60, 1090], [1140, 1090], [1140, 2000], [-60, 2000]]), "#A9845A", 3) + elbow(340, "elL") + elbow(740, "elR") +
-          [0, 1].map((i) => `<g id="fr${i}">${layer(poly(arrowPts(180 + i * 640, 1170, 100 + i * 640, 1170, 26, 70, 56), { round: false }), C.alert, 6)}</g>`).join(""),
-        anims: [A("elL", 0.0, 0.25, { y: -300 }, { y: 0 }, { ease: "outBack", sfx: "whoosh" }), A("elR", 0.1, 0.25, { y: -300 }, { y: 0 }, { ease: "outBack" }), POP("fr0", 0.35, [140, 1170]), POP("fr1", 0.4, [780, 1170])],
-        loops: [{ id: "elL", prop: "x", amp: 28, freq: 3.5, start: 0.3, origin: [340, 1050] }, { id: "elR", prop: "x", amp: 28, freq: 3.5, phase: 0.5, start: 0.3, origin: [740, 1050] }],
-        cam: SLOW(1.15, 1.2, 40, 40), punches: [{ t: 0.3, amp: 0.04 }],
+        svg: layer(poly([[-80, 1215], [1160, 1215], [1160, 2000], [-80, 2000]]), "#A9845A", 2) +
+          [0, 1, 2, 3, 4].map((i) => `<line x1="-80" y1="${1290 + i * 110}" x2="1160" y2="${1290 + i * 110}" stroke="#8A6A3C" stroke-width="5" opacity=".45"/>`).join("") +
+          `<g id="armE">${layer(poly([[-150, 491], [30, 349], [590, 1059], [410, 1201]], { round: false }), SK, 4)}${layer(poly([[453, 1080], [627, 1180], [1087, 380], [913, 280]], { round: false }), SK, 4)}${layer(blob(1000, 300, 125, 110, { jitter: 0.08, n: 12, seed: 3701 }), SK, 4)}${layer(blob(515, 1115, 150, 105, { jitter: 0.05, n: 12, seed: 3700 }), SK, 4)}` +
+          `<g id="elp">${layer(blob(515, 1170, 105, 55, { jitter: 0.25, n: 12, seed: 3702 }), C.problem, 6)}</g></g>` +
+          `<g id="ml">${lines}</g><g id="spk">${layer(star(520, 1218, 70, 26, 6, { jitter: 0 }), C.accent, 7)}</g>`,
+        anims: [
+          A("armE", 0.0, 0.22, { x: -500, y: 0 }, { x: 0, y: 0 }, { ease: "outCubic", sfx: "whoosh" }),
+          POP("ml", 0.25, [480, 1180], { sfx: false }), POP("spk", 0.28, [520, 1218], { sfx: "pop" }),
+          A("elp", 0.3, 0.7, { s: 0.15 }, { s: 1.25 }, { origin: [515, 1170], ease: "outCubic", sfx: false }),
+        ],
+        loops: [{ id: "armE", prop: "x", amp: 38, freq: 4.5, start: 0.2, origin: [515, 1000] }, { id: "ml", prop: "o", amp: 0.4, freq: 7, start: 0.3, origin: [0, 0] }, { id: "spk", prop: "r", amp: 25, freq: 5, start: 0.3, origin: [520, 1218] }],
+        cam: SLOW(1.1, 1.18, 0, 0), punches: [{ t: 0.28, amp: 0.04 }],
       };
     })(),
 
@@ -137,21 +163,20 @@ export function scenesG(C, X) {
     })(),
 
     // « C'est pour ça que la tache reste des mois, et qu'un produit de surface n'y change rien. »
-    // Un calendrier qui défile de janvier à décembre au-dessus de la tache, puis la main qui frotte en vain.
+    // Le calendrier EST l'image : il défile de janvier à décembre, la tache reste sur chaque page ; un produit n'y change rien.
     months: (() => {
       const names = ["JANVIER", "FÉVRIER", "MARS", "AVRIL", "MAI", "JUIN", "JUILLET", "AOÛT", "SEPTEMBRE", "OCTOBRE", "NOVEMBRE", "DÉCEMBRE"];
-      const t0 = R("months", "reste", -0.1), gap = 0.13, tR = R("months", "produit");
-      const pages = `<g id="cal">` + names.map((m, i) => calendar(C, 330, 520, 0.9, `pg${i}`, { mark: (i * 7 + 3) % 18, month: m })).reverse().join("") + `</g>`;   // janvier au-dessus
+      const t0 = R("months", "reste", -0.1), gap = 0.12, tP = R("months", "produit"), tRien = R("months", "rien");
+      const pages = `<g id="cal">` + names.map((m, i) => calendar(C, 540, 780, 2.55, `pg${i}`, { mark: (i * 7 + 3) % 18, month: m, stain: true })).reverse().join("") + `</g>`;
       return {
-        svg: skin(C) + stain(C) + pages + cross(C, 760, 640, 170) + skinHand(C),
+        svg: pages + tube(C, 880, 300, { s: 0.95, label: "SOIN", id: "tb" }) + `<g id="cream">${layer(blob(362, 940, 120, 70, { jitter: 0.12, n: 12, seed: 3800 }), "rgb(250,245,235)", 8)}</g>` + cross(C, 362, 940, 300, "x1"),
         anims: [
-          POP("cal", 0.0, [330, 520]),
-          ...names.slice(0, 11).map((_, i) => A(`pg${i}`, t0 + 0.2 + i * gap, 0.16, { y: 0, r: 0, o: 1 }, { y: -300, r: -16, o: 0 }, { ease: "inCubic", late: i > 0, sfx: "flip", origin: [330, 330] })),
-          A("hand", tR, 0.5, { x: 520, y: -430 }, { x: 0, y: 0 }, { ease: "outCubic", origin: HAND_SKIN }),
-          POP("cross", R("months", "rien", -0.2), [760, 640]),
+          POP("cal", 0.0, [540, 780]),
+          ...names.slice(0, 11).map((_, i) => A(`pg${i}`, t0 + 0.2 + i * gap, 0.15, { y: 0, r: 0, o: 1 }, { y: -900, r: -14, o: 0 }, { ease: "inCubic", late: i > 0, sfx: "flip", origin: [540, 330] })),
+          DROP("tb", tP), A("cream", tP + 0.5, 0.35, { s: 0, o: 0 }, { s: 1, o: 1 }, { origin: [362, 940], ease: "outBack", sfx: "pop" }),
+          POP("x1", tRien, [362, 940]), FADEOUT("cream", tRien + 0.5, 0.5),
         ],
-        loops: [{ id: "hand", prop: "x", amp: 95, freq: 1.9, start: tR + 0.5, origin: HAND_SKIN }],
-        cam: SLOW(1.15, 1.1, 40, 30), punches: [{ t: R("months", "rien", -0.2), amp: 0.04 }],
+        loops: [], cam: SLOW(1.0, 1.05, 0, 0), punches: [{ t: tRien, amp: 0.05 }],
       };
     })(),
   };

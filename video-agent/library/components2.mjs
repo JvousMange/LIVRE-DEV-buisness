@@ -65,7 +65,7 @@ export function shield2(C, cx, cy, s = 1, id = "shield", { check = true, crack =
     (crack ? layer(poly([[-10, -150], [26, -80], [-18, -30], [30, 40], [-8, 100], [4, 150], [-24, 100], [18, 30], [-30, -30], [10, -90]], { round: false }), C.alert, 6) : ""), id);
 }
 
-export function calendar(C, cx, cy, s = 1, id = "cal", { mark = 9, month = "" } = {}) {
+export function calendar(C, cx, cy, s = 1, id = "cal", { mark = 9, month = "", stain = false } = {}) {
   let grid = "";
   for (let r = 0; r < 4; r++) for (let c = 0; c < 5; c++) grid += `<rect x="${-140 + c * 58}" y="${10 + r * 58}" width="46" height="46" fill="none" stroke="${C.kraftDark}" stroke-width="4" opacity=".7"/>`;
   const mc = mark % 5, mr = Math.floor(mark / 5);
@@ -73,7 +73,8 @@ export function calendar(C, cx, cy, s = 1, id = "cal", { mark = 9, month = "" } 
     layer("M-170 -170 L170 -170 L170 190 L-170 190Z", C.cream, 4) + layer("M-170 -170 L170 -170 L170 -90 L-170 -90Z", C.alert, 5) +
     layer(blob(-100, -170, 16, 16, { n: 8, seed: 36 }), C.dark, 6) + layer(blob(100, -170, 16, 16, { n: 8, seed: 37 }), C.dark, 6) +
     txt(0, -112, 44, C.cream, month) + `<g filter="url(#paper1)">${grid}</g>` +
-    `<g filter="url(#paper3)"><circle cx="${-117 + mc * 58}" cy="${33 + mr * 58}" r="34" fill="none" stroke="${C.alert}" stroke-width="8"/></g>`, id);
+    `<g filter="url(#paper3)"><circle cx="${-117 + mc * 58}" cy="${33 + mr * 58}" r="34" fill="none" stroke="${C.alert}" stroke-width="8"/></g>` +
+    (stain ? layer(blob(-60, 70, 62, 42, { jitter: 0.25, n: 12, seed: 77 }), C.problem, 6) + layer(blob(-70, 62, 34, 22, { jitter: 0.25, n: 10, seed: 78 }), "#5E3A27", 7) : ""), id);
 }
 
 export function coin(C, cx, cy, r = 44, id = "coin") {
@@ -185,7 +186,7 @@ export function factory(C, cx, cy, s = 1, id = "fac", K = {}) {
   const k = { body: "#8A5A3C", roof: C.problem, chimney: "#6b4a2a", cap: C.dark, base: C.dark, gear: "#B5724B", ...K };
   const teeth = [-270, -130, 10].map((x) => layer(poly([[x, -108], [x, -212], [x + 140, -108]], { round: false }), k.roof, 4)).join("");
   const win = (x, fill, z) => layer(poly([[x - 32, -64], [x + 32, -64], [x + 32, 2], [x - 32, 2]], { round: false }), fill, z);
-  const smoke = Array.from({ length: 8 }, (_, i) => `<g id="${id}-sm${i}" opacity="0">` + layer(blob(200 + (i % 3) * 8, -338, 46, 38, { jitter: 0.2, n: 10, seed: 1500 + i }), "rgb(241,230,210)", 5, { edge: "rgba(0,0,0,0)" }) + `</g>`).join("");
+  const smoke = Array.from({ length: 24 }, (_, i) => `<g id="${id}-sm${i}" opacity="0">` + layer(blob(200 + (i % 3) * 10, -340, 64, 52, { jitter: 0.22, n: 10, seed: 1500 + i }), i < 8 ? "rgb(241,230,210)" : "rgb(64,54,50)", 5, { edge: "rgba(0,0,0,0)" }) + `</g>`).join("");
   return G(cx, cy, s,
     layer(poly([[-250, -110], [250, -110], [250, 150], [-250, 150]], { round: false }), k.body, 3) + teeth +
     layer(poly([[170, -300], [230, -300], [230, -110], [170, -110]], { round: false }), k.chimney, 3) + layer(poly([[158, -322], [242, -322], [242, -296], [158, -296]], { round: false }), k.cap, 4) +
@@ -213,4 +214,12 @@ export function pipeLine(C, x, yTop, yBelt, beltX0, id = "pipe") {
 export function underground(C) {
   const top = band(-80, 1160, 900, 985, { amp: 7, step: 54, seed: 13 });
   return layer(band(-80, 1160, 960, 3000, { amp: 6, seed: 21 }), "#3A2214", 1) + `<g id="surf">${layer(top, C.cream, 3)}</g>` + `<g id="surfTint">${layer(top, "#9C6544", 4)}</g>`;
+}
+
+// Éclair en zigzag de (x1,y1) à (x2,y2) (cause qui frappe l'usine).
+export function bolt(C, x1, y1, x2, y2, id = "bolt", w = 34) {
+  const n = 7, pts = [], dx = (x2 - x1) / n, dy = (y2 - y1) / n;
+  for (let i = 0; i <= n; i++) pts.push([x1 + dx * i + (i % 2 ? w : -w) * (i === 0 || i === n ? 0 : 1), y1 + dy * i]);
+  const back = pts.slice().reverse().map((p, i, a) => [p[0] + (i === 0 || i === a.length - 1 ? 0 : 16), p[1] + 6]);
+  return `<g id="${id}">` + layer(poly(pts.concat(back), { round: false }), C.alert, 7) + layer(poly(pts.slice(1, -1).concat(back.slice(1, -1)), { round: false }), C.accent, 8) + `</g>`;
 }
