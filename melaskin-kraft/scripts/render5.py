@@ -84,6 +84,42 @@ for _s, _e, _tx in SRT:
         WORDS.append((_cur, _cur + _dd, _w))
         _cur += _dd
 CAPS = build_caps()
+
+def _align_words():
+    import re, difflib, unicodedata
+    global WORDS
+
+    def norm(w):
+        w = unicodedata.normalize('NFD', w.lower())
+        w = ''.join(ch for ch in w if unicodedata.category(ch) != 'Mn')
+        return re.sub(r"[^a-z0-9%]", "", w)
+
+    here = os.path.dirname(os.path.abspath(__file__))
+    script = open(os.path.join(here, 'script_ref.txt'), encoding='utf-8').read().split()
+    sm = difflib.SequenceMatcher(None, [norm(w[2]) for w in WORDS], [norm(w) for w in script], autojunk=False)
+    out = []
+    for op, i1, i2, j1, j2 in sm.get_opcodes():
+        for k in range(i1, i2):
+            s_, e_, w_ = WORDS[k]
+            if op == 'equal':
+                nw = script[j1 + (k - i1)]
+                if norm(w_) in ('tranexamique', 'tyrosinase'):
+                    nw = re.sub(r"[é]", "e", nw).replace('tirozinase', 'tyrosinase')
+                out.append((s_, e_, nw))
+            elif op == 'replace' and (i2 - i1) == (j2 - j1) == 1 and norm(w_) in ('frottement', 'pigments'):
+                out.append((s_, e_, script[j1]))
+            elif op == 'delete' and w_ == ':':
+                continue
+            else:
+                out.append((s_, e_, w_))
+    for k in range(len(out) - 1):
+        if out[k + 1][0] - out[k][1] < .4:
+            out[k] = (out[k][0], out[k + 1][0], out[k][2])
+    WORDS = out
+
+
+_align_words()
+
 BGS = {}
 GRAIN = None
 
