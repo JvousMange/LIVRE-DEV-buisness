@@ -149,9 +149,9 @@ function limb2(x1, y1, x2, y2, w) {
 export function loupe(C, cx, cy, r = 150, id = "loupe") {
   return G(cx, cy, 1,
     layer(limb2(r * 0.7, r * 0.7, r * 1.7, r * 1.7, r * 0.22), C.dark, 5) +
-    layer(blob(0, 0, r + 22, r + 22, { jitter: 0.01, n: 20, seed: 51 }), C.kraftDark, 5) +
-    layer(blob(0, 0, r, r, { jitter: 0.01, n: 20, seed: 52 }), "rgba(255,247,230,.35)", 6) +
-    layer(blob(-r * 0.35, -r * 0.4, r * 0.28, r * 0.12, { jitter: 0.05, n: 10, seed: 53 }), "rgba(255,255,255,.55)", 7), id);
+    `<g filter="url(#paper5)"><circle cx="0" cy="0" r="${r + 11}" fill="none" stroke="${C.kraftDark}" stroke-width="22"/></g>` +
+    `<circle cx="0" cy="0" r="${r}" fill="rgba(255,247,230,.22)"/>` +
+    `<path d="M${-r * 0.62} ${-r * 0.3} Q${-r * 0.35} ${-r * 0.7} ${r * 0.05} ${-r * 0.72}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="${r * 0.09}" stroke-linecap="round"/>`, id);
 }
 
 // Clé en carton (tête ronde + dents), repère local centré sur la tête.
@@ -178,3 +178,32 @@ export function pointer(C, cx, cy, dir = 1, id = "pointer", skin = "#9C6544", sl
 }
 
 export { arrowPts };
+
+// ---------- Usine à pigment (le mélanocyte vu comme une usine sous la peau) ----------
+// Repère local centré sur la façade. Ids internes : "${id}-gear", "${id}-win" (fenêtres allumées), "${id}-red" (fenêtres d'alerte), "${id}-sm0".."${id}-sm7" (fumée).
+export function factory(C, cx, cy, s = 1, id = "fac") {
+  const teeth = [-270, -130, 10].map((x) => layer(poly([[x, -108], [x, -212], [x + 140, -108]], { round: false }), C.problem, 4)).join("");
+  const win = (x, fill, z) => layer(poly([[x - 32, -64], [x + 32, -64], [x + 32, 2], [x - 32, 2]], { round: false }), fill, z);
+  const smoke = Array.from({ length: 8 }, (_, k) => `<g id="${id}-sm${k}" opacity="0">` + layer(blob(200 + (k % 3) * 8, -338, 46, 38, { jitter: 0.2, n: 10, seed: 1500 + k }), "rgba(241,230,210,.92)", 5, { edge: "rgba(0,0,0,0)" }) + `</g>`).join("");
+  return G(cx, cy, s,
+    layer(poly([[-250, -110], [250, -110], [250, 150], [-250, 150]], { round: false }), "#8A5A3C", 3) + teeth +
+    layer(poly([[170, -300], [230, -300], [230, -110], [170, -110]], { round: false }), "#6b4a2a", 3) + layer(poly([[158, -322], [242, -322], [242, -296], [158, -296]], { round: false }), C.dark, 4) +
+    layer(poly([[170, -270], [230, -270], [230, -246], [170, -246]], { round: false }), C.alert, 4) +
+    `<g id="${id}-win">${[-180, -70, 40].map((x) => win(x, C.accent, 5)).join("")}</g><g id="${id}-red" opacity="0">${[-180, -70, 40].map((x) => win(x, C.alert, 6)).join("")}</g>` +
+    layer(poly([[-240, 30], [-150, 30], [-150, 150], [-240, 150]], { round: false }), C.cream, 4) +
+    layer(poly([[-250, 140], [250, 140], [250, 170], [-250, 170]], { round: false }), C.dark, 4) +
+    `<g id="${id}-gear">` + layer(star(190, 62, 56, 46, 10, { jitter: 0 }), "#B5724B", 5) + layer(blob(190, 62, 20, 20, { n: 10, seed: 1490 }), C.cream, 6) + `</g>` + smoke, id);
+}
+
+// Sirène d'alerte (dôme rouge sur socle). Ids : "${id}" (le tout).
+export function siren(C, cx, cy, s = 1, id = "siren") {
+  return G(cx, cy, s, layer(poly([[-46, 0], [46, 0], [46, 30], [-46, 30]], { round: false }), C.dark, 5) + layer(blob(0, -2, 44, 44, { jitter: 0.02, n: 12, seed: 1495 }), C.alert, 6) + layer(blob(-12, -16, 12, 12, { n: 8, seed: 1496 }), "#F2C56A", 7), id);
+}
+
+// Tuyau vertical + tapis roulant horizontal de la sortie de l'usine vers la surface.
+export function pipeLine(C, x, yTop, yBelt, beltX0, id = "pipe") {
+  return `<g id="${id}">` +
+    layer(poly([[x - 32, yTop], [x + 32, yTop], [x + 32, yBelt + 16], [x - 32, yBelt + 16]], { round: false }), "#E8D0A8", 3) +
+    layer(poly([[beltX0, yBelt - 14], [x + 32, yBelt - 14], [x + 32, yBelt + 16], [beltX0, yBelt + 16]], { round: false }), C.dark, 4) +
+    [0, 1, 2].map((i) => layer(blob(beltX0 + 28 + i * 44, yBelt + 20, 12, 12, { n: 8, seed: 1480 + i }), C.kraftDark, 5)).join("") + `</g>`;
+}

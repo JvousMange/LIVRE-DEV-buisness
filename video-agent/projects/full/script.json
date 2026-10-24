@@ -456,12 +456,8 @@
    "at": "Deux"
   },
   {
-   "scene": "lightSoin",
+   "scene": "soinPeau",
    "at": "Trois"
-  },
-  {
-   "scene": "darkSoin",
-   "at": "Sur une peau mate"
   },
   {
    "scene": "products",
