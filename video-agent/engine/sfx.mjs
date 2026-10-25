@@ -19,50 +19,44 @@ const hann = (u) => (u <= 0 || u >= 1 ? 0 : Math.sin(Math.PI * u) ** 2);
 
 // Chaque son : { d: durée (s), g: gain, make(ev, seed) → (t, i) → échantillon }
 const SOUNDS = {
-  // bulle de bois / goutte : courte, ronde, sur une note de la gamme
-  pop: { d: 0.24, g: 0.55, make: (ev) => { const f0 = SCALE[(ev.n ?? 0) % 6]; let ph = 0, ph2 = 0; const n = lcg(3), lp = lowpass1(0.3);
-    return (t) => { const f = f0 * (1 + 0.7 * exp(t, 55)); ph += (TAU * f) / SR; ph2 += (TAU * f * 2.01) / SR;
-      return (Math.sin(ph) * exp(t, 17) + 0.22 * Math.sin(ph2) * exp(t, 40)) * Math.min(1, t / 0.002) + lp(n()) * exp(t, 400) * 0.35; }; } },
-  // « blop » plus grave et rond (rideau de taches)
-  blop: { d: 0.3, g: 0.5, make: (ev) => { const f0 = SCALE[(ev.n ?? 0) % 6] / 2; let ph = 0;
-    return (t) => { const f = f0 * (1 + 1.1 * exp(t, 30)); ph += (TAU * f) / SR; return Math.sin(ph) * exp(t, 12) * Math.min(1, t / 0.004); }; } },
-  // claquement de bois (mécanismes, rebonds, ciseaux)
-  tick: { d: 0.1, g: 0.5, make: () => { const n = lcg(11), bp = bandpass(6); let ph = 0;
-    return (t) => { ph += (TAU * 880) / SR; return bp(n(), 1900) * exp(t, 90) * 1.5 + Math.sin(ph) * exp(t, 70) * 0.5; }; } },
-  // choc sourd de carton : corps grave + claque
-  thud: { d: 0.5, g: 0.95, make: () => { const n = lcg(5), lp = lowpass1(0.06), bp = bandpass(1.5); let ph = 0;
-    return (t) => { const f = 46 + 70 * exp(t, 28); ph += (TAU * f) / SR; return Math.sin(ph) * exp(t, 9) * 0.95 + lp(n()) * exp(t, 40) * 1.4 + bp(n(), 700) * exp(t, 70) * 0.5; }; } },
-  // tampon : choc + claque de papier + « gomme »
-  stamp: { d: 0.45, g: 1.0, make: () => { const n = lcg(6), lp = lowpass1(0.05), bp = bandpass(1.1); let ph = 0, ph2 = 0;
-    return (t) => { ph += (TAU * (62 + 90 * exp(t, 26))) / SR; ph2 += (TAU * 150) / SR;
-      return Math.sin(ph) * exp(t, 11) + 0.3 * Math.sin(ph2) * exp(t, 22) + lp(n()) * exp(t, 50) * 1.2 + bp(n(), 1300) * exp(t, 60) * 0.7; }; } },
-  // cloche douce (validation, coche) : partiels inharmoniques
-  ding: { d: 1.1, g: 0.42, make: () => { const P = [[1, 1, 4.5], [2.76, 0.32, 8], [5.4, 0.14, 13]], f0 = 1318.5; const ph = [0, 0, 0];
+  // Palette « impacts » (mesurée sur Cloudless : ~77 % de l'énergie des silences entre 30 et 150 Hz, très peu de notes) :
+  // un corps grave qui chute en hauteur + une claque brillante très courte. Trois tailles : pop (petit), thud (moyen), stamp (gros).
+  pop: { d: 0.3, g: 0.8, make: (ev, seed) => { const n = lcg(seed + 3), bp = bandpass(2), bp3 = bandpass(1.5), lp = lowpass1(0.05); let ph = 0;
+    return (t) => { ph += (TAU * (72 + 80 * exp(t, 38))) / SR; return Math.sin(ph) * exp(t, 12) * Math.min(1, t / 0.003) * 0.9 + lp(n()) * exp(t, 45) * 0.8 + bp3(n(), 300) * exp(t, 40) * 1.2 + bp(n(), 3800) * exp(t, 110) * 0.55; }; } },
+  blop: { d: 0.3, g: 0.55, make: (ev, seed) => { const n = lcg(seed + 5), lp = lowpass1(0.04); let ph = 0;
+    return (t) => { ph += (TAU * (66 + 50 * exp(t, 22))) / SR; return Math.sin(ph) * exp(t, 10) * Math.min(1, t / 0.005) + lp(n()) * exp(t, 30) * 0.4; }; } },
+  // petite pluie de claquements secs (rafale de taches / granules) : un seul son pour tout le groupe
+  scatter: { d: 0.5, g: 0.8, make: (ev, seed) => { const n = lcg(seed + 8), bp = bandpass(3), lp = lowpass1(0.05); let ph = 0; const T = [0, 0.07, 0.15, 0.22, 0.3];
+    return (t) => { ph += (TAU * (70 + 70 * exp(t, 36))) / SR; let y = Math.sin(ph) * exp(t, 11) * 0.8 + lp(n()) * exp(t, 40) * 0.6;
+      for (const t0 of T) if (t > t0) y += bp(n(), 2600 + 1400 * ((t0 * 37) % 1)) * exp(t - t0, 130) * 0.45; return y; }; } },
+  tick: { d: 0.1, g: 0.4, make: (ev, seed) => { const n = lcg(seed + 11), bp = bandpass(5); return (t) => bp(n(), 2400) * exp(t, 110) * 1.5; } },
+  // choc de carton : coup de sub profond + corps bruité 100–600 Hz + claque
+  thud: { d: 0.7, g: 1.0, make: (ev, seed) => { const n = lcg(seed + 5), lp = lowpass1(0.05), bp = bandpass(1.2), bp2 = bandpass(2); let ph = 0;
+    return (t) => { ph += (TAU * (64 + 100 * exp(t, 24))) / SR; return Math.sin(ph) * exp(t, 6.5) * 1.0 + lp(n()) * exp(t, 14) * 1.3 + bp(n(), 330) * exp(t, 20) * 1.8 + bp2(n(), 4200) * exp(t, 90) * 0.5; }; } },
+  // tampon / croix : plus gros — boom, claque brillante, queue grave
+  stamp: { d: 0.8, g: 1.1, make: (ev, seed) => { const n = lcg(seed + 6), lp = lowpass1(0.04), bp = bandpass(1), bp2 = bandpass(1.5); let ph = 0;
+    return (t) => { ph += (TAU * (58 + 110 * exp(t, 20))) / SR; return Math.sin(ph) * exp(t, 5.5) * 1.1 + lp(n()) * exp(t, 11) * 1.4 + bp(n(), 360) * exp(t, 24) * 1.6 + bp2(n(), 5200) * exp(t, 70) * 0.7; }; } },
+  // cloche douce, discrète (validation)
+  ding: { d: 1.0, g: 0.3, make: () => { const P = [[1, 1, 4.5], [2.76, 0.3, 8], [5.4, 0.12, 13]], f0 = 1318.5; const ph = [0, 0, 0];
     return (t) => { let y = 0; for (let k = 0; k < 3; k++) { ph[k] += (TAU * f0 * P[k][0]) / SR; y += Math.sin(ph[k]) * P[k][1] * exp(t, P[k][2]); } return y * Math.min(1, t / 0.002); }; } },
-  // pièce : deux notes métalliques rapides (si → mi)
-  coin: { d: 0.5, g: 0.34, make: () => { let a = 0, b = 0, c = 0;
+  coin: { d: 0.5, g: 0.3, make: () => { let a = 0, b = 0, c = 0;
     return (t) => { a += (TAU * 1975.5) / SR; b += (TAU * 2637) / SR; c += (TAU * 5274) / SR; const t2 = t - 0.07;
       return Math.sin(a) * exp(t, 20) * Math.min(1, t / 0.001) + (t2 > 0 ? (Math.sin(b) * 1.1 + 0.25 * Math.sin(c)) * exp(t2, 9) * Math.min(1, t2 / 0.001) : 0); }; } },
-  // sirène douce à deux tons
-  beep: { d: 0.4, g: 0.3, make: () => { let ph = 0; return (t) => { ph += (TAU * (t < 0.2 ? 660 : 880)) / SR; return (Math.sin(ph) * 0.8 + Math.sin(ph * 2) * 0.1) * hann(t / 0.4) ** 0.3 * (t < 0.38 ? 1 : 0) * Math.min(1, t * 150); }; } },
-  // papier qui glisse : bruit fibreux, bande passante qui balaie, gonflement doux
-  whoosh: { d: 0.5, g: 0.6, make: (ev, seed) => { const n = lcg(seed + 7), bp = bandpass(0.9), am = lowpass1(0.0015); const D = 0.5;
-    return (t) => { const u = t / D, f = 260 + 2400 * Math.sin(Math.PI * Math.min(1, u)) ** 1.5; const fib = 0.75 + 0.25 * am(n()) * 40; return bp(n(), f) * hann(u) * 1.7 * fib; }; } },
-  // coupe de plan : feuille qu'on tourne, courte et aérienne
-  swish: { d: 0.26, g: 0.42, make: (ev, seed) => { const n = lcg(seed + 9), bp = bandpass(1.0); const D = 0.26;
-    return (t) => { const u = t / D; return bp(n(), 1100 + 3200 * u) * hann(u) * 1.6; }; } },
-  // feuille de calendrier : petit froissement sec
-  flip: { d: 0.16, g: 0.5, make: (ev, seed) => { const n = lcg(seed + 17), bp = bandpass(0.8);
-    return (t) => bp(n(), 3200) * (exp(t, 45) * 1.6 + (t > 0.045 ? exp(t - 0.045, 60) : 0) * 0.8) * Math.min(1, t / 0.001); } },
-  // montée de tension (zoom, aiguille qui s'emballe)
-  rise: { d: 1.2, g: 0.45, make: (ev, seed) => { const n = lcg(seed + 13), bp = bandpass(1.4); let ph = 0; const D = 1.2;
-    return (t) => { const u = Math.min(1, t / D); ph += (TAU * (200 + 1100 * u * u)) / SR; return (bp(n(), 250 + 4200 * u * u) * 1.6 + Math.sin(ph) * 0.22) * (u * u) * (u < 0.96 ? 1 : (1 - u) / 0.04); }; } },
-  // éclair : craquement électrique + tonnerre grave
-  zap: { d: 1.2, g: 0.7, make: (ev, seed) => { const n = lcg(seed + 21), bp = bandpass(1.2), lp = lowpass1(0.012); let ph = 0; const r = lcg(seed + 4);
+  beep: { d: 0.4, g: 0.22, make: () => { let ph = 0; return (t) => { ph += (TAU * (t < 0.2 ? 660 : 880)) / SR; return (Math.sin(ph) * 0.8 + Math.sin(ph * 2) * 0.1) * (t < 0.38 ? 1 : 0) * Math.min(1, t * 150); }; } },
+  // « swipe » de papier : rafale brillante très courte et nette, attaque rapide, queue qui meurt (les traînées verticales vues dans leur spectre)
+  whoosh: { d: 0.34, g: 0.75, make: (ev, seed) => { const n = lcg(seed + 7), bp = bandpass(0.8); const D = 0.3;
+    return (t) => { const u = t / D; const env = u < 0.18 ? u / 0.18 : exp(t - 0.18 * D, 11); return bp(n(), 1800 + 5200 * Math.min(1, u * 1.6)) * env * 1.8 * (t < D ? 1 : 0); }; } },
+  swish: { d: 0.26, g: 0.5, make: (ev, seed) => { const n = lcg(seed + 9), bp = bandpass(0.9); const D = 0.2;
+    return (t) => { const u = t / D; const env = u < 0.25 ? u / 0.25 : exp(t - 0.25 * D, 14); return bp(n(), 2400 + 4000 * Math.min(1, u * 1.4)) * env * 1.6 * (t < D ? 1 : 0); }; } },
+  flip: { d: 0.16, g: 0.55, make: (ev, seed) => { const n = lcg(seed + 17), bp = bandpass(0.8);
+    return (t) => bp(n(), 3600) * (exp(t, 45) * 1.6 + (t > 0.045 ? exp(t - 0.045, 60) : 0) * 0.8) * Math.min(1, t / 0.001); } },
+  rise: { d: 1.2, g: 0.5, make: (ev, seed) => { const n = lcg(seed + 13), bp = bandpass(1.4); let ph = 0; const D = 1.2;
+    return (t) => { const u = Math.min(1, t / D); ph += (TAU * (90 + 700 * u * u)) / SR; return (bp(n(), 300 + 5200 * u * u) * 1.6 + Math.sin(ph) * 0.3) * (u * u) * (u < 0.96 ? 1 : (1 - u) / 0.04); }; } },
+  zap: { d: 1.2, g: 0.8, make: (ev, seed) => { const n = lcg(seed + 21), bp = bandpass(1.2), lp = lowpass1(0.012); let ph = 0, ph2 = 0; const r = lcg(seed + 4);
     const bursts = [0, 0.03, 0.075, 0.11, 0.17, 0.24].map((b) => b + Math.abs(r()) * 0.01);
     return (t) => { let g = 0; for (const b of bursts) if (t >= b && t < b + 0.035) g = Math.max(g, 1 - (t - b) / 0.035);
-      ph += (TAU * (140 + 1500 * exp(t, 14))) / SR;
-      return bp(n(), 3200) * g * 1.8 + Math.sin(ph) * exp(t, 12) * 0.5 + lp(n()) * exp(t, 3.2) * 6 * Math.min(1, t / 0.02); }; } },
+      ph += (TAU * (140 + 1500 * exp(t, 14))) / SR; ph2 += (TAU * (58 + 40 * exp(t, 6))) / SR;
+      return bp(n(), 3600) * g * 1.8 + Math.sin(ph) * exp(t, 12) * 0.4 + Math.sin(ph2) * exp(t, 3) * 0.9 + lp(n()) * exp(t, 3.2) * 6 * Math.min(1, t / 0.02); }; } },
 };
 
 // Petite réverb (Schroeder) : colle les sons dans un même espace.
@@ -92,7 +86,7 @@ export function renderSfx(events, duration, outFile) {
       buf[start + i] += fn(i / SR, i) * g;
     }
   });
-  buf = reverb(buf, 0.14);
+  buf = reverb(buf, 0.07);
   const pcm = Buffer.alloc(buf.length * 2);
   let peak = 0; for (const v of buf) peak = Math.max(peak, Math.abs(v));
   const k = peak > 0.9 ? 0.9 / peak : 1;
@@ -135,19 +129,15 @@ export function eventsFromBeats(beats) {
   const first = [], last = {};
   for (const e of ev) { if (last[e.type] !== undefined && e.t - last[e.type] < 0.06) continue; last[e.type] = e.t; first.push(e); }
 
-  // 2) rafales de petits sons → une phrase montante de 3 notes maximum
-  const out = []; let melody = 0, i = 0;
+  // 2) rafales de petits sons → un seul « scatter » (pluie de claquements) pour tout le groupe
+  const out = []; let i = 0;
   while (i < first.length) {
     const e = first[i];
     if (!SOFT.has(e.type)) { out.push(e); i++; continue; }
     let j = i; const grp = [e];
     while (j + 1 < first.length && SOFT.has(first[j + 1].type) && first[j + 1].t - first[j].t < 0.4) grp.push(first[++j]);
-    if (grp.length <= 2) grp.forEach((g) => out.push({ ...g, n: DEG[melody++ % DEG.length], gain: (g.gain ?? 1) * 0.85 }));
-    else {
-      const pick = [grp[0], grp[Math.floor(grp.length / 2)], grp[grp.length - 1]];
-      const base = melody++ % 3;
-      pick.forEach((g, k) => out.push({ ...g, type: g.type === "blop" ? "blop" : "pop", n: base + k, gain: (g.gain ?? 1) * (0.55 + 0.12 * k) }));
-    }
+    if (grp.length <= 2) grp.forEach((g) => out.push({ ...g }));
+    else out.push({ ...grp[0], type: grp[0].type === "blop" ? "blop" : "scatter", gain: 0.9 });
     i = j + 1;
   }
 

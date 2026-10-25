@@ -175,9 +175,9 @@ console.log(`bruitages : ${events.length} événements`);
 const args = ["-y", "-v", "error", "-framerate", String(FPS), "-i", path.join(framesDir, "f_%05d.jpg"), "-i", path.join(dir, script.voice), "-i", sfxFile];
 const fc = [
   `[1:a]atrim=0:${T},asetpts=PTS-STARTPTS,afade=t=out:st=${T - 0.4}:d=0.4,asplit=2[v][vs]`,
-  `[2:a]atrim=0:${T},asetpts=PTS-STARTPTS,highpass=f=90,lowpass=f=7500,equalizer=f=2800:t=q:w=1.2:g=-5,volume=${script.sfxVolume ?? 0.55}[fx0]`,
+  `[2:a]atrim=0:${T},asetpts=PTS-STARTPTS,highpass=f=35,lowpass=f=9500,equalizer=f=1300:t=o:w=2.2:g=-9,equalizer=f=230:t=o:w=1.6:g=8,acompressor=threshold=0.08:ratio=5:attack=4:release=140:makeup=1,volume=${script.sfxVolume ?? 0.4}[fx0]`,
   // les bruitages s'effacent sous la voix (side-chain) : on entend toujours le texte
-  `[fx0][vs]sidechaincompress=threshold=0.012:ratio=14:attack=6:release=260:makeup=1[fx]`,
+  `[fx0][vs]sidechaincompress=threshold=0.02:ratio=5:attack=6:release=220:makeup=1[fx]`,
   `[v][fx]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-14:TP=-1.5:LRA=11[a]`,
 ].join(";");
 const mp4 = path.join(out, "final_9x16.mp4");
