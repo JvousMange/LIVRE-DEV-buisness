@@ -97,57 +97,96 @@ export function renderSfx(events, duration, outFile) {
   writeFileSync(outFile, Buffer.concat([hdr, pcm]));
 }
 
-// Déduit les bruitages des animations puis les ÉDITE comme un monteur son :
-//  - moments clés (croix, éclair, STOP, ticket, validation) : toujours présents, à pleine présence ;
-//  - mouvements (entrées, chutes, coupes de plan) : présents mais discrets ;
-//  - décoration (taches, granules, pièces qui apparaissent en rafale) : fondue en une courte phrase de 3 notes max.
-const KEY = new Set(["stamp", "zap", "ding", "rise", "thud", "beep"]);
-const SOFT = new Set(["pop", "blop", "tick", "coin"]);
+// ───────────────────────── ENTONNOIR DE SONORISATION ─────────────────────────
+// On part de TOUTES les animations (≈400 sons possibles) et on ne garde que ce qui mérite un son.
+//  Q1  L'élément porte-t-il du SENS (idée nouvelle, verdict, preuve, impact) ? sinon → pas de son (décor : taches, granules, briques, points, texte sur pancarte…).
+//  Q2  Est-il l'un d'une SÉRIE (10 produits, 8 cartes, 11 pages…) ? alors un son pour la série (le premier, et le dernier si elle dure), pas un par élément.
+//  Q3  Un son plus important est-il déjà là (±0,35 s) ? alors on ne double pas (priorité : impact clé > entrée d'objet > coupe de plan).
+//  Q4  Budget : 4 sons maximum par plan, pour que chacun soit entendu.
+// priorités : 3 = moment clé (croix, éclair, STOP, ticket, validation), 2 = entrée d'objet principal, 1 = appoint
+const KEYS = { ck: 3, x: 3, x_it: 3, xx: 3, cross: 3, bigx: 3, bl: 3, okc: 3, stop: 3, rc: 3, rcring: 3, off: 3, lock: 3, shield: 3, "gA-needle": 3, fire: 3, siren: 2, btn: 3, pg: 3, co: 2, q1: 1, "dots-r": 2 };
+const MOVES = { hand: 2, arm: 2, armS: 2, armE: 2, rz: 2, bkw: 2, cal: 2, sun: 2, beam: 1, wallet: 2, faucet: 2, "enz-plug": 3, sc: 2, bottle: 2, b: 2, b3: 3, badge: 2, dose: 1, ring: 1, enz: 1, tb: 2, w: 2, cd: 2, it: 2, p: 2, ck: 2, nb: 1, pg: 1, rt: 2, "faucet-h": 3, stream: 1, mel: 1, scs: 1, rz2: 1 };
+const SKIP = new Set(["gr", "sp", "pt", "ir", "as", "gp", "sf", "dr", "ps", "pb", "po", "fl", "sbb", "at", "foam", "spk", "sw", "d", "br", "arr", "ar", "lp", "fac", "stainW", "gA", "fire2", "signX", "liq", "beaker", "ok", "b1", "b2", "plus", "eq", "plus", "rcr", "rc2", "w0x"]);
+const SERIES = new Set(["x_it", "it", "p", "cd", "ck", "w", "nb", "pg", "rt", "br", "dots-r", "d", "co", "cal", "siren"]);
 export function eventsFromBeats(beats) {
-  const ev = [];
-  const push = (e) => ev.push(e);
+  const raw = [];
+  const cutRaw = [];
   for (const b of beats) {
+    const add = (id, e) => raw.push({ ...e, beat: b.name, id, base: id.replace(/\d+$/, "") });
     for (const a of b.anims) {
       if (a.sfx === false) continue;
       const id = a.id.replace(/^b\d+-/, "");
       const t = b.t0 + a.t0;
-      if (a.sfx) { const list = Array.isArray(a.sfx) ? a.sfx : [a.sfx]; list.forEach((x) => push({ t: t + (x.dt || 0), type: x.type || x, gain: x.gain })); continue; }
+      if (a.sfx) { (Array.isArray(a.sfx) ? a.sfx : [a.sfx]).forEach((x) => add(id, { t: t + (x.dt || 0), type: x.type || x, gain: x.gain })); continue; }
       const popLike = a.from && a.from.s === 0 && a.to && a.to.s === 1;
       const dropLike = a.from && a.from.y !== undefined && a.from.y <= -1000;
-      if (dropLike) { push({ t: t + 0.02, type: "whoosh", gain: 0.55 }); push({ t: t + 0.42, type: "thud", gain: 0.7 }); }
+      if (dropLike) { add(id, { t: t + 0.02, type: "whoosh", gain: 0.55 }); add(id, { t: t + 0.42, type: "thud", gain: 0.7 }); }
       else if (popLike) {
-        const type = /^(x|x_|x\d|xB|xL|xR|bigx|cross)/.test(id) ? "stamp" : /^(chk|ok|okc)/.test(id) ? "ding" : /^fd\d+/.test(id) ? "blop" : "pop";
-        push({ t: t + (type === "stamp" ? 0.12 : 0.03), type, gain: 1 });
+        const type = /^(x|x_|x\d|xB|xL|xR|bigx|cross)/.test(id) ? "stamp" : /^(chk|ok|okc|ck)/.test(id) ? "ding" : /^fd\d+/.test(id) ? "blop" : "pop";
+        add(id, { t: t + (type === "stamp" ? 0.12 : 0.03), type, gain: 1 });
       }
     }
-    for (const x of b.sfx || []) push({ t: b.t0 + x.t, type: x.type, gain: x.gain });
-    if (b.t0 > 0.01) push({ t: b.t0 - 0.04, type: "swish", gain: 1 });
+    for (const x of b.sfx || []) add("(plan)", { t: b.t0 + x.t, type: x.type, gain: x.gain });
+    if (b.t0 > 0.01) cutRaw.push({ t: b.t0 - 0.04, type: "swish", gain: 1, beat: b.name, id: "(plan)", base: "(plan)", pri: 1 });
   }
-  ev.sort((x, y) => x.t - y.t);
+  const funnel = { brut: raw.length + cutRaw.length };
 
-  // 1) doublons trop proches (même type)
-  const first = [], last = {};
-  for (const e of ev) { if (last[e.type] !== undefined && e.t - last[e.type] < 0.06) continue; last[e.type] = e.t; first.push(e); }
-
-  // 2) rafales de petits sons → un seul « scatter » (pluie de claquements) pour tout le groupe
-  const out = []; let i = 0;
-  while (i < first.length) {
-    const e = first[i];
-    if (!SOFT.has(e.type)) { out.push(e); i++; continue; }
-    let j = i; const grp = [e];
-    while (j + 1 < first.length && SOFT.has(first[j + 1].type) && first[j + 1].t - first[j].t < 0.4) grp.push(first[++j]);
-    if (grp.length <= 2) grp.forEach((g) => out.push({ ...g }));
-    else out.push({ ...grp[0], type: grp[0].type === "blop" ? "blop" : "scatter", gain: 0.9 });
-    i = j + 1;
+  // Q1 : sens ? — on retire le décor ; le rideau de taches devient UN grand geste, les rétractions UN souffle
+  let kept = [];
+  const fd = raw.filter((e) => e.base === "fd");
+  for (const e of raw) {
+    if (e.base === "fd") continue;
+    const k = e.id.replace(/^[a-z]*\d*-/, "") && e.base;
+    if (e.base === "sign") { if (e.beat === "ninetyFour" && e.type === "thud") kept.push({ ...e, pri: 2 }); continue; }   // le texte sur pancarte n'a pas besoin de son (sauf le grand chiffre)
+    if (SKIP.has(e.base)) continue;
+    const pri = KEYS[e.base] ?? KEYS[e.id] ?? MOVES[e.base] ?? MOVES[e.id] ?? (e.type === "rise" || e.type === "zap" || e.type === "stamp" || e.type === "ding" ? 3 : 1);
+    kept.push({ ...e, pri });
   }
-
-  // 3) densité : jamais plus de 3 sons en 0,5 s ; les moments clés ne sont jamais supprimés
-  out.sort((x, y) => x.t - y.t);
-  const kept = [];
-  for (const e of out) {
-    const near = kept.filter((k) => e.t - k.t < 0.5 && !KEY.has(k.type));
-    if (!KEY.has(e.type) && near.length >= 3) continue;
-    kept.push(e);
+  if (fd.length) {
+    const t0 = fd[0].t, t1 = fd[fd.length - 1].t, beat = fd[0].beat;
+    if (beat === "triggers5") { kept.push({ t: Math.max(0, t1 - 1.0), type: "rise", gain: 0.9, beat, id: "fd", base: "fd", pri: 3 }, { t: t1 + 0.1, type: "stamp", gain: 1.1, beat, id: "fd", base: "fd", pri: 3 }); }
+    else kept.push({ t: t0, type: "whoosh", gain: 0.9, beat, id: "fd", base: "fd", pri: 2 });
   }
-  return kept;
+  funnel.apresQ1_sens = kept.length + cutRaw.length;
+
+  // Q2 : séries — un son pour la série (premier, + dernier si elle s'étale sur plus d'1 s)
+  const bySeries = new Map(), single = [];
+  for (const e of kept) {
+    if (SERIES.has(e.base)) { const k = `${e.beat}|${e.base}|${e.type}`; (bySeries.get(k) || bySeries.set(k, []).get(k)).push(e); } else single.push(e);
+  }
+  for (const list of bySeries.values()) {
+    list.sort((a, b) => a.t - b.t);
+    const f = list[0], l = list[list.length - 1];
+    if (f.base === "co") { single.push({ ...l, type: "coin", gain: 1 }); continue; }   // les pièces : un seul « ka-ching » quand la dernière tombe
+    single.push(f);
+    if (list.length >= 4 && l.t - f.t > 1.0 && f.base !== "pg") single.push(l);
+    if (f.base === "pg") list.forEach((x, i) => { if (i > 0) single.push({ ...x, gain: 0.7 }); });   // le défilement des mois EST le rythme : on garde chaque page
+  }
+  // dans une série d'objets qui tombent, on ne garde que le choc (pas le souffle)
+  const afterQ2 = single.filter((e) => !(["it", "p", "cd"].includes(e.base) && e.type === "whoosh" && false));
+  funnel.apresQ2_series = afterQ2.length + cutRaw.length;
+
+  // Q3 : un son plus important est déjà là → on ne double pas. Les coupes de plan ne sonnent que si rien d'autre n'accompagne ±0,35 s.
+  const all = [...afterQ2, ...cutRaw].sort((a, b) => b.pri - a.pri || a.t - b.t);
+  const out = [], drops = [];
+  for (const e of all) {
+    const gap = e.type === "swish" ? 0.35 : 0.22;
+    const clash = e.type === "rise" ? null : out.find((k) => k.type !== "rise" && Math.abs(k.t - e.t) < gap && (k.pri >= e.pri));
+    if (clash) { drops.push({ t: +e.t.toFixed(2), type: e.type, id: e.id, beat: e.beat, why: `doublon avec ${clash.type}(${clash.id}) à ${clash.t.toFixed(2)}` }); continue; }
+    out.push(e);
+  }
+  funnel.apresQ3_doublons = out.length;
+
+  // Q4 : budget — 4 sons maximum par plan (les plus importants d'abord)
+  const perBeat = new Map(), final = [];
+  for (const e of out.sort((a, b) => b.pri - a.pri || a.t - b.t)) {
+    const c = perBeat.get(e.beat) || 0;
+    if (c >= 4 && e.pri < 3) { drops.push({ t: +e.t.toFixed(2), type: e.type, id: e.id, beat: e.beat, why: "budget du plan" }); continue; }
+    perBeat.set(e.beat, c + 1); final.push(e);
+  }
+  final.sort((a, b) => a.t - b.t);
+  funnel.final = final.length;
+  if (process.env.DEBUG_SFX) writeFileSync(process.env.DEBUG_SFX, JSON.stringify({ funnel, drops, final: final.map(({ t, type, beat, id, pri }) => ({ t: +t.toFixed(2), type, beat, id, pri })) }));
+  console.log("entonnoir sons :", JSON.stringify(funnel));
+  return final;
 }
