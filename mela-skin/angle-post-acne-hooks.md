@@ -38,3 +38,30 @@ Les plus simples à produire avec la bibliothèque actuelle : #1, #2, #7, #8, #1
 
 ## Garde-fous
 « Gratter / gommer / citron aggrave » : formulation prudente (« peut », « risque de ») ; pas de promesse médicale ; faits sources dans `micro-avatars-hooks.md`.
+
+---
+
+## Registre « copines » : oral, direct, un peu piquant (retour client)
+
+Formule : **[appel précis + comparaison ou jalon de vie] + [ordre court]** (« Écoute ça. », « Faut changer ça. », « Regarde ça. »).
+Ton : une copine qui parle franchement, sans jargon, sans honte imposée.
+
+| # | Mécanique | Parlé | Image |
+|---|---|---|---|
+| 1 | Copines (ta version) | « T'es la seule de tes copines à avoir besoin d'une tonne de maquillage pour cacher tes taches ? Faut changer ça. » | Cinq copines papier sans fond de teint, une seule avec un pinceau énorme |
+| 2 | Copines | « Tes copines sortent sans fond de teint. Toi, jamais. Écoute ça. » | Groupe devant la porte, elle retourne au miroir |
+| 3 | Remarque d'un proche | « Ton mec te dit "mais on voit rien", et toi tu ne vois que ça. » | Couple, lui sourit, elle zoome sur sa joue dans le miroir |
+| 4 | Jalon (ta version) | « T'as passé la puberté, mais tes taches ne partent toujours pas ? Écoute ça. » | Calendrier d'années, bouton qui disparaît, marque qui reste |
+| 5 | Jalon âge | « T'as 25 ans, plus un seul bouton, et toujours ces marques ? Écoute ça. » | Gâteau de 25 bougies, joue avec marques |
+| 6 | Jalon temps | « Ça fait des années que tes boutons sont partis. Pourquoi tes marques sont encore là ? » | Calendrier de plusieurs années, même case cerclée |
+| 7 | Jalon scolaire | « Le lycée est fini. Les marques, non. » | Diplôme en papier, joue tachée |
+| 8 | Maquillage | « Trente minutes de fond de teint pour aller acheter du pain ? Faut changer ça. » | Horloge qui tourne, pinceau, porte de la boulangerie |
+| 9 | Maquillage | « Tu te maquilles pour cacher des boutons qui ne sont même plus là. » | Pinceau qui couvre une joue sans bouton |
+| 10 | Week-end | « Tu pars en week-end : première chose dans le sac, ton fond de teint ? » | Sac ouvert, fond de teint tout en haut |
+| 11 | Ordre | « Arrête de frotter tes marques. Écoute ça. » | Main qui frotte, peau qui rougit, puis stop |
+| 12 | Ordre | « Avant de racheter un gommage : regarde ça. » | Gommage en main, flèche vers la peau |
+| 13 | Entre nous | « Peau mate, boutons guéris, marques toujours là ? Écoute-moi vingt secondes. » | Visage papier, marques qui apparaissent |
+| 14 | Entre nous | « Les soins pour peaux claires, ça ne marche pas sur nous. Voilà pourquoi. » | Nuancier de 8 cartes, les foncées barrées |
+
+Choix recommandé pour démarrer : **#1, #4, #3 et #8** (comparaison, jalon, remarque d'un proche, maquillage excessif). #1 et #4 sont tes formulations, nettoyées.
+Précaution : la comparaison doit rassurer (« ça se change »), pas humilier ; garder « Faut changer ça » ou « Écoute ça » comme porte vers le corps.
