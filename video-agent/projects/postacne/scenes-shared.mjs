@@ -40,10 +40,17 @@ export function scenes(C, X) {
     // ───────── NOUVEAU HOOK : « Tes copines, elles mangent n'importe quoi, elles sortent sans maquillage… et toi, tes boutons sont partis, mais les taches, elles, sont toujours là ? Écoute ça. »
     // Décor inédit : une terrasse de café. Les copines (peau nette, burgers, frites, cocktails) ; elle, au bout de la table, avec son pinceau et son miroir de poche.
     hookTerrasse: (() => {
-      const tCop = R("hookTerrasse", "copines"), tMange = R("hookTerrasse", "mangent"), tSans = R("hookTerrasse", "sans"), tToi = R("hookTerrasse", "toi"), tTaches = R("hookTerrasse", "taches"), tEc = R("hookTerrasse", "écoute", -0.1), dur = D("hookTerrasse");
+      const tCop = R("hookTerrasse", "copines"), tMange = R("hookTerrasse", "mangent"), tSans = R("hookTerrasse", "sans"), tToi = R("hookTerrasse", "toi"), tTaches = R("hookTerrasse", "taches"), tEc = R("hookTerrasse", "écoute", -0.1), tBite = R("hookTerrasse", "mangent", 0.55), dur = D("hookTerrasse");
       const burger = (x, y, id) => `<g id="${id}"><g transform="translate(${x} ${y})">` + layer("M-95 0 Q-95 -88 0 -92 Q95 -88 95 0Z", "#C99A78", 5) + layer(poly([[-100, -4], [100, -4], [96, 22], [-96, 22]], { round: false }), C.solution, 6) + layer(poly([[-98, 20], [98, 20], [98, 52], [-98, 52]], { round: false }), "#5E3A27", 6) + layer("M-95 52 L95 52 Q95 84 0 84 Q-95 84 -95 52Z", "#C99A78", 5) + `</g></g>`;
       const fries = (x, y, id) => `<g id="${id}"><g transform="translate(${x} ${y})">` + [-40, -20, 0, 20, 40].map((dx, i) => layer(poly([[dx - 9, -70 - (i % 2) * 18], [dx + 9, -70 - (i % 2) * 18], [dx + 9, 20], [dx - 9, 20]], { round: false }), C.accent, 6)).join("") + layer("M-55 -10 L55 -10 L42 70 L-42 70Z", C.alert, 7) + `</g></g>`;
       const glass = (x, y, id, col) => `<g id="${id}"><g transform="translate(${x} ${y})">` + layer("M-46 -90 L46 -90 L34 60 L-34 60Z", "#B7D0E0", 4) + layer("M-40 -60 L40 -60 L34 60 L-34 60Z", col, 5) + layer(poly([[-4, 60], [4, 60], [4, 100], [-4, 100]], { round: false }), "#B7D0E0", 4) + `</g></g>`;
+      // burger tenu par la 2e copine : entier (hb), croqué (hbb, un morceau en moins à droite), bouche ouverte (mo) et miettes (cr0..4)
+      const BX = 370, BY = 1110, BS = 1.1;
+      const bunTop = `M-95 0 Q-95 -88 -20 -92 Q30 -90 52 -70 L40 -58 L62 -46 L50 -32 L66 -18 L60 0Z`;
+      const burgerWhole = (id) => `<g id="${id}"><g transform="translate(${BX} ${BY}) scale(${BS})">` + layer("M-95 0 Q-95 -88 0 -92 Q95 -88 95 0Z", "#C99A78", 5) + layer(poly([[-100, -4], [100, -4], [96, 22], [-96, 22]], { round: false }), C.solution, 6) + layer(poly([[-98, 20], [98, 20], [98, 52], [-98, 52]], { round: false }), "#5E3A27", 6) + layer("M-95 52 L95 52 Q95 84 0 84 Q-95 84 -95 52Z", "#C99A78", 5) + `</g></g>`;
+      const burgerBite = (id) => `<g id="${id}"><g transform="translate(${BX} ${BY}) scale(${BS})">` + layer(bunTop, "#C99A78", 5) + layer(poly([[-100, -4], [58, -4], [70, 8], [56, 22], [-96, 22]], { round: false }), C.solution, 6) + layer(poly([[-98, 20], [60, 20], [72, 34], [58, 52], [-98, 52]], { round: false }), "#5E3A27", 6) + layer("M-95 52 L56 52 L68 64 Q50 84 0 84 Q-95 84 -95 52Z", "#C99A78", 5) + `</g></g>`;
+      const crumbs = [0, 1, 2, 3, 4].map((i) => `<g id="cr${i}">` + layer(blob(BX + 60 + i * 8, BY - 70 + (i % 2) * 22, 7 + (i % 3) * 3, 6 + (i % 2) * 3, { jitter: 0.2, n: 7, seed: 4420 + i }), i % 2 ? C.solution : "#C99A78", 8) + `</g>`).join("");
+      const mouth = `<g id="mo">${layer(blob(BX, 932, 20, 13, { jitter: 0.05, n: 10, seed: 4430 }), C.dark, 8)}${layer(blob(BX, 938, 10, 5, { jitter: 0.1, n: 8, seed: 4431 }), C.alert, 9)}</g>`;
       const friend = (x, tone, hair, id) => `<g id="${id}">${woman(C, { cx: x, cy: 880, scale: 0.36, spotsOn: false, mirrorOn: false, tone, hair })}</g>`;
       const FR = [[150, "light", "bob"], [370, "mixed", "puff"], [590, "dark", "bob"]];
       const HX = 870, HY = 880;
@@ -54,11 +61,21 @@ export function scenes(C, X) {
           layer(poly([[60, 120], [260, 120], [260, 320], [60, 320]], { round: false }), "#B7D0E0", 2) + layer(poly([[820, 120], [1020, 120], [1020, 320], [820, 320]], { round: false }), "#B7D0E0", 2) +
           FR.map(([x, t, h], i) => friend(x, t, h, `fr${i}`)).join("") +
           `<g id="her">${woman(C, { cx: HX, cy: HY, scale: 0.4, spotsOn: false, mirrorOn: false, tone: "deep" })}<g transform="translate(${HX} ${HY}) scale(.4)">${spotsLocal("sp")}</g></g>` +
-          burger(140, 1130, "bg0") + fries(380, 1130, "fy0") + glass(600, 1100, "gl0", C.alert) + mirrorHand,
+          burger(140, 1160, "bg0") + fries(1010, 1180, "fy0") + glass(600, 1100, "gl0", C.alert) + burgerWhole("hb") + burgerBite("hbb") + mouth + crumbs + mirrorHand,
         anims: [
           ...FR.map((_, i) => A(`fr${i}`, Math.max(0, tCop) + i * 0.15, 0.4, { y: 500 }, { y: 0 }, { ease: "outBack", sfx: false })),
           A("parasol", 0, 0.5, { y: -700 }, { y: 0 }, { ease: "outBack", sfx: false }),
-          DROP("bg0", Math.max(0, tMange), [140, 1130], -900), POP("fy0", Math.max(0, tMange) + 0.18, [380, 1130], { sfx: false }), POP("gl0", Math.max(0, tMange) + 0.3, [600, 1100], { sfx: false }),
+          DROP("bg0", Math.max(0, tMange - 0.3), [140, 1160], -900), POP("fy0", Math.max(0, tMange) + 0.18, [1010, 1180], { sfx: false }), POP("gl0", Math.max(0, tMange) + 0.3, [600, 1100], { sfx: false }),
+          // une copine soulève son burger, mord dedans (bouchée visible, miettes), mâche, repose
+          A("hb", Math.max(0, tMange - 0.1), 0.5, { y: 230, o: 0 }, { y: -160, o: 1 }, { ease: "outBack", sfx: "whoosh" }),
+          A("hbb", Math.max(0, tMange - 0.1), 0.5, { y: 230, o: 0 }, { y: -160, o: 0 }, { ease: "outBack", sfx: false }),
+          A("mo", tBite - 0.12, 0.12, { s: 0 }, { s: 1 }, { origin: [BX, 932], ease: "outCubic", sfx: false }),
+          A("hb", tBite, 0.05, { y: -160, o: 1 }, { y: -160, o: 0 }, { ease: "lin", late: true, sfx: [{ type: "flip", gain: 1.4 }, { type: "thud", dt: 0.04, gain: 0.5 }] }),
+          A("hbb", tBite, 0.05, { y: -160, o: 0 }, { y: -160, o: 1 }, { ease: "lin", late: true, sfx: false }),
+          A("mo", tBite + 0.2, 0.15, { s: 1 }, { s: 0 }, { origin: [BX, 932], ease: "inCubic", late: true, sfx: false }),
+          ...[0, 1, 2, 3, 4].map((i) => A(`cr${i}`, tBite, 0.7, { x: 0, y: 0, o: 1, r: 0 }, { x: 40 + i * 30, y: 140 + (i % 3) * 40, o: 0, r: 200 }, { ease: "outCubic", sfx: false })),
+          ...[0.55, 0.95, 1.35].flatMap((d) => [A("mo", tBite + d, 0.1, { s: 0 }, { s: 0.8 }, { origin: [BX, 932], ease: "outCubic", late: true, sfx: false }), A("mo", tBite + d + 0.16, 0.1, { s: 0.8 }, { s: 0 }, { origin: [BX, 932], ease: "inCubic", late: true, sfx: false })]),
+          A("hbb", tBite + 1.7, 0.4, { y: -160 }, { y: 40 }, { ease: "inOut", late: true, sfx: false }),
           A("her", Math.max(0.2, tToi - 0.2), 0.45, { x: 500 }, { x: 0 }, { ease: "outBack", sfx: "whoosh" }),
           POP("pc", Math.max(0, tSans), [HX - 120, 1010], { sfx: false }),
           ...SPOTS.map((s, i) => POP(`sp${i}`, tTaches + i * 0.07, [s.x, s.y], { sfx: false })),
