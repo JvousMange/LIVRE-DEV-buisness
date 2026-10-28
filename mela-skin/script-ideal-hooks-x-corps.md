@@ -52,3 +52,25 @@ Total : hook 5 s + corps 40 s ≈ 45 s, soit ≈ 110 mots de voix.
 
 ## Page de destination
 Titre repris du hook gagnant (H2 → « Les soins anti-taches n'ont pas été pensés pour ta peau »), sous-titre = mécanisme, avis de clientes de même carnation en premier, offre 1 / 2+1 / 3 avec prix par flacon, garantie 90 jours expliquée, FAQ = objections par fréquence, barre d'achat collante sur mobile.
+
+---
+
+## Annexe — Hooks « à la Cloudless » (10 propositions, même corps)
+
+Mécaniques relevées sur l'ouverture de la vidéo Cloudless (acné adulte) : (1) un appel très précis (âge + situation) dès la première phrase ; (2) une image absurde et lisible en une seconde (un adulte accroupi sur une chaise d'écolier au milieu d'élèves) ; (3) un gros plan sur le problème avec le geste de honte (la main qui cache) ; (4) « ça vient de l'intérieur » tout de suite, avec une coupe et une sirène ; (5) la récurrence prouvée par un calendrier où la même case est cerclée ; (6) aucun texte à l'écran en plus des sous-titres.
+
+| # | Mécanique | Parlé | Image d'ouverture |
+|---|---|---|---|
+| C1 | Appel âge + situation | « Si tu as plus de vingt-cinq ans et des taches d'ado, écoute. » | Femme adulte accroupie sur une chaise d'écolier, au milieu d'élèves, joues tachées |
+| C2 | Appel carnation + enjeu | « Peau mate, peau noire : les soins anti-taches n'ont pas été testés sur toi. » | Rang de cartes de teintes, les claires cochées, les foncées barrées |
+| C3 | Geste de honte | « Cette main devant la joue, sur chaque photo : on va parler de ça. » | Gros plan : main qui cache une joue tachée, flash d'appareil |
+| C4 | Récurrence | « Ta tache revient toujours au même endroit, et il y a une raison. » | Calendrier, même case cerclée, visage qui se re-marque au même point |
+| C5 | Intérieur / sirène | « Ta tache ne vient pas de la surface : elle vient de l'intérieur. » | Coupe de la peau, sirène rouge qui s'allume, flèches qui montent |
+| C6 | Absurde / objet disproportionné | « Chaque matin, tu mets un mètre de fond de teint… pour cacher ça. » | Femme qui étale le fond de teint avec une truelle de maçon sur une joue |
+| C7 | Scène de salle de bain | « Sept heures, devant le miroir : tu cherches la tache sous la lumière. » | Salle de bain en carrelage, femme en pied qui se penche, reflet zoomé |
+| C8 | Chiffre | « [STAT : N sur 10] femmes à peau mate gardent des marques après un bouton. » | Dix silhouettes dont [N] tachées, qui se colorient une à une |
+| C9 | Avertissement | « Gommer ou frotter ta tache : ça la rend plus foncée. Voilà pourquoi. » | Main qui frotte, la tache qui s'assombrit, flèche vers le bas |
+| C10 | Question qui pique | « À partir de quel âge on a le droit d'avoir une peau uniforme ? » | Rang de femmes de tous âges, chacune avec une marque, toutes se cachent |
+
+Premiers à tester (rapides à produire avec la bibliothèque actuelle) : C5 (coupe + sirène, usine déjà animée), C4 (calendrier), C7 (miroir), C9 (main + tache). À créer : C1 (chaise d'écolier), C3 (flash), C6 (truelle).
+Chiffre C8 : à n'utiliser qu'avec une source réelle.
