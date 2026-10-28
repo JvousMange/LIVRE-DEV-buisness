@@ -1,17 +1,136 @@
 {
-  "hooks": {
-    "H1": { "scene": "hookMec", "at": "Ton mec", "lines": [{ "text": "Ton mec te dit que tes taches ne se voient pas, mais toi tu ne vois que ça sur tes joues ?" }] },
-    "H2": { "scene": "hookRetouche", "at": "Tu retouches", "lines": [{ "text": "Tu retouches tes photos parce que les taches qu'ont laissées tes boutons gâchent tout ?" }, { "text": "Regarde ça." }] },
-    "H3": { "scene": "hookPeau", "at": "T'as la peau", "lines": [{ "text": "T'as la peau mate ou noire : tes boutons sont partis, mais les taches sont toujours là ?" }, { "text": "Écoute ça." }] }
+ "hooks": {
+  "H1": {
+   "scene": "hookMec",
+   "at": "Ton mec",
+   "lines": [
+    {
+     "text": "Ton mec te dit que tes taches ne se voient pas, mais toi tu ne vois que ça sur tes joues ?"
+    }
+   ]
   },
-  "body": [
-    { "scene": "mecanisme", "at": "Voilà ce qui se passe", "lines": [{ "text": "Voilà ce qui se passe." }, { "text": "Quand ta peau est agressée, elle fabrique trop de mélanine, à cet endroit précis." }, { "text": "Elle reste coincée sous la surface, et plus fort sur une peau mate." }] },
-    { "scene": "surface", "at": "Gommer", "lines": [{ "text": "Gommer, couvrir, frotter : ça ne touche que la surface." }, { "text": "Ce n'est pas ta peau qui est en cause." }] },
-    { "scene": "stop", "at": "Mela Skin", "lines": [{ "text": "Mela Skin freine la fabrication du pigment à la source.", "tts": "Méla Skinne freine la fabrication du pigment à la source." }] },
-    { "scene": "actifs", "at": "Quatre actifs", "lines": [{ "text": "Quatre actifs, un seul flacon." }] },
-    { "scene": "identite", "at": "Pensé pour", "lines": [{ "text": "Pensé pour les peaux mates et noires." }, { "text": "Pas pour éclaircir : pour réguler." }] },
-    { "scene": "offre", "at": "Cette semaine", "lines": [{ "text": "Cette semaine, pour deux flacons achetés, un offert." }] },
-    { "scene": "garantie", "at": "Et si tes taches", "lines": [{ "text": "Et si tes taches sont toujours là au bout de quatre-vingt-dix jours, on te rembourse." }] },
-    { "scene": "cta", "at": "Touche le bouton", "lines": [{ "text": "Touche le bouton." }] }
-  ]
+  "H2": {
+   "scene": "hookRetouche",
+   "at": "Tu retouches",
+   "lines": [
+    {
+     "text": "Tu retouches tes photos parce que les taches qu'ont laissées tes boutons gâchent tout ?"
+    },
+    {
+     "text": "Regarde ça."
+    }
+   ]
+  },
+  "H3": {
+   "scene": "hookPeau",
+   "at": "T'as la peau",
+   "lines": [
+    {
+     "text": "T'as la peau mate ou noire : tes boutons sont partis, mais les taches sont toujours là ?"
+    },
+    {
+     "text": "Écoute ça."
+    }
+   ]
+  },
+  "H4": {
+   "scene": "hookTerrasse",
+   "at": "Tes copines",
+   "lines": [
+    {
+     "text": "Tes copines mangent n'importe quoi, sortent sans maquillage, et toi tes boutons sont partis mais les taches sont toujours là ?"
+    },
+    {
+     "text": "Écoute ça."
+    }
+   ]
+  }
+ },
+ "body": [
+  {
+   "scene": "mecanisme",
+   "at": "Voilà ce qui se passe",
+   "lines": [
+    {
+     "text": "Voilà ce qui se passe."
+    },
+    {
+     "text": "Quand ta peau est agressée, elle fabrique trop de mélanine, à cet endroit précis."
+    },
+    {
+     "text": "Elle reste coincée sous la surface, et plus fort sur une peau mate."
+    }
+   ]
+  },
+  {
+   "scene": "surface",
+   "at": "Gommer",
+   "lines": [
+    {
+     "text": "Gommer, couvrir, frotter : ça ne touche que la surface."
+    },
+    {
+     "text": "Ce n'est pas ta peau qui est en cause."
+    }
+   ]
+  },
+  {
+   "scene": "stop",
+   "at": "Mela Skin",
+   "lines": [
+    {
+     "text": "Mela Skin freine la fabrication du pigment à la source.",
+     "tts": "Méla Skinne freine la fabrication du pigment à la source."
+    }
+   ]
+  },
+  {
+   "scene": "actifs",
+   "at": "Quatre actifs",
+   "lines": [
+    {
+     "text": "Quatre actifs, un seul flacon."
+    }
+   ]
+  },
+  {
+   "scene": "identite",
+   "at": "Pensé pour",
+   "lines": [
+    {
+     "text": "Pensé pour les peaux mates et noires."
+    },
+    {
+     "text": "Pas pour éclaircir : pour réguler."
+    }
+   ]
+  },
+  {
+   "scene": "offre",
+   "at": "Cette semaine",
+   "lines": [
+    {
+     "text": "Cette semaine, pour deux flacons achetés, un offert."
+    }
+   ]
+  },
+  {
+   "scene": "garantie",
+   "at": "Et si tes taches",
+   "lines": [
+    {
+     "text": "Et si tes taches sont toujours là au bout de quatre-vingt-dix jours, on te rembourse."
+    }
+   ]
+  },
+  {
+   "scene": "cta",
+   "at": "Touche le bouton",
+   "lines": [
+    {
+     "text": "Touche le bouton."
+    }
+   ]
+  }
+ ]
 }
