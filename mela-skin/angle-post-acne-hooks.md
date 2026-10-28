@@ -116,3 +116,34 @@ Pourquoi : chacune met une scène ou une comparaison que la cliente reconnaît, 
 ### Garde-fous
 - Les recadrages « ne vient pas de là / de ton hygiène / de ce que tu manges » : à valider (je ne les écris pas comme un fait médical absolu) ; la formulation la plus sûre pour la première version : « Ce n'est pas (uniquement) ce que tu fais. »
 - Pas de promesse de disparition : le corps de l'annonce parle d'« estomper ».
+
+---
+
+## Hooks « nommés » : le contexte est dans la phrase, rien de flou (retour client)
+
+Règle : un hook doit contenir, en clair, **qui** (peau mate / noire / métisse), **quoi** (les taches brunes que les boutons ont laissées), **où** (joues, menton, front) et **la scène** (photo, miroir, ton mec, fond de teint). Pas de « ça », « ces trucs », « tes marques » seuls.
+
+Avant → après :
+- « Ton mec te dit que ça ne se voit pas, mais toi tu ne vois que ça ? » → « Ton mec te dit que les taches de tes anciens boutons ne se voient pas, mais toi tu ne vois que ça sur ta joue ? »
+- « Tu retouches tes photos ? Regarde ça. » → « Tu retouches tes photos parce que les taches brunes que tes boutons ont laissées gâchent tout ? Regarde ça. »
+- « Tes copines n'ont jamais de marques ? » → « Tes copines n'ont aucune tache de boutons, alors que toi, sur peau noire, tu en gardes pendant des mois ? Voilà pourquoi. »
+
+| # | Parlé | Contexte nommé |
+|---|---|---|
+| N1 | « Ton mec te dit que les taches de tes anciens boutons ne se voient pas, mais toi tu ne vois que ça sur ta joue ? » | taches de boutons · joue · mec |
+| N2 | « Tu retouches tes photos parce que les taches brunes que tes boutons ont laissées gâchent tout ? Regarde ça. » | taches brunes · boutons · photos |
+| N3 | « Peau noire ou métisse : tes boutons sont partis, mais les taches brunes qu'ils ont laissées sont toujours là ? Écoute ça. » | peau noire/métisse · taches brunes |
+| N4 | « Tu mets du fond de teint sur tes joues pour cacher les taches de boutons que tu as déjà guéris ? Regarde ça. » | fond de teint · joues · boutons guéris |
+| N5 | « Sur une peau mate, chaque bouton te laisse une tache brune pendant des mois ? Écoute ça. » | peau mate · bouton → tache brune |
+| N6 | « Tu évites les photos de près à cause des taches de boutons sur ton menton et tes joues ? Regarde ça. » | photos de près · menton · joues |
+| N7 | « Tes boutons sont guéris depuis un an, mais les taches brunes sur ton menton sont toujours là ? Écoute ça. » | un an · menton |
+| N8 | « Tu gommes tes taches de boutons chaque semaine et elles sont plus foncées ? Regarde ça. » | gommage · taches de boutons |
+| N9 | « Ta cousine à la peau claire fait un bouton, trois jours et c'est fini. Toi, peau mate : six mois de tache brune ? Voilà pourquoi. » | peau claire vs mate · durée |
+| N10 | « Citron, gommage, vitamine C : tu as tout essayé sur les taches de tes boutons et rien ne bouge ? Regarde ça. » | citron · gommage · vitamine C |
+| N11 | « Tu te maquilles tous les matins juste pour cacher les taches que tes boutons ont laissées ? Faut changer ça. » | maquillage · matin · boutons |
+| N12 | « Tes copines mangent n'importe quoi et n'ont aucune tache de boutons, alors que toi tu en gardes pendant des mois ? Voilà pourquoi. » | copines · alimentation · durée |
+| N13 | « En visio, tu coupes la caméra à cause des taches brunes que tes boutons ont laissées sur ton front ? Regarde ça. » | visio · front |
+| N14 | « Les soins anti-boutons du commerce n'ont pas été pensés pour les peaux mates. Résultat : tes taches restent. Écoute ça. » | soins anti-boutons · peau mate |
+
+À tester en premier : **N1, N2, N3, N9** (scène + peau + tache nommées, et chute claire).
+Vocabulaire : alterner « taches brunes » (visuel), « marques de boutons » (courant) et, à l'oral, éviter « hyperpigmentation post-inflammatoire » (trop clinique) sauf en sous-titre secondaire.
