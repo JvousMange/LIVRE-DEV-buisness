@@ -1,5 +1,5 @@
 // Annonce « anti-tache post-acné » : 3 hooks interchangeables (hookMec / hookRetouche / hookPeau) + un corps identique.
-import { layer, blob, poly, arrowPts } from "../../engine/paper.mjs";
+import { layer, blob, poly, band, arrowPts } from "../../engine/paper.mjs";
 import { skin, stain, melanocyte, granuleSpecs, granule, cross, tag, woman, bottle, skinHand, SPOTS, MEL, HAND_SKIN } from "../../library/components.mjs";
 import { check, jar, gauge, shield2, button, loupe, bolt, stopSign, padlock, pimple, flame } from "../../library/components2.mjs";
 import { A, POP, FADEIN, FADEOUT, DROP, SLOW } from "../full/kit.mjs";
@@ -33,6 +33,42 @@ export function scenes(C, X) {
         ],
         loops: [{ id: "lens", prop: "s", amp: 0.03, freq: 2.2, start: tQue + 0.9, origin: [LX, LY] }],
         cam: SLOW(1.0, 1.1, 0, 60), punches: [{ t: tQue, amp: 0.04 }],
+      };
+    })(),
+
+
+    // ───────── NOUVEAU HOOK : « Tes copines, elles mangent n'importe quoi, elles sortent sans maquillage… et toi, tes boutons sont partis, mais les taches, elles, sont toujours là ? Écoute ça. »
+    // Décor inédit : une terrasse de café. Les copines (peau nette, burgers, frites, cocktails) ; elle, au bout de la table, avec son pinceau et son miroir de poche.
+    hookTerrasse: (() => {
+      const tCop = R("hookTerrasse", "copines"), tMange = R("hookTerrasse", "mangent"), tSans = R("hookTerrasse", "sans"), tToi = R("hookTerrasse", "toi"), tTaches = R("hookTerrasse", "taches"), tEc = R("hookTerrasse", "écoute", -0.1), dur = D("hookTerrasse");
+      const burger = (x, y, id) => `<g id="${id}"><g transform="translate(${x} ${y})">` + layer("M-95 0 Q-95 -88 0 -92 Q95 -88 95 0Z", "#C99A78", 5) + layer(poly([[-100, -4], [100, -4], [96, 22], [-96, 22]], { round: false }), C.solution, 6) + layer(poly([[-98, 20], [98, 20], [98, 52], [-98, 52]], { round: false }), "#5E3A27", 6) + layer("M-95 52 L95 52 Q95 84 0 84 Q-95 84 -95 52Z", "#C99A78", 5) + `</g></g>`;
+      const fries = (x, y, id) => `<g id="${id}"><g transform="translate(${x} ${y})">` + [-40, -20, 0, 20, 40].map((dx, i) => layer(poly([[dx - 9, -70 - (i % 2) * 18], [dx + 9, -70 - (i % 2) * 18], [dx + 9, 20], [dx - 9, 20]], { round: false }), C.accent, 6)).join("") + layer("M-55 -10 L55 -10 L42 70 L-42 70Z", C.alert, 7) + `</g></g>`;
+      const glass = (x, y, id, col) => `<g id="${id}"><g transform="translate(${x} ${y})">` + layer("M-46 -90 L46 -90 L34 60 L-34 60Z", "#B7D0E0", 4) + layer("M-40 -60 L40 -60 L34 60 L-34 60Z", col, 5) + layer(poly([[-4, 60], [4, 60], [4, 100], [-4, 100]], { round: false }), "#B7D0E0", 4) + `</g></g>`;
+      const friend = (x, tone, hair, id) => `<g id="${id}">${woman(C, { cx: x, cy: 880, scale: 0.36, spotsOn: false, mirrorOn: false, tone, hair })}</g>`;
+      const FR = [[150, "light", "bob"], [370, "mixed", "puff"], [590, "dark", "bob"]];
+      const HX = 870, HY = 880;
+      const mirrorHand = `<g id="pc"><g transform="translate(${HX - 120} 1010)">` + layer(blob(0, 0, 70, 70, { jitter: 0.02, n: 14, seed: 4401 }), C.kraftDark, 6) + layer(blob(0, 0, 56, 56, { jitter: 0.02, n: 14, seed: 4402 }), "#E8D0A8", 7) + `</g></g>`;
+      return {
+        svg: layer(poly([[-80, 1000], [1160, 1000], [1160, 2000], [-80, 2000]], { round: false }), "#A9845A", 2) + layer(band(-80, 1160, 960, 1080, { amp: 8, step: 100, seed: 44 }), "#D8C2A0", 3) +
+          `<g id="parasol"><g transform="translate(540 520)">${layer("M-520 0 Q0 -400 520 0Z", C.alert, 4)}${layer("M-520 0 Q-350 40 -260 0 Q-170 40 0 0 Q170 40 260 0 Q350 40 520 0 L520 -8 L-520 -8Z", C.cream, 5)}${layer(poly([[-8, 0], [8, 0], [8, 360], [-8, 360]], { round: false }), C.dark, 3)}</g></g>` +
+          layer(poly([[60, 120], [260, 120], [260, 320], [60, 320]], { round: false }), "#B7D0E0", 2) + layer(poly([[820, 120], [1020, 120], [1020, 320], [820, 320]], { round: false }), "#B7D0E0", 2) +
+          FR.map(([x, t, h], i) => friend(x, t, h, `fr${i}`)).join("") +
+          `<g id="her">${woman(C, { cx: HX, cy: HY, scale: 0.4, spotsOn: false, mirrorOn: false, tone: "deep" })}<g transform="translate(${HX} ${HY}) scale(.4)">${spotsLocal("sp")}</g></g>` +
+          burger(140, 1130, "bg0") + fries(380, 1130, "fy0") + glass(600, 1100, "gl0", C.alert) + mirrorHand,
+        anims: [
+          ...FR.map((_, i) => A(`fr${i}`, Math.max(0, tCop) + i * 0.15, 0.4, { y: 500 }, { y: 0 }, { ease: "outBack", sfx: false })),
+          A("parasol", 0, 0.5, { y: -700 }, { y: 0 }, { ease: "outBack", sfx: false }),
+          DROP("bg0", Math.max(0, tMange), [140, 1130], -900), POP("fy0", Math.max(0, tMange) + 0.18, [380, 1130], { sfx: false }), POP("gl0", Math.max(0, tMange) + 0.3, [600, 1100], { sfx: false }),
+          A("her", Math.max(0.2, tToi - 0.2), 0.45, { x: 500 }, { x: 0 }, { ease: "outBack", sfx: "whoosh" }),
+          POP("pc", Math.max(0, tSans), [HX - 120, 1010], { sfx: false }),
+          ...SPOTS.map((s, i) => POP(`sp${i}`, tTaches + i * 0.07, [s.x, s.y], { sfx: false })),
+        ],
+        loops: [{ id: "parasol", prop: "r", amp: 0.8, freq: 0.7, start: 0.6, origin: [540, 520] }],
+        cam: [
+          { t0: 0, t1: Math.max(0.5, tToi - 0.2), from: { s: 1.0, x: 0, y: 0 }, to: { s: 1.0, x: 0, y: 0 }, ease: "lin" },
+          { t0: Math.max(0.5, tToi - 0.2), t1: Math.max(tToi + 0.4, dur), from: { s: 1.0, x: 0, y: 0 }, to: { s: 1.7, x: -300, y: 260 }, ease: "inOut" },
+        ],
+        punches: [{ t: tTaches, amp: 0.04 }],
       };
     })(),
 
