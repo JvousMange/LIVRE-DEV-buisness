@@ -2,79 +2,134 @@
  "title": "MELA SKIN — anti-tache post-acné — H3",
  "brand": "../../../brands/mela-skin/brand.json",
  "voice": "voice.mp3",
- "duration": 51.31,
+ "duration": 39.01,
  "fps": 15,
  "emphasis": "taches|boutons|mélanine|offert|quatre-vingt|90|Mela|STOP",
  "segments": [
   {
-   "text": "T'as la peau mate ou noire : tes boutons sont partis, mais les taches sont toujours là ?",
-   "t0": 0,
-   "t1": 5.224
+   "text": "T'as la peau mate ou noire :",
+   "t0": 0.12,
+   "t1": 1.43
+  },
+  {
+   "text": "tes boutons sont partis,",
+   "t0": 1.82,
+   "t1": 3.01
+  },
+  {
+   "text": "mais les taches sont toujours là ?",
+   "t0": 3.2,
+   "t1": 4.49
   },
   {
    "text": "Écoute ça.",
-   "t0": 5.574,
-   "t1": 6.758
+   "t0": 5.26,
+   "t1": 5.77
   },
   {
    "text": "Voilà ce qui se passe.",
-   "t0": 7.078,
-   "t1": 8.877
+   "t0": 6.46,
+   "t1": 7.45
   },
   {
-   "text": "Quand ta peau est agressée, elle fabrique trop de mélanine, à cet endroit précis.",
-   "t0": 9.197,
-   "t1": 14.587
+   "text": "Quand ta peau est agressée, elle fabrique trop de mélanine,",
+   "t0": 7.79,
+   "t1": 10.47
   },
   {
-   "text": "Elle reste coincée sous la surface, et plus fort sur une peau mate.",
-   "t0": 14.907,
-   "t1": 19.378
+   "text": "à cet endroit précis.",
+   "t0": 10.65,
+   "t1": 11.7
   },
   {
-   "text": "Gommer, couvrir, frotter : ça ne touche que la surface.",
-   "t0": 19.698,
-   "t1": 24.219
+   "text": "Elle reste coincée sous la surface,",
+   "t0": 12.12,
+   "t1": 13.9
+  },
+  {
+   "text": "et plus fort sur une peau mate.",
+   "t0": 14.02,
+   "t1": 15.49
+  },
+  {
+   "text": "Gommer, couvrir, frotter :",
+   "t0": 15.78,
+   "t1": 17.79
+  },
+  {
+   "text": "ça ne touche que la surface.",
+   "t0": 18.02,
+   "t1": 19.42
   },
   {
    "text": "Ce n'est pas ta peau qui est en cause.",
-   "t0": 24.539,
-   "t1": 26.789
+   "t0": 19.77,
+   "t1": 21.2
   },
   {
-   "text": "Mela Skin freine la fabrication du pigment à la source.",
-   "t0": 27.109,
-   "t1": 30.95
+   "text": "Mela Skin freine la fabrication du pigment",
+   "t0": 21.54,
+   "t1": 23.66
   },
   {
-   "text": "Quatre actifs, un seul flacon.",
-   "t0": 31.27,
-   "t1": 33.822
+   "text": "à la source.",
+   "t0": 23.89,
+   "t1": 24.54
+  },
+  {
+   "text": "Quatre actifs,",
+   "t0": 24.93,
+   "t1": 25.62
+  },
+  {
+   "text": "un seul flacon.",
+   "t0": 25.86,
+   "t1": 26.53
   },
   {
    "text": "Pensé pour les peaux mates et noires.",
-   "t0": 34.142,
-   "t1": 36.475
+   "t0": 26.91,
+   "t1": 28.53
   },
   {
-   "text": "Pas pour éclaircir : pour réguler.",
-   "t0": 36.795,
-   "t1": 39.504
+   "text": "Pas pour éclaircir :",
+   "t0": 29.02,
+   "t1": 29.85
   },
   {
-   "text": "Cette semaine, pour deux flacons achetés, un offert.",
-   "t0": 39.824,
-   "t1": 43.686
+   "text": "pour réguler.",
+   "t0": 30.25,
+   "t1": 30.86
   },
   {
-   "text": "Et si tes taches sont toujours là au bout de quatre-vingt-dix jours, on te rembourse.",
-   "t0": 44.006,
-   "t1": 48.913
+   "text": "Cette semaine,",
+   "t0": 31.2,
+   "t1": 31.86
+  },
+  {
+   "text": "pour deux flacons achetés,",
+   "t0": 31.97,
+   "t1": 33.02
+  },
+  {
+   "text": "un offert.",
+   "t0": 33.25,
+   "t1": 33.78
+  },
+  {
+   "text": "Et si tes taches sont toujours là au bout de quatre-vingt-dix jours,",
+   "t0": 34.14,
+   "t1": 36.66
+  },
+  {
+   "text": "on te rembourse.",
+   "t0": 36.88,
+   "t1": 37.61
   },
   {
    "text": "Touche le bouton.",
-   "t0": 49.233,
-   "t1": 50.594
+   "t0": 37.9,
+   "t1": 38.48
   }
  ],
  "beats": [

@@ -2,74 +2,134 @@
  "title": "MELA SKIN — anti-tache post-acné — H1",
  "brand": "../../../brands/mela-skin/brand.json",
  "voice": "voice.mp3",
- "duration": 49.72,
+ "duration": 37.97,
  "fps": 15,
  "emphasis": "taches|boutons|mélanine|offert|quatre-vingt|90|Mela|STOP",
  "segments": [
   {
-   "text": "Ton mec te dit que tes taches ne se voient pas, mais toi tu ne vois que ça sur tes joues ?",
-   "t0": 0,
-   "t1": 5.132
+   "text": "Ton mec te dit que tes taches ne se voient pas,",
+   "t0": 0.11,
+   "t1": 1.88
+  },
+  {
+   "text": "mais toi tu ne vois que",
+   "t0": 2.25,
+   "t1": 3.4
+  },
+  {
+   "text": "ça sur",
+   "t0": 3.52,
+   "t1": 3.94
+  },
+  {
+   "text": "tes joues ?",
+   "t0": 4.11,
+   "t1": 4.65
   },
   {
    "text": "Voilà ce qui se passe.",
-   "t0": 5.482,
-   "t1": 7.281
+   "t0": 5.42,
+   "t1": 6.41
   },
   {
-   "text": "Quand ta peau est agressée, elle fabrique trop de mélanine, à cet endroit précis.",
-   "t0": 7.601,
-   "t1": 12.991
+   "text": "Quand ta peau est agressée, elle fabrique trop de mélanine,",
+   "t0": 6.75,
+   "t1": 9.43
   },
   {
-   "text": "Elle reste coincée sous la surface, et plus fort sur une peau mate.",
-   "t0": 13.311,
-   "t1": 17.782
+   "text": "à cet endroit précis.",
+   "t0": 9.61,
+   "t1": 10.66
   },
   {
-   "text": "Gommer, couvrir, frotter : ça ne touche que la surface.",
-   "t0": 18.102,
-   "t1": 22.622
+   "text": "Elle reste coincée sous la surface,",
+   "t0": 11.08,
+   "t1": 12.86
+  },
+  {
+   "text": "et plus fort sur une peau mate.",
+   "t0": 12.98,
+   "t1": 14.45
+  },
+  {
+   "text": "Gommer, couvrir, frotter :",
+   "t0": 14.74,
+   "t1": 16.75
+  },
+  {
+   "text": "ça ne touche que la surface.",
+   "t0": 16.98,
+   "t1": 18.38
   },
   {
    "text": "Ce n'est pas ta peau qui est en cause.",
-   "t0": 22.942,
-   "t1": 25.193
+   "t0": 18.73,
+   "t1": 20.16
   },
   {
-   "text": "Mela Skin freine la fabrication du pigment à la source.",
-   "t0": 25.513,
-   "t1": 29.354
+   "text": "Mela Skin freine la fabrication du pigment",
+   "t0": 20.5,
+   "t1": 22.62
   },
   {
-   "text": "Quatre actifs, un seul flacon.",
-   "t0": 29.674,
-   "t1": 32.226
+   "text": "à la source.",
+   "t0": 22.85,
+   "t1": 23.5
+  },
+  {
+   "text": "Quatre actifs,",
+   "t0": 23.89,
+   "t1": 24.59
+  },
+  {
+   "text": "un seul flacon.",
+   "t0": 24.82,
+   "t1": 25.49
   },
   {
    "text": "Pensé pour les peaux mates et noires.",
-   "t0": 32.546,
-   "t1": 34.879
+   "t0": 25.87,
+   "t1": 27.49
   },
   {
-   "text": "Pas pour éclaircir : pour réguler.",
-   "t0": 35.199,
-   "t1": 37.908
+   "text": "Pas pour éclaircir :",
+   "t0": 27.98,
+   "t1": 28.81
   },
   {
-   "text": "Cette semaine, pour deux flacons achetés, un offert.",
-   "t0": 38.228,
-   "t1": 42.09
+   "text": "pour réguler.",
+   "t0": 29.21,
+   "t1": 29.82
   },
   {
-   "text": "Et si tes taches sont toujours là au bout de quatre-vingt-dix jours, on te rembourse.",
-   "t0": 42.41,
-   "t1": 47.317
+   "text": "Cette semaine,",
+   "t0": 30.16,
+   "t1": 30.82
+  },
+  {
+   "text": "pour deux flacons achetés,",
+   "t0": 30.93,
+   "t1": 31.98
+  },
+  {
+   "text": "un offert.",
+   "t0": 32.21,
+   "t1": 32.74
+  },
+  {
+   "text": "Et si tes taches sont toujours là au bout de quatre-vingt-dix jours,",
+   "t0": 33.1,
+   "t1": 35.62
+  },
+  {
+   "text": "on te rembourse.",
+   "t0": 35.84,
+   "t1": 36.57
   },
   {
    "text": "Touche le bouton.",
-   "t0": 47.637,
-   "t1": 48.998
+   "t0": 36.86,
+   "t1": 37.44
   }
  ],
  "beats": [
