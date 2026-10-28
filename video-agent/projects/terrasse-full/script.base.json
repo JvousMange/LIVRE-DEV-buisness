@@ -1,0 +1,140 @@
+{
+ "title": "MELA SKIN - hook terrasse + corps principal (v7)",
+ "brand": "../../brands/mela-skin/brand.json",
+ "voice": "voice.mp3",
+ "duration": 0,
+ "fps": 15,
+ "emphasis": "\\d|Cinq|Deux|^Un$|Trois|Quatre|cinq|fond|teint|maquillage|caches|mélanine|quatre-vingt|94|offert|copines",
+ "segments": [],
+ "beats": [
+  {
+   "scene": "hookTerrasse",
+   "at": "Tes copines"
+  },
+  {
+   "scene": "skinRub",
+   "at": "Un"
+  },
+  {
+   "scene": "mirror",
+   "at": "Deux"
+  },
+  {
+   "scene": "soinPeau",
+   "at": "Trois"
+  },
+  {
+   "scene": "products",
+   "at": "Quatre"
+  },
+  {
+   "scene": "fiveSun",
+   "at": "Et cinq",
+   "offset": 0.25
+  },
+  {
+   "scene": "fiveRazor",
+   "at": "rasage",
+   "offset": 0
+  },
+  {
+   "scene": "fiveElbows",
+   "at": "frottements",
+   "offset": 0
+  },
+  {
+   "scene": "triggers5",
+   "at": "rien ne protège",
+   "offset": -0.15
+  },
+  {
+   "scene": "notYou",
+   "at": "Le problème ne vient"
+  },
+  {
+   "scene": "usine",
+   "at": "Voilà ce qui se passe"
+  },
+  {
+   "scene": "compare",
+   "at": "Et sur une peau mate"
+  },
+  {
+   "scene": "months",
+   "at": "C'est pour ça que la tache"
+  },
+  {
+   "scene": "whiten",
+   "at": "Le but n'est donc pas"
+  },
+  {
+   "scene": "regulate",
+   "at": "C'est de réguler"
+  },
+  {
+   "scene": "imagine",
+   "at": "Imagine que tu puisses"
+  },
+  {
+   "scene": "noBurn",
+   "at": "Pas avec un produit"
+  },
+  {
+   "scene": "source",
+   "at": "mais avec une solution"
+  },
+  {
+   "scene": "fourActives",
+   "at": "Pour ça, il y a quatre"
+  },
+  {
+   "scene": "azelaic",
+   "at": "L'acide azélaïque"
+  },
+  {
+   "scene": "arbutin",
+   "at": "L'alpha-arbutine"
+  },
+  {
+   "scene": "tranexamic",
+   "at": "L'acide tranexamique"
+  },
+  {
+   "scene": "niacin",
+   "at": "Et la niacinamide"
+  },
+  {
+   "scene": "products2",
+   "at": "Il existe plusieurs produits"
+  },
+  {
+   "scene": "meet",
+   "at": "Le Sérum Anti-Taches"
+  },
+  {
+   "scene": "ninetyFour",
+   "at": "Quatre-vingt-quatorze"
+  },
+  {
+   "scene": "offer",
+   "at": "Et cette semaine"
+  },
+  {
+   "scene": "skeptic",
+   "at": "Toujours sceptique"
+  },
+  {
+   "scene": "guarantee",
+   "at": "une garantie"
+  },
+  {
+   "scene": "refund",
+   "at": "Si tu as encore"
+  },
+  {
+   "scene": "cta",
+   "at": "Clique sur le bouton"
+  }
+ ],
+ "anticipation": 0.45
+}

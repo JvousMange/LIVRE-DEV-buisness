@@ -1,0 +1,395 @@
+{
+ "title": "MELA SKIN - hook terrasse + corps principal",
+ "brand": "../../brands/mela-skin/brand.json",
+ "voice": "voice.mp3",
+ "duration": 110.01,
+ "fps": 15,
+ "emphasis": "\\d|Cinq|Deux|^Un$|Trois|Quatre|cinq|fond|teint|maquillage|caches|mélanine|quatre-vingt|94|offert|copines",
+ "segments": [
+  {
+   "text": "Tes copines mangent n'importe quoi, sortent sans maquillage, et toi tes boutons sont partis mais les taches",
+   "t0": 0.1,
+   "t1": 5
+  },
+  {
+   "text": "sont",
+   "t0": 5.1,
+   "t1": 5.42
+  },
+  {
+   "text": "toujours là ?",
+   "t0": 5.54,
+   "t1": 6.03
+  },
+  {
+   "text": "Écoute ça.",
+   "t0": 6.56,
+   "t1": 7.03
+  },
+  {
+   "text": "Le problème ne vient pas de toi,",
+   "t0": 7.63,
+   "t1": 9.18
+  },
+  {
+   "text": "ni de ta peau,",
+   "t0": 9.32,
+   "t1": 10.18
+  },
+  {
+   "text": "mais d'en dessous.",
+   "t0": 10.34,
+   "t1": 10.97
+  },
+  {
+   "text": "Et c'est là",
+   "t0": 11.41,
+   "t1": 11.95
+  },
+  {
+   "text": "que tu peux agir.",
+   "t0": 12.08,
+   "t1": 12.88
+  },
+  {
+   "text": "Voilà ce qui se passe.",
+   "t0": 13.21,
+   "t1": 14.11
+  },
+  {
+   "text": "Ta peau fabrique de la mélanine :",
+   "t0": 14.53,
+   "t1": 16.06
+  },
+  {
+   "text": "c'est ce qui lui donne sa couleur.",
+   "t0": 16.28,
+   "t1": 17.42
+  },
+  {
+   "text": "Quand elle est agressée,",
+   "t0": 17.85,
+   "t1": 18.84
+  },
+  {
+   "text": "par un bouton, un rasage, le soleil ou les hormones, elle en fabrique trop,",
+   "t0": 18.95,
+   "t1": 23.15
+  },
+  {
+   "text": "à cet endroit précis.",
+   "t0": 23.4,
+   "t1": 24.4
+  },
+  {
+   "text": "Cette mélanine reste coincée sous la peau.",
+   "t0": 24.81,
+   "t1": 26.78
+  },
+  {
+   "text": "Et sur une peau mate ou noire, elle réagit souvent plus fort.",
+   "t0": 27.19,
+   "t1": 30.23
+  },
+  {
+   "text": "C'est pour ça que la tache reste des mois,",
+   "t0": 30.62,
+   "t1": 32.35
+  },
+  {
+   "text": "et qu'un produit de surface n'y change rien.",
+   "t0": 32.51,
+   "t1": 34.14
+  },
+  {
+   "text": "Le but n'est donc pas d'éclaircir ta peau.",
+   "t0": 34.54,
+   "t1": 36.47
+  },
+  {
+   "text": "C'est de réguler ta production de mélanine, pour qu'à chaque agression,",
+   "t0": 36.84,
+   "t1": 40.35
+  },
+  {
+   "text": "ta peau n'en fabrique plus trop et ne te gâche plus le teint tous les jours.",
+   "t0": 40.46,
+   "t1": 43.41
+  },
+  {
+   "text": "Imagine que tu puisses",
+   "t0": 43.82,
+   "t1": 44.78
+  },
+  {
+   "text": "enfin faire partir ces taches.",
+   "t0": 44.93,
+   "t1": 46.51
+  },
+  {
+   "text": "Pas avec un produit qui brûle,",
+   "t0": 46.86,
+   "t1": 48.28
+  },
+  {
+   "text": "pas avec un gommage magique, mais avec une solution qui freine la fabrication de pigment",
+   "t0": 48.39,
+   "t1": 52.7
+  },
+  {
+   "text": "à la source.",
+   "t0": 52.81,
+   "t1": 53.56
+  },
+  {
+   "text": "Pour ça,",
+   "t0": 53.94,
+   "t1": 54.38
+  },
+  {
+   "text": "il y a",
+   "t0": 54.54,
+   "t1": 54.8
+  },
+  {
+   "text": "quatre actifs dont tu as besoin.",
+   "t0": 54.92,
+   "t1": 56.18
+  },
+  {
+   "text": "L'acide azélaïque, à dix pour cent, freine la production de mélanine.",
+   "t0": 56.6,
+   "t1": 60.01
+  },
+  {
+   "text": "L'alpha-arbutine bloque la tyrosinase,",
+   "t0": 60.37,
+   "t1": 62.69
+  },
+  {
+   "text": "l'enzyme qui lance cette fabrication.",
+   "t0": 62.86,
+   "t1": 64.52
+  },
+  {
+   "text": "L'acide tranexamique agit sur les taches tenaces,",
+   "t0": 64.92,
+   "t1": 67.5
+  },
+  {
+   "text": "celles qui ne partent jamais vraiment.",
+   "t0": 67.63,
+   "t1": 68.99
+  },
+  {
+   "text": "Et la niacinamide, à cinq pour cent,",
+   "t0": 69.35,
+   "t1": 71.27
+  },
+  {
+   "text": "renforce ta barrière cutanée,",
+   "t0": 71.38,
+   "t1": 73.08
+  },
+  {
+   "text": "pour que ta peau réagisse moins,",
+   "t0": 73.21,
+   "t1": 74.49
+  },
+  {
+   "text": "et que les taches reviennent moins.",
+   "t0": 74.62,
+   "t1": 75.77
+  },
+  {
+   "text": "Il existe plusieurs produits capables de faire partir tes taches.",
+   "t0": 76.22,
+   "t1": 79.15
+  },
+  {
+   "text": "Mais tu n'as pas besoin de dix flacons différents, ni d'un produit hors de prix.",
+   "t0": 79.47,
+   "t1": 83.03
+  },
+  {
+   "text": "Le Sérum Anti-Taches, Mela Skin,",
+   "t0": 83.42,
+   "t1": 85.66
+  },
+  {
+   "text": "réunit tous les actifs dont tu as",
+   "t0": 85.8,
+   "t1": 87.2
+  },
+  {
+   "text": "besoin en un seul flacon.",
+   "t0": 87.3,
+   "t1": 88.25
+  },
+  {
+   "text": "Quatre-vingt-quatorze pour cent de celles qui l'ont testé le recommandent à leur entourage.",
+   "t0": 88.63,
+   "t1": 92.15
+  },
+  {
+   "text": "Et cette semaine,",
+   "t0": 92.51,
+   "t1": 93.26
+  },
+  {
+   "text": "pour deux flacons achetés,",
+   "t0": 93.38,
+   "t1": 95.11
+  },
+  {
+   "text": "tu en reçois un offert.",
+   "t0": 95.24,
+   "t1": 95.78
+  },
+  {
+   "text": "Toujours sceptique ?",
+   "t0": 96.17,
+   "t1": 96.92
+  },
+  {
+   "text": "Très bien,",
+   "t0": 97.23,
+   "t1": 97.57
+  },
+  {
+   "text": "c'est pour ça que Mela Skin a mis en place une garantie satisfait ou remboursé de",
+   "t0": 97.79,
+   "t1": 101.17
+  },
+  {
+   "text": "quatre-vingt-dix jours.",
+   "t0": 101.28,
+   "t1": 102.05
+  },
+  {
+   "text": "Si tu as encore des taches au bout de trois mois,",
+   "t0": 102.45,
+   "t1": 104.39
+  },
+  {
+   "text": "on te rembourse",
+   "t0": 104.52,
+   "t1": 105.27
+  },
+  {
+   "text": "la totalité.",
+   "t0": 105.39,
+   "t1": 105.91
+  },
+  {
+   "text": "Clique sur le bouton ci-dessous",
+   "t0": 106.29,
+   "t1": 107.66
+  },
+  {
+   "text": "et fais",
+   "t0": 107.78,
+   "t1": 108.08
+  },
+  {
+   "text": "enfin partir ces taches.",
+   "t0": 108.21,
+   "t1": 109.5
+  }
+ ],
+ "beats": [
+  {
+   "scene": "hookTerrasse",
+   "at": "Tes copines"
+  },
+  {
+   "scene": "notYou",
+   "at": "Le problème ne vient"
+  },
+  {
+   "scene": "usine",
+   "at": "Voilà ce qui se passe"
+  },
+  {
+   "scene": "compare",
+   "at": "Et sur une peau mate"
+  },
+  {
+   "scene": "months",
+   "at": "C'est pour ça que la tache"
+  },
+  {
+   "scene": "whiten",
+   "at": "Le but n'est donc pas"
+  },
+  {
+   "scene": "regulate",
+   "at": "C'est de réguler"
+  },
+  {
+   "scene": "imagine",
+   "at": "Imagine que tu puisses"
+  },
+  {
+   "scene": "noBurn",
+   "at": "Pas avec un produit"
+  },
+  {
+   "scene": "source",
+   "at": "mais avec une solution"
+  },
+  {
+   "scene": "fourActives",
+   "at": "Pour ça, il y a quatre"
+  },
+  {
+   "scene": "azelaic",
+   "at": "L'acide azélaïque"
+  },
+  {
+   "scene": "arbutin",
+   "at": "L'alpha-arbutine"
+  },
+  {
+   "scene": "tranexamic",
+   "at": "L'acide tranexamique"
+  },
+  {
+   "scene": "niacin",
+   "at": "Et la niacinamide"
+  },
+  {
+   "scene": "products2",
+   "at": "Il existe plusieurs produits"
+  },
+  {
+   "scene": "meet",
+   "at": "Le Sérum Anti-Taches"
+  },
+  {
+   "scene": "ninetyFour",
+   "at": "Quatre-vingt-quatorze"
+  },
+  {
+   "scene": "offer",
+   "at": "Et cette semaine"
+  },
+  {
+   "scene": "skeptic",
+   "at": "Toujours sceptique"
+  },
+  {
+   "scene": "guarantee",
+   "at": "une garantie"
+  },
+  {
+   "scene": "refund",
+   "at": "Si tu as encore"
+  },
+  {
+   "scene": "cta",
+   "at": "Clique sur le bouton"
+  }
+ ],
+ "anticipation": 0.45
+}
