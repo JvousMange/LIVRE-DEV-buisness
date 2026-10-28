@@ -133,7 +133,7 @@ export function renderSfx(events, duration, outFile) {
 // priorités : 3 = moment clé (croix, éclair, STOP, ticket, validation), 2 = entrée d'objet principal, 1 = appoint
 const KEYS = { ck: 3, x: 3, x_it: 3, xx: 3, cross: 3, bigx: 3, bl: 3, okc: 3, stop: 3, rc: 3, rcring: 3, off: 3, lock: 3, shield: 3, "gA-needle": 3, fire: 3, siren: 2, btn: 3, pg: 3, co: 2, q1: 1, "dots-r": 2 };
 const MOVES = { hand: 2, arm: 2, armS: 2, armE: 2, rz: 2, bkw: 2, cal: 2, sun: 2, beam: 1, wallet: 2, faucet: 2, "enz-plug": 3, sc: 2, bottle: 2, b: 2, b3: 3, badge: 2, dose: 1, ring: 1, enz: 1, tb: 2, w: 2, cd: 2, it: 2, p: 2, ck: 2, nb: 1, pg: 1, rt: 2, "faucet-h": 3, stream: 1, mel: 1, scs: 1, rz2: 1 };
-const SKIP = new Set(["gr", "sp", "pt", "ir", "as", "gp", "sf", "dr", "ps", "pb", "po", "fl", "sbb", "at", "foam", "spk", "sw", "d", "br", "arr", "ar", "lp", "fac", "stainW", "gA", "fire2", "signX", "liq", "beaker", "ok", "b1", "b2", "plus", "eq", "plus", "rcr", "rc2", "w0x"]);
+const SKIP = new Set(["pm", "ls", "knob", "sld", "gr", "sp", "pt", "ir", "as", "gp", "sf", "dr", "ps", "pb", "po", "fl", "sbb", "at", "foam", "spk", "sw", "d", "br", "arr", "ar", "lp", "fac", "stainW", "gA", "fire2", "signX", "liq", "beaker", "ok", "b1", "b2", "plus", "eq", "plus", "rcr", "rc2", "w0x"]);
 const SERIES = new Set(["x_it", "cd", "w", "pg", "rt", "br", "dots-r", "d", "cal", "siren"]);
 const BADGE_N = { skinRub: 1, mirror: 2, soinPeau: 3, products: 4, fiveSun: 5 };
 export function eventsFromBeats(beats) {

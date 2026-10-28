@@ -1,0 +1,114 @@
+{
+ "title": "MELA SKIN — anti-tache post-acné — H1",
+ "brand": "../../../brands/mela-skin/brand.json",
+ "voice": "voice.mp3",
+ "duration": 49.72,
+ "fps": 15,
+ "emphasis": "taches|boutons|mélanine|offert|quatre-vingt|90|Mela|STOP",
+ "segments": [
+  {
+   "text": "Ton mec te dit que tes taches ne se voient pas, mais toi tu ne vois que ça sur tes joues ?",
+   "t0": 0,
+   "t1": 5.132
+  },
+  {
+   "text": "Voilà ce qui se passe.",
+   "t0": 5.482,
+   "t1": 7.281
+  },
+  {
+   "text": "Quand ta peau est agressée, elle fabrique trop de mélanine, à cet endroit précis.",
+   "t0": 7.601,
+   "t1": 12.991
+  },
+  {
+   "text": "Elle reste coincée sous la surface, et plus fort sur une peau mate.",
+   "t0": 13.311,
+   "t1": 17.782
+  },
+  {
+   "text": "Gommer, couvrir, frotter : ça ne touche que la surface.",
+   "t0": 18.102,
+   "t1": 22.622
+  },
+  {
+   "text": "Ce n'est pas ta peau qui est en cause.",
+   "t0": 22.942,
+   "t1": 25.193
+  },
+  {
+   "text": "Mela Skin freine la fabrication du pigment à la source.",
+   "t0": 25.513,
+   "t1": 29.354
+  },
+  {
+   "text": "Quatre actifs, un seul flacon.",
+   "t0": 29.674,
+   "t1": 32.226
+  },
+  {
+   "text": "Pensé pour les peaux mates et noires.",
+   "t0": 32.546,
+   "t1": 34.879
+  },
+  {
+   "text": "Pas pour éclaircir : pour réguler.",
+   "t0": 35.199,
+   "t1": 37.908
+  },
+  {
+   "text": "Cette semaine, pour deux flacons achetés, un offert.",
+   "t0": 38.228,
+   "t1": 42.09
+  },
+  {
+   "text": "Et si tes taches sont toujours là au bout de quatre-vingt-dix jours, on te rembourse.",
+   "t0": 42.41,
+   "t1": 47.317
+  },
+  {
+   "text": "Touche le bouton.",
+   "t0": 47.637,
+   "t1": 48.998
+  }
+ ],
+ "beats": [
+  {
+   "scene": "hookMec",
+   "at": "Ton mec"
+  },
+  {
+   "scene": "mecanisme",
+   "at": "Voilà ce qui se passe"
+  },
+  {
+   "scene": "surface",
+   "at": "Gommer"
+  },
+  {
+   "scene": "stop",
+   "at": "Mela Skin"
+  },
+  {
+   "scene": "actifs",
+   "at": "Quatre actifs"
+  },
+  {
+   "scene": "identite",
+   "at": "Pensé pour"
+  },
+  {
+   "scene": "offre",
+   "at": "Cette semaine"
+  },
+  {
+   "scene": "garantie",
+   "at": "Et si tes taches"
+  },
+  {
+   "scene": "cta",
+   "at": "Touche le bouton"
+  }
+ ],
+ "anticipation": 0.45
+}
