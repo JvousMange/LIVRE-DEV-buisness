@@ -65,3 +65,54 @@ Ton : une copine qui parle franchement, sans jargon, sans honte imposée.
 
 Choix recommandé pour démarrer : **#1, #4, #3 et #8** (comparaison, jalon, remarque d'un proche, maquillage excessif). #1 et #4 sont tes formulations, nettoyées.
 Précaution : la comparaison doit rassurer (« ça se change »), pas humilier ; garder « Faut changer ça » ou « Écoute ça » comme porte vers le corps.
+
+---
+
+## Le vrai registre (exemples du client) : question vécue + chute courte
+
+Exemples de référence :
+1. « Ton mec te dit que tes taches ne se voient pas, mais toi tu ne vois que ça ? »
+2. « Tu retouches tes photos car tes taches gâchent tout ? Regarde ça. »
+3. « Tes copines mangent n'importe quoi et n'ont jamais d'hyperpigmentation ? C'est que le problème ne vient pas de là. »
+
+Ce qui les distingue de mes premières versions :
+- Une **question** en « tu / tes » qui décrit **une scène ou un comportement du quotidien** (le copain, la retouche photo, les copines qui mangent n'importe quoi), pas une statistique.
+- La question contient la **contradiction** (« ça ne se voit pas, mais toi tu ne vois que ça »), pas un constat neutre.
+- Une **chute de 3 à 8 mots** qui ouvre la boucle : « Regarde ça. », « Écoute ça. », ou un **recadrage qui enlève la culpabilité** (« le problème ne vient pas de là »).
+- Mots de tous les jours (« ton mec », « n'importe quoi », « gâchent tout »).
+
+**Formule** : `[Tu / Tes + comportement ou scène] + [contradiction ou comparaison] ? + [Regarde ça. / Écoute ça. / C'est que le problème ne vient pas de là.]`
+
+### A. Ce qu'on te dit vs ce que tu vois
+| # | Parlé | Image |
+|---|---|---|
+| A1 | « Ton mec te dit que tes taches ne se voient pas, mais toi tu ne vois que ça ? » (ta version) | Couple, lui sourit, elle zoome sur sa joue dans le miroir |
+| A2 | « Ta meilleure amie te dit que t'es belle sans maquillage, mais toi tu ne sors jamais comme ça ? » | Amie qui sourit, elle repose le fond de teint |
+| A3 | « Ta mère te dit que ça va partir tout seul, mais ça fait des années ? » | Mère papier rassurante, calendrier de plusieurs années |
+| A4 | « On te dit qu'on ne remarque rien, mais toi tu évites la lumière du jour ? » | Elle choisit la table au fond du café |
+
+### B. Le comportement caché (+ « Regarde ça »)
+| # | Parlé | Image |
+|---|---|---|
+| B1 | « Tu retouches tes photos car tes taches gâchent tout ? Regarde ça. » (ta version) | Photo sur téléphone, curseur de retouche |
+| B2 | « Tu coupes la caméra ou tu baisses la lumière en visio à cause de tes taches ? Regarde ça. » | Écran d'appel vidéo, joue floutée |
+| B3 | « Tu te places toujours du bon côté sur les photos de groupe ? Regarde ça. » | Photo de groupe, elle tourne la tête |
+| B4 | « Tu mets un filtre sur chaque selfie ? Regarde ça. » | Selfie avec/sans filtre |
+| B5 | « Tu laisses ton fond de teint même pour aller faire du sport ? Écoute ça. » | Tapis de sport, pinceau dans le sac |
+
+### C. Les copines / la comparaison + recadrage (enlève la culpabilité)
+| # | Parlé | Image |
+|---|---|---|
+| C1 | « Tes copines mangent n'importe quoi et n'ont jamais d'hyperpigmentation ? C'est que le problème ne vient pas de là. » (ta version) | Copines avec burgers, joues nettes ; elle avec une salade, joue tachée |
+| C2 | « Tu te démaquilles tous les soirs, tu bois de l'eau, et les marques restent ? C'est que le problème ne vient pas de ton hygiène. » | Salle de bain nickel, la marque reste |
+| C3 | « Ta cousine fait un bouton, trois jours après c'est fini. Toi, six mois de marque ? Voilà pourquoi. » | Deux calendriers côte à côte |
+| C4 | « Tu fais la même routine que ta sœur et c'est toi qui as les marques ? Ce n'est pas ta routine. » | Deux étagères de salle de bain identiques |
+| C5 | « Tu as tout essayé et rien ne change ? C'est que le problème ne vient pas d'où tu cherches. » | Pile de pots, flèche qui plonge sous la peau |
+
+### À tester en premier
+**A1, B1, C1** (tes trois versions, nettoyées) puis **B2** (visio), **C3** (la cousine) et **C2** (hygiène).
+Pourquoi : chacune met une scène ou une comparaison que la cliente reconnaît, et la chute ouvre directement sur « Voilà ce qui se passe ».
+
+### Garde-fous
+- Les recadrages « ne vient pas de là / de ton hygiène / de ce que tu manges » : à valider (je ne les écris pas comme un fait médical absolu) ; la formulation la plus sûre pour la première version : « Ce n'est pas (uniquement) ce que tu fais. »
+- Pas de promesse de disparition : le corps de l'annonce parle d'« estomper ».
