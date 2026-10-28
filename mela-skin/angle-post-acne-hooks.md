@@ -147,3 +147,24 @@ Avant → après :
 
 À tester en premier : **N1, N2, N3, N9** (scène + peau + tache nommées, et chute claire).
 Vocabulaire : alterner « taches brunes » (visuel), « marques de boutons » (courant) et, à l'oral, éviter « hyperpigmentation post-inflammatoire » (trop clinique) sauf en sous-titre secondaire.
+
+---
+
+## Sélection pour le test : 3 hooks
+
+Angle commun : anti-tache post-acné. Corps de l'annonce identique. Une seule variable : le hook. Trois portes d'entrée différentes pour apprendre quelque chose de net.
+
+| Nom | Hook | Porte | Ce que ça teste |
+|---|---|---|---|
+| `H1_Mec` (N1) | « Ton mec te dit que les taches de tes anciens boutons ne se voient pas, mais toi tu ne vois que ça sur ta joue ? » | Scène sociale + contradiction | La reconnaissance émotionnelle (on me rassure, je ne le crois pas) |
+| `H2_Retouche` (N2) | « Tu retouches tes photos parce que les taches brunes que tes boutons ont laissées gâchent tout ? Regarde ça. » | Comportement caché + démonstration | Le geste de la retouche photo + une chute visuelle (« Regarde ça ») |
+| `H3_PeauNoire` (N3) | « Peau noire ou métisse : tes boutons sont partis, mais les taches brunes qu'ils ont laissées sont toujours là ? Écoute ça. » | Identité (carnation) + problème nommé | L'appel direct par la peau, le plus filtrant |
+
+En réserve (2e tour) : N9 (la cousine à peau claire), N8 (gommage = plus foncé), N5 (peau mate, tache pendant des mois).
+
+Plan de test
+- 3 annonces, même audience, même budget, même corps, même offre, même page.
+- Noms : `MELA_PostAcne_Papier_H1_Mec_v1`, `..._H2_Retouche_v1`, `..._H3_PeauNoire_v1`.
+- Lecture : hook rate (vues à 3 s / impressions), puis hold rate à 8 s (le pont « Voilà ce qui se passe »), puis CTR, puis coût par achat.
+- Ne rien conclure sur quelques centaines d'impressions ; attendre un volume qui rend l'écart de hook rate lisible, puis des achats pour trancher.
+- Décision : hook rate fort + hold faible → resserrer le pont ; hook rate faible → changer première image ou première phrase ; gagnant → décliner 3 variantes de la même famille.
