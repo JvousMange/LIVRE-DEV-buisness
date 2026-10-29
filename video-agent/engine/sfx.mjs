@@ -29,6 +29,16 @@ const SAMPLES = {
   s_pop: { f: "pop.mp3", d: 0.5, g: 0.7 }, s_click: { f: "click.mp3", d: 0.4, g: 0.6 }, s_boom: { f: "boom.mp3", d: 1.1, g: 0.5, fade: 0.5 },
   s_riser: { f: "riser.mp3", d: 2.2, g: 0.35, fade: 0.2 }, s_success: { f: "success.mp3", d: 1.4, g: 0.45, fade: 0.5 }, s_notif: { f: "notification.mp3", d: 1.2, g: 0.4, fade: 0.4 },
   s_shutter: { f: "shutter.mp3", d: 0.7, g: 0.7, fade: 0.1 }, s_glitch: { f: "glitch.mp3", d: 0.7, g: 0.4, fade: 0.2 }, s_magic: { f: "magic-reveal.mp3", d: 1.4, g: 0.4, fade: 0.5 },
+  // ElevenLabs text-to-sound (générés pour le projet)
+  e_pop: { f: "eleven/e00.mp3", d: 0.7, g: 0.8, fade: 0.2 }, e_pops3: { f: "eleven/e01.mp3", d: 1.6, g: 0.8, fade: 0.2 }, e_rub: { f: "eleven/e02.mp3", d: 1.1, g: 0.7, fade: 0.3 },
+  e_brush: { f: "eleven/e03.mp3", d: 1.0, g: 0.8, fade: 0.2 }, e_razor: { f: "eleven/e04.mp3", d: 1.0, g: 0.7, fade: 0.3 }, e_flame: { f: "eleven/e05.mp3", d: 1.4, g: 0.7, fade: 0.4 },
+  e_sun: { f: "eleven/e06.mp3", d: 2.0, g: 0.55, fade: 0.8 }, e_loco: { f: "eleven/e07.mp3", d: 7, g: 0.4, fade: 1.2 }, e_crack: { f: "eleven/e09.mp3", d: 0.5, g: 1.0, fade: 0.1 },
+  e_elbow: { f: "eleven/e10.mp3", d: 1.0, g: 0.7, fade: 0.3 }, e_bottle: { f: "eleven/e11.mp3", d: 0.9, g: 0.8, fade: 0.2 }, e_snip: { f: "eleven/e12.mp3", d: 0.5, g: 0.9, fade: 0.05 },
+  e_tap: { f: "eleven/e13.mp3", d: 1.6, g: 0.6, fade: 0.4 }, e_blocks: { f: "eleven/e14.mp3", d: 1.6, g: 0.7, fade: 0.3 }, e_coins: { f: "eleven/e15.mp3", d: 1.6, g: 0.7, fade: 0.4 },
+  e_receipt: { f: "eleven/e16.mp3", d: 1.8, g: 0.6, fade: 0.4 }, e_sparkle: { f: "eleven/e17.mp3", d: 1.0, g: 0.5, fade: 0.3 }, e_btn: { f: "eleven/e18.mp3", d: 0.6, g: 0.9, fade: 0.1 },
+  e_drop: { f: "eleven/e19.mp3", d: 1.0, g: 0.8, fade: 0.4 }, e_cream: { f: "eleven/e20.mp3", d: 1.6, g: 0.7, fade: 0.4 }, e_scrub: { f: "eleven/e21.mp3", d: 1.0, g: 0.6, fade: 0.3 },
+  e_mirror: { f: "eleven/e22.mp3", d: 0.7, g: 0.9, fade: 0.1 }, e_plug: { f: "eleven/e23.mp3", d: 1.2, g: 0.8, fade: 0.2 }, e_ticks: { f: "eleven/e24.mp3", d: 1.0, g: 0.7, fade: 0.2 },
+  e_stamp: { f: "eleven/e25.mp3", d: 1.2, g: 0.9, fade: 0.2 },
   s_keys: { f: "keyboard.mp3", d: 1.2, g: 0.5, fade: 0.2 }, s_drone: { f: "drone.mp3", d: 3, g: 0.3, fade: 1 },
 };
 const sampleCache = {};
@@ -304,6 +314,30 @@ export function eventsFromBeats(beats) {
       extra.push({ t: e.t, type: "s_magic", gain: 1.0, beat: e.beat, id: e.id, pri: 1 }, { t: e.t + 0.02, type: "s_boom", gain: 0.45, p: 1.35, beat: e.beat, id: e.id, pri: 1 }, { t: Math.max(0, e.t - 0.5), type: "s_rev", gain: 0.7, beat: e.beat, id: e.id, pri: 1 });
     }
   });
+  // couche « bruitages d'ambiance » : un vrai son par geste (début de la vidéo en priorité). id = animation du plan, sinon début du plan + dt
+  const LAYERS = [
+    ["hookFace", null, 0.35, "e_pops3", 0.8], ["hookFace", null, 1.9, "e_pop", 0.7], ["hookFace", null, 2.7, "e_drop", 0.8],
+    ["skinRub", null, 0.15, "e_rub", 0.8], ["skinRub", null, 1.5, "e_scrub", 0.5],
+    ["mirror", null, 0.15, "e_mirror", 0.9], ["mirror", null, 1.3, "e_brush", 0.8],
+    ["soinPeau", null, 0.3, "e_cream", 0.7], ["soinPeau", "fire4", 0, "e_flame", 0.7],
+    ["fiveSun", null, 0.1, "e_sun", 0.8], ["fiveRazor", null, 0.15, "e_razor", 0.8], ["fiveElbows", null, 0.1, "e_elbow", 0.8],
+    ["triggers5", "shield", 0, "e_crack", 1.0],
+    ["usine", null, 0.5, "e_loco", 0.6],
+    ["compare", "fire", 0, "e_flame", 0.6], ["noBurn", "flame", 0, "e_flame", 0.7],
+    ["regulate", "pim", 0, "e_pop", 0.7],
+    ["fourActives", null, 0.4, "e_blocks", 0.7],
+    ["azelaic", "faucet", 0, "e_tap", 0.7], ["arbutin", "enz-plug", -0.1, "e_plug", 0.9], ["tranexamic", "sc", 0.1, "e_snip", 0.9],
+    ["meet", "bottle", 0, "e_bottle", 0.8], ["ninetyFour", null, 0.2, "e_ticks", 0.8], ["skeptic", null, 0.1, "e_drop", 0.7],
+    ["guarantee", "shield", 0, "e_stamp", 0.9], ["refund", null, 0.1, "e_receipt", 0.7], ["refund", "co0", 0.05, "e_coins", 0.7],
+    ["cta", "btn", 0, "e_btn", 0.9],
+  ];
+  const t0s = Object.fromEntries(beats.map((b) => [b.name, b.t0]));
+  for (const [beat, id, dt, type, gain] of LAYERS) {
+    if (t0s[beat] === undefined) continue;
+    const m = id && raw.find((r) => r.beat === beat && r.id === id);
+    if (id && !m) continue;
+    extra.push({ t: Math.max(0, (m ? m.t : t0s[beat]) + dt), type, gain, beat, id: id || "(layer)", pri: 1 });
+  }
   extra.forEach((e) => final.push(e));
   final.sort((a, b) => a.t - b.t);
   funnel.final = final.length;
