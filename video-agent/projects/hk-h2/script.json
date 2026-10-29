@@ -1,0 +1,27 @@
+{
+ "title": "hook H2",
+ "brand": "../../brands/mela-skin/brand.json",
+ "voice": "voice.mp3",
+ "duration": 4.66,
+ "fps": 15,
+ "emphasis": "taches|boutons|copines",
+ "segments": [
+  {
+   "text": "Tu retouches tes photos parce que les taches qu'ont laiss\u00e9es tes boutons g\u00e2chent tout ?",
+   "t0": 0,
+   "t1": 3.1
+  },
+  {
+   "text": "Regarde \u00e7a.",
+   "t0": 3.58,
+   "t1": 4.14
+  }
+ ],
+ "beats": [
+  {
+   "scene": "hookRetouche",
+   "at": "Tu retouches"
+  }
+ ],
+ "anticipation": 0.45
+}
