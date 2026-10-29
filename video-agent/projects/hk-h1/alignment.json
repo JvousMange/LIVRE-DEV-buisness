@@ -1,15 +1,15 @@
 {
- "duration": 4.44,
+ "duration": 4.52,
  "segments": [
   {
-   "text": "Ton mec te dit que tes taches ne se voient pas,",
+   "text": "Ton mec te dit que tes taches ne se voient pas mais toi tu ne vois que",
    "t0": 0,
-   "t1": 2.03
+   "t1": 3.3
   },
   {
-   "text": "mais toi tu ne vois que ça sur tes joues ?",
-   "t0": 2.19,
-   "t1": 4.22
+   "text": "ça sur tes joues ?",
+   "t0": 3.4,
+   "t1": 4.3
   }
  ]
 }
