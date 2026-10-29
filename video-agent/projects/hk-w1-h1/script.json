@@ -2,7 +2,7 @@
  "title": "hook H1 concept 1",
  "brand": "../../brands/mela-skin/brand.json",
  "voice": "voice.mp3",
- "duration": 6.26,
+ "duration": 6.33,
  "fps": 15,
  "emphasis": "taches|boutons|copines",
  "segments": [
@@ -12,14 +12,14 @@
    "t1": 2.73
   },
   {
-   "text": "toi tu vois que ça sur tes joues.",
-   "t0": 2.91,
-   "t1": 4.53
+   "text": "toi tu ne vois que ça sur tes joues.",
+   "t0": 2.9,
+   "t1": 4.61
   },
   {
    "text": "Alors écoute ça.",
-   "t0": 4.95,
-   "t1": 5.67
+   "t0": 5.04,
+   "t1": 5.76
   }
  ],
  "beats": [
