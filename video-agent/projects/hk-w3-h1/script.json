@@ -1,0 +1,27 @@
+{
+ "title": "hook H1 concept 3",
+ "brand": "../../brands/mela-skin/brand.json",
+ "voice": "voice.mp3",
+ "duration": 4.78,
+ "fps": 15,
+ "emphasis": "taches|boutons|copines",
+ "segments": [
+  {
+   "text": "Ton mec te dit que tes taches ne se voient pas mais toi tu ne vois que",
+   "t0": 0,
+   "t1": 3.3
+  },
+  {
+   "text": "\u00e7a sur tes joues ?",
+   "t0": 3.4,
+   "t1": 4.3
+  }
+ ],
+ "beats": [
+  {
+   "scene": "hookW3",
+   "at": "Ton mec"
+  }
+ ],
+ "anticipation": 0.45
+}
