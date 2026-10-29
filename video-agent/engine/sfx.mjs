@@ -207,7 +207,7 @@ export function eventsFromBeats(beats) {
         add(id, { t: t + (type === "stamp" ? 0.12 : 0.03), type, gain: 1 });
       }
     }
-    for (const x of b.sfx || []) add("(plan)", { t: b.t0 + x.t, type: x.type, gain: x.gain });
+    for (const x of b.sfx || []) add("(plan)", { t: b.t0 + x.t, type: x.type, gain: x.gain, p: x.p, prod: x.prod });
     if (b.t0 > 0.01) cutRaw.push({ t: b.t0 - 0.04, type: "swish", gain: 1, beat: b.name, id: "(plan)", base: "(plan)", pri: 1 });
   }
   const funnel = { brut: raw.length + cutRaw.length };
@@ -221,6 +221,8 @@ export function eventsFromBeats(beats) {
     if (e.base === "fd") continue;
     const k = e.id.replace(/^[a-z]*\d*-/, "") && e.base;
     if (e.base === "sign") { if (e.beat === "ninetyFour" && e.type === "thud") kept.push({ ...e, pri: 2 }); continue; }   // le texte sur pancarte n'a pas besoin de son (sauf le grand chiffre)
+    if (e.beat === "usine" && e.id === "(plan)") { prod.push({ ...e, pri: 1 }); continue; }
+    if (e.beat === "usine" && /^(ps|pb|po|bl)$/.test(e.base)) continue;   // la bande-son de l'usine est écrite dans la scène
     if (e.beat === "usine" && /^(ps|pb|po)$/.test(e.base) && e.type !== "whoosh" && e.type !== "thud") { const ph = e.base === "ps" ? 0.9 : e.base === "pb" ? 1 : 1.15; prod.push({ ...e, type: "tchik", t: e.t + 0.03, gain: e.base === "po" ? 0.7 : 1, p: ph, pri: 1 }); continue; }
     if (e.id === "sp_a" && e.type === "pop") { kept.push({ ...e, type: "magic", pri: 3 }); continue; }
     if (e.id === "sp_b" && e.type === "pop") { kept.push({ ...e, type: "glint", gain: 0.8, pri: 3, t: e.t + 0.05 }); continue; }
@@ -283,7 +285,7 @@ export function eventsFromBeats(beats) {
     perBeat.set(e.beat, c + 1); final.push(e);
   }
   bed.forEach((e) => final.push({ ...e, pri: 1 }));
-  prod.forEach((e, i) => { if (e.base === "po" && i % 2) return; final.push({ ...e, pri: 1 }); });
+  prod.forEach((e) => { final.push({ ...e, pri: 1 }); });
   final.sort((a, b) => a.t - b.t);
   // variation naturelle : timbre (jamais deux fois de suite le même), hauteur et force légèrement différentes à chaque occurrence
   const rnd = (() => { let x = 12345; return () => ((x = (Math.imul(x, 1664525) + 1013904223) >>> 0) / 4294967296); })();
@@ -322,7 +324,6 @@ export function eventsFromBeats(beats) {
     ["soinPeau", null, 0.3, "e_cream", 0.7], ["soinPeau", "fire4", 0, "e_flame", 0.7],
     ["fiveSun", null, 0.1, "e_sun", 0.8], ["fiveRazor", null, 0.15, "e_razor", 0.8], ["fiveElbows", null, 0.1, "e_elbow", 0.8],
     ["triggers5", "shield", 0, "e_crack", 1.0],
-    ["usine", null, 0.5, "e_loco", 0.6],
     ["compare", "fire", 0, "e_flame", 0.6], ["noBurn", "flame", 0, "e_flame", 0.7],
     ["regulate", "pim", 0, "e_pop", 0.7],
     ["fourActives", null, 0.4, "e_blocks", 0.7],

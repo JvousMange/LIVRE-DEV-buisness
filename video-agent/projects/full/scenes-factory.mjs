@@ -90,7 +90,20 @@ export function scenesF(C, X, opts = {}) {
           { id: "siren", prop: "s", amp: 0.16, freq: 4, start: tAgr, origin: [FX - 40, FY - 215 * FS - 18] },
         ],
         cam: FIXED,
-        sfx: [tAgr, tAgr + 0.5, tAgr + 1.0, tTrop, tTrop + 0.35].map((t) => ({ t, type: "alarm", gain: 1 })).concat([{ t: tEnd - 0.3, type: "stamp" }]),
+        // bande-son « usine » : le rythme de la machine s'accélère avec l'histoire (calme → agitée → emballée), chaque cause a SON bruit, l'alarme ne sonne que deux fois
+        sfx: (() => {
+          const mach = (a, b, step, gain, p0, p1) => { const o = []; for (let t = a, i = 0; t < b; t += step, i++) o.push({ t, type: "tchik", gain, p: p0 + (p1 - p0) * ((t - a) / Math.max(0.1, b - a)), prod: true }); return o; };
+          return [
+            { t: Math.max(0, tFab - 0.2), type: "s_drone", gain: 0.55 },
+            ...mach(tFab + 0.2, tAgr - 0.3, 1.1, 0.8, 0.9, 0.9),
+            { t: tAgr, type: "alarm", gain: 0.9 }, { t: tAgr + 0.55, type: "alarm", gain: 0.9 },
+            ...mach(tAgr + 1.0, tTrop - 0.3, 0.5, 1, 1.0, 1.15),
+            { t: tBou, type: "e_pop", gain: 1 }, { t: tRas, type: "e_razor", gain: 0.9 }, { t: tSol, type: "e_sun", gain: 0.8 }, { t: tHor, type: "e_drop", gain: 0.9 },
+            { t: tTrop - 0.2, type: "alarm", gain: 1 }, { t: tTrop + 0.35, type: "alarm", gain: 1 }, { t: tTrop - 0.8, type: "rise", gain: 0.8 },
+            ...mach(tTrop + 0.6, tCoin - 0.5, 0.22, 0.7, 1.15, 1.45),
+            { t: tEnd - 0.3, type: "stamp" }, { t: tCoin + 0.4, type: "e_drop", gain: 1 },
+          ];
+        })(),
         punches: [tBou, tRas, tSol, tHor, tTrop].map((t) => ({ t, amp: 0.045 })).concat([{ t: tCoin + 0.4, amp: 0.05 }]),
       };
     })(),
