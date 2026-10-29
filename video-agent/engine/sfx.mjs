@@ -113,6 +113,10 @@ const SOUNDS = {
   alarm: { d: 0.52, g: 0.34, make: () => { let ph = 0; const lp = lowpass1(0.22);
     return (t) => { const f = t < 0.26 ? 450 : 600; ph += (TAU * f) / SR; let y = 0; for (let h = 1; h <= 5; h++) y += Math.sin(ph * h) / h; y = lp(y);
       const u = (t % 0.26) / 0.26, env = Math.min(1, u * 28) * (u < 0.86 ? 1 : (1 - u) / 0.14); return y * env * (t < 0.52 ? 1 : 0); }; } },
+  // scintillement magique : grappe de petites cloches aiguës qui montent vite (étoiles, « imagine que tu puisses… »)
+  glint: { d: 1.2, g: 0.42, make: (ev) => { const F = [1568, 2093, 2637, 3136, 4186], P = ev.p ?? 1; const ph = F.map(() => 0);
+    return (t) => { let y = 0; F.forEach((f, k) => { const t0 = k * 0.045; if (t < t0) return; const u = t - t0; ph[k] += (TAU * f * P) / SR; y += Math.sin(ph[k]) * exp(u, 5 + k * 1.5) * Math.min(1, u / 0.002) * (1 - k * 0.12); });
+      return y * 0.45; }; } },
   zap: { d: 1.2, g: 0.8, make: (ev, seed) => { const n = lcg(seed + 21), bp = bandpass(1.2), lp = lowpass1(0.012); let ph = 0, ph2 = 0; const r = lcg(seed + 4);
     const bursts = [0, 0.03, 0.075, 0.11, 0.17, 0.24].map((b) => b + Math.abs(r()) * 0.01);
     return (t) => { let g = 0; for (const b of bursts) if (t >= b && t < b + 0.035) g = Math.max(g, 1 - (t - b) / 0.035);
@@ -208,6 +212,9 @@ export function eventsFromBeats(beats) {
     const k = e.id.replace(/^[a-z]*\d*-/, "") && e.base;
     if (e.base === "sign") { if (e.beat === "ninetyFour" && e.type === "thud") kept.push({ ...e, pri: 2 }); continue; }   // le texte sur pancarte n'a pas besoin de son (sauf le grand chiffre)
     if (e.beat === "usine" && /^(ps|pb|po)$/.test(e.base) && e.type !== "whoosh" && e.type !== "thud") { const ph = e.base === "ps" ? 0.9 : e.base === "pb" ? 1 : 1.15; prod.push({ ...e, type: "tchik", t: e.t + 0.03, gain: e.base === "po" ? 0.7 : 1, p: ph, pri: 1 }); continue; }
+    if (e.id === "sp_a" && e.type === "pop") { kept.push({ ...e, type: "magic", pri: 3 }); continue; }
+    if (e.id === "sp_b" && e.type === "pop") { kept.push({ ...e, type: "glint", gain: 0.8, pri: 3, t: e.t + 0.05 }); continue; }
+    if (e.base === "spk" && e.type === "pop") { kept.push({ ...e, type: "glint", gain: 0.6, p: e.id === "spk1" ? 1 : 1.25, pri: 2 }); continue; }
     if (e.base === "off") { kept.push({ ...e, type: "ding", pri: 3 }); continue; }
     if (SKIP.has(e.base)) continue;
     if (e.base === "badge") { kept.push({ ...e, type: "num", n: (BADGE_N[e.beat] ?? 1) - 1, pri: 2 }); continue; }
@@ -286,10 +293,16 @@ export function eventsFromBeats(beats) {
     else if (e.type === "swish" && v === 1) { e.type = "s_whoosh2"; e.gain = (e.gain ?? 1) * 0.6; } else if (e.type === "swish" && v === 2) { e.type = "s_swoosh"; }
     else if (e.type === "pop" && v === 1) e.type = "s_pop";
     else if (e.type === "tick") e.type = "s_click";
-    else if (e.type === "stamp") extra.push({ t: e.t, type: "s_boom", gain: 0.55, p: 1.15, beat: e.beat, id: e.id, pri: 1 });
+    else if (e.type === "stamp") extra.push({ t: e.t, type: "s_boom", gain: 0.8, p: 1.15, beat: e.beat, id: e.id, pri: 1 });
     else if (e.type === "rise") extra.push({ t: Math.max(0, e.t - 0.3), type: "s_riser", gain: 0.8, beat: e.beat, id: e.id, pri: 1 });
     else if (e.type === "zap") extra.push({ t: e.t, type: "s_glitch", gain: 0.5, beat: e.beat, id: e.id, pri: 1 });
     else if (e.type === "ding" && e.id === "off") extra.push({ t: e.t, type: "s_success", gain: 0.7, beat: e.beat, id: e.id, pri: 1 });
+  });
+  final.forEach((e) => {
+    if (e.type === "magic") {
+      e.type = "glint";
+      extra.push({ t: e.t, type: "s_magic", gain: 1.0, beat: e.beat, id: e.id, pri: 1 }, { t: e.t + 0.02, type: "s_boom", gain: 0.45, p: 1.35, beat: e.beat, id: e.id, pri: 1 }, { t: Math.max(0, e.t - 0.5), type: "s_rev", gain: 0.7, beat: e.beat, id: e.id, pri: 1 });
+    }
   });
   extra.forEach((e) => final.push(e));
   final.sort((a, b) => a.t - b.t);
