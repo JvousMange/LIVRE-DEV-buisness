@@ -95,20 +95,43 @@ export function tag(C, cx, cy, w, h, text, { id, seed = 3, fontSize = 40, z = 4,
     `<g filter="url(#paper1)"><text x="${x0 + 66}" y="${f1(cy + fontSize * 0.35)}" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="900" font-size="${fontSize}" letter-spacing="-0.5" fill="${C.dark}">${text}</text></g></g>`;
 }
 
-// Flacon MELA SKIN (version provisoire en attendant le vrai packshot vectorisé). Origine = centre du corps.
+// Flacon MELA SKIN, d'après le packshot : verre ambré, pipette et bague brunes, étiquette marron (rendu mi-réaliste : dégradés, reflets, ombre portée).
+// Origine = centre du corps ; mêmes dimensions que l'ancienne version provisoire (x ±100, y -405 → 232).
 export function bottle(C, cx, cy, s = 1, id = "bottle") {
-  const g = (d, fill, z) => layer(d, fill, z);
-  const body = "M-100 200 Q-100 232 -68 232 L68 232 Q100 232 100 200 L100 -110 Q100 -135 82 -152 L38 -205 L-38 -205 L-82 -152 Q-100 -135 -100 -110Z";
+  const F = "Inter, 'DejaVu Sans', sans-serif", sal = "#E8A184", gl = `${id}-gl`, br = `${id}-br`, lb = `${id}-lb`, bu = `${id}-bu`, sh = `${id}-sh`;
+  const body = "M-100 205 Q-100 232 -70 232 L70 232 Q100 232 100 205 L100 -40 Q100 -105 58 -140 Q40 -156 36 -178 L-36 -178 Q-40 -156 -58 -140 Q-100 -105 -100 -40Z";
   return `<g id="${id}"><g transform="translate(${cx} ${cy}) scale(${s})">` +
-    g("M-34 -250 Q-34 -405 0 -405 Q34 -405 34 -250Z", "#3A2214", 4) +
-    g("M-48 -252 L48 -252 L48 -200 L-48 -200Z", "#2E2019", 3) +
-    g(body, "#D98E2B", 2) +
-    g("M-78 -110 L-60 -110 L-60 160 L-78 160Z", "#F0B552", 3) +
-    g("M-100 -70 L100 -70 L100 150 L-100 150Z", "#7A4E32", 3) +
-    `<g filter="url(#paper1)"><text x="0" y="-8" text-anchor="middle" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="900" font-size="50" fill="${C.cream}" letter-spacing="2">MELA</text>` +
-    `<text x="0" y="38" text-anchor="middle" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="900" font-size="50" fill="${C.cream}" letter-spacing="2">SKIN</text>` +
-    `<text x="0" y="84" text-anchor="middle" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="700" font-size="15" fill="${C.cream}" letter-spacing="1.5">SÉRUM ANTI-TACHES</text>` +
-    `<text x="0" y="122" text-anchor="middle" font-family="Inter, 'DejaVu Sans', sans-serif" font-weight="600" font-size="15" fill="${C.cream}">30 ml</text></g>` +
+    `<defs>` +
+    `<linearGradient id="${gl}" x1="0" x2="1"><stop offset="0" stop-color="#4A230F"/><stop offset=".18" stop-color="#8A4A1E"/><stop offset=".42" stop-color="#B8691F"/><stop offset=".7" stop-color="#7A3E16"/><stop offset="1" stop-color="#3B1B0B"/></linearGradient>` +
+    `<linearGradient id="${br}" x1="0" x2="1"><stop offset="0" stop-color="#23160F"/><stop offset=".3" stop-color="#5B4032"/><stop offset=".55" stop-color="#4A3226"/><stop offset="1" stop-color="#1F130D"/></linearGradient>` +
+    `<linearGradient id="${lb}" x1="0" x2="1"><stop offset="0" stop-color="#2B1A13"/><stop offset=".35" stop-color="#4B2F25"/><stop offset=".65" stop-color="#432A21"/><stop offset="1" stop-color="#25160F"/></linearGradient>` +
+    `<linearGradient id="${bu}" x1="0" x2="1"><stop offset="0" stop-color="#2E1D14"/><stop offset=".35" stop-color="#6A4A3B"/><stop offset="1" stop-color="#2A1A12"/></linearGradient>` +
+    `<radialGradient id="${sh}"><stop offset="0" stop-color="#000" stop-opacity=".38"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>` +
+    `</defs>` +
+    `<ellipse cx="70" cy="238" rx="170" ry="22" fill="url(#${sh})"/>` +
+    // pipette (poire) + bague nervurée
+    `<path d="M-30 -262 Q-32 -330 -30 -372 Q-28 -405 0 -405 Q28 -405 30 -372 Q32 -330 30 -262Z" fill="url(#${bu})"/>` +
+    `<path d="M-16 -380 Q-19 -330 -19 -272" stroke="#9C7A66" stroke-opacity=".55" stroke-width="7" fill="none" stroke-linecap="round"/>` +
+    `<rect x="-62" y="-268" width="124" height="96" rx="9" fill="url(#${br})"/>` +
+    Array.from({ length: 13 }, (_, i) => `<line x1="${-54 + i * 9}" y1="-262" x2="${-54 + i * 9}" y2="-176" stroke="#120A06" stroke-opacity=".45" stroke-width="2.2"/>`).join("") +
+    `<rect x="-62" y="-268" width="124" height="8" rx="4" fill="#7B5C4B" fill-opacity=".55"/>` +
+    // verre ambré
+    `<path d="${body}" fill="url(#${gl})"/>` +
+    `<path d="M-78 -60 Q-78 -108 -48 -132" stroke="#F3B87A" stroke-opacity=".5" stroke-width="9" fill="none" stroke-linecap="round"/>` +
+    `<path d="M-84 -20 L-84 -40" stroke="#F8C892" stroke-opacity=".55" stroke-width="10" stroke-linecap="round"/>` +
+    `<path d="M58 -90 Q74 -70 76 -30" stroke="#E7A25B" stroke-opacity=".28" stroke-width="7" fill="none" stroke-linecap="round"/>` +
+    // étiquette brune mate
+    `<rect x="-100" y="-30" width="200" height="236" fill="url(#${lb})"/>` +
+    `<rect x="-100" y="-30" width="200" height="236" fill="#fff" fill-opacity=".03"/>` +
+    `<g font-family="${F}" text-anchor="middle">` +
+    `<text x="0" y="22" font-weight="800" font-size="33" fill="${sal}" letter-spacing=".5">MELA SKIN</text>` +
+    `<text x="0" y="46" font-weight="400" font-size="12.5" fill="#E9D4C8">L'expertise pensée pour vous</text>` +
+    `<text x="0" y="92" font-weight="600" font-size="11.5" fill="${sal}" letter-spacing=".4">SÉRUM CORRECTEUR DE TEINT</text>` +
+    `<text x="0" y="109" font-weight="600" font-size="11.5" fill="${sal}" letter-spacing=".4">ANTI-TÂCHES</text>` +
+    `<text x="0" y="170" font-weight="500" font-size="7.6" fill="${sal}" fill-opacity=".85">VEGAN · CRUELTY FREE · COMPOSITION CLEAN</text>` +
+    `<text x="0" y="190" font-weight="500" font-size="9.5" fill="#E9D4C8">30ml</text></g>` +
+    // reflet vertical sur toute la hauteur
+    `<rect x="-88" y="-28" width="7" height="230" rx="3.5" fill="#fff" fill-opacity=".07"/>` +
     `</g></g>`;
 }
 
