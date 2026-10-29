@@ -40,30 +40,34 @@ export function scenes(C, X) {
       return {
         svg: BG(C.problem) +
           `<g id="phone"><g filter="url(#paper3)"><rect x="110" y="120" width="860" height="1680" rx="96" fill="${C.dark}"/></g>` +
+          `<defs><radialGradient id="lmp" cx="300" cy="760" r="380" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${C.accent}" stop-opacity=".55"/><stop offset="1" stop-color="${C.accent}" stop-opacity="0"/></radialGradient></defs>` +
           `<clipPath id="scr"><rect x="150" y="160" width="780" height="1600" rx="70"/></clipPath><g clip-path="url(#scr)">` +
-          `<rect x="150" y="160" width="780" height="1600" fill="${C.kraft}"/>` + layer(poly([[180, 520], [470, 520], [470, 900], [180, 900]], { round: false }), "#B7D0E0", 3) +
+          `<rect x="150" y="160" width="780" height="1600" fill="${C.kraft}"/><rect x="150" y="160" width="780" height="1600" fill="url(#lmp)"/>` +
+          layer(poly([[150, 1180], [930, 1180], [930, 1760], [150, 1760]], { round: false }), C.kraftDark, 2) +
+          layer(poly([[262, 560], [338, 560], [372, 680], [228, 680]], { round: false }), C.cream, 4) + layer(poly([[294, 680], [306, 680], [306, 1180], [294, 1180]], { round: false }), C.dark, 3) +
           `<g id="him">${man(540, 1330, 1.55, "manv")}</g>` +
           `<g id="ui">${txt(540, 250, "Mon chéri", 48, C.cream)}${txt(540, 300, "02:14", 30, C.cream, "middle", 600)}` +
           `<g filter="url(#paper3)"><circle cx="360" cy="1640" r="60" fill="${C.kraftDark}"/><circle cx="540" cy="1640" r="66" fill="${C.alert}"/><circle cx="720" cy="1640" r="60" fill="${C.kraftDark}"/></g>` +
           `<g filter="url(#paper1)"><rect x="505" y="1628" width="70" height="24" rx="12" fill="${C.cream}"/></g></g>` +
-          bubble(380, 470, 400, 130, "bub", "Ça se voit pas !", 40, -1) + heart(560, 400, 0.6, "h1") + heart(610, 450, 0.45, "h2") +
+          // bulle juste au-dessus de sa tête, la pointe vers sa bouche
+          bubble(420, 720, 470, 150, "bub", "Ça se voit pas !", 48, 1) +
           // vignette « moi » : elle ne regarde que ça
           `<g id="self"><clipPath id="selfc"><rect x="640" y="360" width="240" height="300" rx="26"/></clipPath><g clip-path="url(#selfc)"><rect x="640" y="360" width="240" height="300" fill="${C.cream}"/>` +
-          woman(C, { cx: SX, cy: SY, scale: SS, spotsOn: false, mirrorOn: false }) + spotsAt(SX, SY, SS, "sp") + wp(SX, SY, SS).map(([x, y], i) => ring(`rg${i}`, x, y, 12, 3)).join("") + `</g>` +
+          woman(C, { cx: SX, cy: SY, scale: SS, spotsOn: false, mirrorOn: false }) + spotsAt(SX, SY, SS, "sp") + `</g>` +
           `<g filter="url(#paper3)"><rect x="640" y="360" width="240" height="300" rx="26" fill="none" stroke="${C.cream}" stroke-width="7"/></g>` +
-          `<g id="selfred"><g filter="url(#paper3)"><rect x="640" y="360" width="240" height="300" rx="26" fill="none" stroke="${C.alert}" stroke-width="9"/></g></g></g>` +
+          `<g id="selfhi"><g filter="url(#paper3)"><rect x="634" y="354" width="252" height="312" rx="30" fill="none" stroke="${C.accent}" stroke-width="10"/></g></g></g>` +
           `</g></g>`,
         anims: [
           A("phone", 0, 0.5, { y: 900 }, { y: 0 }, { ease: "outBack", sfx: "whoosh" }),
           POP("him", Math.max(0.15, tMec - 0.05), [540, 1100]),
-          POP("bub", tNo, [380, 470]), POP("h1", tNo + 0.1, [560, 400]), POP("h2", tNo + 0.2, [610, 450]),
-          POP("self", 0.35, [760, 510], { sfx: false }),
-          POP("selfred", tToi, [760, 510]), A("selfred", tToi + 0.5, 0.3, { o: 1 }, { o: 0 }, { ease: "lin", late: true, sfx: false }),
-          FADEOUT("bub", tQue - 0.2, 0.2), FADEOUT("h1", tQue - 0.2, 0.2), FADEOUT("h2", tQue - 0.2, 0.2),
-          A("self", tQue - 0.2, 0.55, { s: 1 }, { s: 3.0 }, { origin: [880, 360], ease: "outBack", late: true, sfx: "whoosh" }),
-          ...spotPops(tQue + 0.4, "sp"), ...wp(SX, SY, SS).map(([x, y], i) => POP(`rg${i}`, tQue + 0.6 + i * 0.06, [x, y], { sfx: false })),
+          POP("self", 0.35, [760, 510], { sfx: false }), ...spotPops(0.45, "sp", 0.01),
+          POP("bub", tNo - 0.1, [440, 790]),
+          POP("selfhi", tToi - 0.05, [760, 510]),
+          FADEOUT("bub", tQue - 0.25, 0.2), FADEOUT("selfhi", tQue - 0.2, 0.15),
+          A("self", tQue - 0.2, 0.6, { s: 1 }, { s: 3.3 }, { origin: [880, 360], ease: "outBack", late: true, sfx: "whoosh" }),
+          A("self", tQue + 0.5, 1.6, { s: 3.3 }, { s: 3.55 }, { origin: [880, 360], ease: "lin", late: true, sfx: false }),
         ],
-        loops: [], cam: SLOW(1.0, 1.03, 0, 0), punches: [{ t: tQue + 0.4, amp: 0.04 }],
+        loops: [], cam: SLOW(1.0, 1.03, 0, 0), punches: [{ t: tQue + 0.3, amp: 0.035 }],
       };
     })(),
 
@@ -74,32 +78,33 @@ export function scenes(C, X) {
       const hand = `<g id="hand">` + layer(poly([[HX - 30, HY + 40], [HX + 30, HY + 40], [HX + 60, HY + 520], [HX - 10, HY + 520]], { round: false }), C.dark, 6) +
         layer(blob(HX, HY + 20, 48, 52, { jitter: 0.04, n: 12, seed: 6201 }), FACE.skin, 7) +
         [-30, -10, 10, 30].map((dx, i) => layer(poly([[HX + dx - 9, HY - 60 + (i === 0 || i === 3 ? 18 : 0)], [HX + dx + 9, HY - 60 + (i === 0 || i === 3 ? 18 : 0)], [HX + dx + 9, HY + 10], [HX + dx - 9, HY + 10]]), FACE.skin, 7)).join("") + `</g>`;
-      const P = wp(WX, WY, WS).filter((_, i) => i >= 4);       // joue droite (la gauche est cachée par la main)
       return {
         svg: BG(C.problem) +
           [0, 1, 2, 3, 4, 5].map((i) => `<rect x="${-40 + i * 200}" y="-600" width="80" height="2400" fill="${C.dark}" fill-opacity=".18"/>`).join("") +
-          layer(poly([[640, 260], [980, 260], [980, 600], [640, 600]], { round: false }), C.dark, 3) + `<g filter="url(#paper3)"><circle cx="860" cy="360" r="46" fill="${C.cream}"/></g>` +
+          `<defs><radialGradient id="cg" cx="540" cy="960" r="330" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${C.accent}" stop-opacity=".42"/><stop offset=".45" stop-color="${C.accent}" stop-opacity=".14"/><stop offset="1" stop-color="${C.accent}" stop-opacity="0"/></radialGradient></defs>` +
+          // tableau (lune) à gauche, en hauteur : laisse la place à la bulle au-dessus de lui
+          layer(poly([[110, 250], [370, 250], [370, 520], [110, 520]], { round: false }), C.dark, 3) + `<g filter="url(#paper3)"><circle cx="290" cy="340" r="40" fill="${C.cream}"/></g>` +
+          `<g id="glow"><rect x="160" y="580" width="760" height="760" fill="url(#cg)"/></g>` +
           woman(C, { cx: WX, cy: WY, scale: WS, spotsOn: false, mirrorOn: false }) + spotsAt(WX, WY, WS, "sp") +
-          man(800, 1130, 0.85, "man") +
-          `<g id="glow"><circle cx="540" cy="960" r="200" fill="${C.accent}" fill-opacity=".16"/></g>` + hand +
+          man(800, 1130, 0.85, "man") + hand +
           layer(poly([[-200, 1170], [1280, 1170], [1280, 2400], [-200, 2400]], { round: false }), C.cream, 3) +
           layer(poly([[-200, 1170], [1280, 1170], [1280, 1205], [-200, 1205]], { round: false }), C.kraft, 4) +
           `<g id="cdl">${layer(poly([[522, 990], [558, 990], [558, 1180], [522, 1180]], { round: false }), C.cream, 5)}${layer(poly([[500, 1170], [580, 1170], [580, 1200], [500, 1200]], { round: false }), C.kraftDark, 5)}</g>` +
           `<g id="flame">${layer(blob(540, 955, 22, 38, { jitter: 0.06, n: 10, seed: 6202 }), C.accent, 6)}${layer(blob(540, 965, 10, 18, { jitter: 0.06, n: 8, seed: 6203 }), C.alert, 7)}</g>` +
           layer(blob(250, 1250, 120, 34, { jitter: 0.03, n: 14, seed: 6204 }), "#FFFFFF", 4) + layer(blob(830, 1250, 120, 34, { jitter: 0.03, n: 14, seed: 6205 }), "#FFFFFF", 4) +
-          heart(760, 720, 0.8, "h1") + heart(870, 650, 0.6, "h2") + heart(690, 620, 0.5, "h3") +
-          bubble(760, 470, 470, 140, "bub", "Ça se voit pas !", 42, 1) +
-          P.map(([x, y], i) => ring(`rg${i}`, x, y, 20, 5)).join(""),
+          // cœurs au-dessus de sa tête, puis la bulle prend leur place (pointe vers lui)
+          heart(800, 800, 0.75, "h1") + heart(900, 740, 0.55, "h2") + heart(705, 735, 0.5, "h3") +
+          bubble(760, 690, 500, 150, "bub", "Ça se voit pas !", 48, 0.4),
         anims: [
           ...spotPops(0.25, "sp", 0.02),
           A("man", Math.max(0, tMec - 0.25), 0.5, { x: 600 }, { x: 0 }, { ease: "outBack", sfx: "whoosh" }),
-          POP("h1", tMec + 0.25, [760, 720]), POP("h2", tMec + 0.4, [870, 650], { sfx: false }), POP("h3", tMec + 0.55, [690, 620], { sfx: false }),
-          POP("bub", tNo, [760, 470]),
+          POP("h1", tMec + 0.25, [800, 800]), POP("h2", tMec + 0.4, [900, 740], { sfx: false }), POP("h3", tMec + 0.55, [705, 735], { sfx: false }),
+          FADEOUT("h1", tNo - 0.15, 0.15), FADEOUT("h2", tNo - 0.15, 0.15), FADEOUT("h3", tNo - 0.15, 0.15),
+          POP("bub", tNo - 0.1, [800, 760]),
           A("hand", tToi - 0.1, 0.45, { y: 460 }, { y: 0 }, { ease: "outBack", sfx: "swish" }),
-          FADEOUT("bub", tQue, 0.25), FADEOUT("h1", tQue, 0.25), FADEOUT("h2", tQue, 0.25), FADEOUT("h3", tQue, 0.25),
-          ...P.map(([x, y], i) => POP(`rg${i}`, tQue + 0.5 + i * 0.08, [x, y], { sfx: false })),
+          FADEOUT("bub", tQue, 0.25),
         ],
-        loops: [{ id: "flame", prop: "s", amp: 0.07, freq: 5.5, start: 0, origin: [540, 990] }, { id: "glow", prop: "s", amp: 0.05, freq: 3.1, start: 0, origin: [540, 960] }],
+        loops: [{ id: "flame", prop: "s", amp: 0.07, freq: 5.5, start: 0, origin: [540, 990] }, { id: "glow", prop: "s", amp: 0.04, freq: 3.1, start: 0, origin: [540, 960] }],
         cam: [{ t0: tQue - 0.1, t1: tQue + 0.8, from: { s: 1, x: 0, y: 0 }, to: { s: 1.75, x: 1.75 * (540 - 300), y: 1.75 * (960 - 930) }, ease: "inOut" }],
         punches: [{ t: tToi + 0.3, amp: 0.03 }],
       };
