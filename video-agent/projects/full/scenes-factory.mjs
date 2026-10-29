@@ -20,7 +20,7 @@ export function scenesF(C, X, opts = {}) {
   const grainAnims = (id, t, yEnd, fade) => {
     const dist = OUT[1] - yEnd, dTravel = dist / 470;
     return [
-      POP(id, t, OUT, { from: { s: 0 }, to: { s: 1 }, sfx: false }),
+      POP(id, t, OUT, { from: { s: 0 }, to: { s: 1 } }),
       A(id, t + 0.3, 0.45, { x: 0, y: 0 }, { x: PX - OUT[0], y: 0 }, { ease: "lin", late: true }),
       A(id, t + 0.75, dTravel, { x: PX - OUT[0], y: 0 }, { x: PX - OUT[0], y: -dist }, { ease: "lin", late: true }),
       ...(fade ? [A(id, t + 0.75 + dTravel, 0.25, { o: 1 }, { o: 0 }, { ease: "lin", late: true })] : []),
@@ -79,7 +79,7 @@ export function scenesF(C, X, opts = {}) {
           ...busy.flatMap((t, i) => grainAnims(ids.b[i], t, 955, true)),
           ...over.flatMap((t, i) => grainAnims(ids.o[i], t, STACK0 + i * STEP, false)),
           // chaque cause : le déclencheur arrive, un éclair frappe l'usine, qui grossit
-          POP("siren", tAgr, [FX - 40, FY - 215 * FS - 18], { sfx: "beep" }), A("fac-red", tAgr, 0.3, { o: 0 }, { o: 1 }, { ease: "lin", sfx: false }),
+          POP("siren", tAgr, [FX - 40, FY - 215 * FS - 18], { sfx: false }), A("fac-red", tAgr, 0.3, { o: 0 }, { o: 1 }, { ease: "lin", sfx: false }),
           ...hit("bl1", 230, 330, FX - 70, tBou), ...hit("bl2", 520, 300, FX - 10, tRas), ...hit("bl3", 800, 340, FX + 60, tSol), ...hit("bl4", 130, 380, FX + 20, tHor),
           POP("stainW", tEnd - 0.3, [PX, 905]), POP("ring", tEnd, [PX, 905]),
           DROP("lock", tCoin, [PX, 1010]),
@@ -90,7 +90,7 @@ export function scenesF(C, X, opts = {}) {
           { id: "siren", prop: "s", amp: 0.16, freq: 4, start: tAgr, origin: [FX - 40, FY - 215 * FS - 18] },
         ],
         cam: FIXED,
-        sfx: [tAgr, tAgr + 0.5, tAgr + 1.0, tTrop, tTrop + 0.35].map((t) => ({ t, type: "beep", gain: 0.7 })).concat([{ t: tEnd - 0.3, type: "stamp" }]),
+        sfx: [tAgr, tAgr + 0.5, tAgr + 1.0, tTrop, tTrop + 0.35].map((t) => ({ t, type: "alarm", gain: 1 })).concat([{ t: tEnd - 0.3, type: "stamp" }]),
         punches: [tBou, tRas, tSol, tHor, tTrop].map((t) => ({ t, amp: 0.045 })).concat([{ t: tCoin + 0.4, amp: 0.05 }]),
       };
     })(),

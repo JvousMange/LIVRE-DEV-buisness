@@ -79,6 +79,12 @@ const SOUNDS = {
     return (t) => bp(n(), 3600) * (exp(t, 45) * 1.6 + (t > 0.045 ? exp(t - 0.045, 60) : 0) * 0.8) * Math.min(1, t / 0.001); } },
   rise: { d: 1.2, g: 0.5, make: (ev, seed) => { const n = lcg(seed + 13), bp = bandpass(1.4); let ph = 0; const D = 1.2;
     return (t) => { const u = Math.min(1, t / D); ph += (TAU * (90 + 700 * u * u)) / SR; return (bp(n(), 300 + 5200 * u * u) * 1.6 + Math.sin(ph) * 0.3) * (u * u) * (u < 0.96 ? 1 : (1 - u) / 0.04); }; } },
+  // production de l'usine : petit « tchik-tchak » mécanique léger (hauteur et cadence montent avec la production)
+  tchik: { d: 0.16, g: 0.42, make: (ev, seed) => { const P = ev.p ?? 1, n = lcg(seed + 41), bp = bandpass(3), bp2 = bandpass(2); let ph = 0;
+    return (t) => { ph += (TAU * 190 * P) / SR; return bp(n(), 2300 * P) * exp(t, 95) * 1.4 + bp2(n(), 900 * P) * exp(t - 0.035, 80) * (t > 0.035 ? 0.7 : 0) + Math.sin(ph) * exp(t, 60) * 0.35; }; } },
+  // alarme douce qui s'active : deux tons montants, arrondis
+  alarm: { d: 0.5, g: 0.3, make: () => { let ph = 0; const D = 0.46;
+    return (t) => { const u = (t % 0.23) / 0.23; const f = 640 + 360 * u; ph += (TAU * f) / SR; return (Math.sin(ph) * 0.8 + Math.sin(ph * 2) * 0.12) * Math.sin(Math.PI * Math.min(1, u)) ** 0.6 * (t < D ? 1 : 0) * Math.min(1, t * 120); }; } },
   zap: { d: 1.2, g: 0.8, make: (ev, seed) => { const n = lcg(seed + 21), bp = bandpass(1.2), lp = lowpass1(0.012); let ph = 0, ph2 = 0; const r = lcg(seed + 4);
     const bursts = [0, 0.03, 0.075, 0.11, 0.17, 0.24].map((b) => b + Math.abs(r()) * 0.01);
     return (t) => { let g = 0; for (const b of bursts) if (t >= b && t < b + 0.035) g = Math.max(g, 1 - (t - b) / 0.035);
@@ -161,13 +167,15 @@ export function eventsFromBeats(beats) {
 
   // Q1 : sens ? — on retire le décor ; le rideau de taches devient UN grand geste, les rétractions UN souffle
   let kept = [];
-  const bed = [];   // « tum tum » de fond : pulsation légère pendant que les produits s'empilent, exempte du tri
+  const bed = []; const prod = [];   // « tum tum » de fond : pulsation légère pendant que les produits s'empilent, exempte du tri
   const hasThud = new Set(raw.filter((e) => (e.base === "it" || e.base === "p") && e.type === "thud").map((e) => e.beat + e.id));
   const fd = raw.filter((e) => e.base === "fd");
   for (const e of raw) {
     if (e.base === "fd") continue;
     const k = e.id.replace(/^[a-z]*\d*-/, "") && e.base;
     if (e.base === "sign") { if (e.beat === "ninetyFour" && e.type === "thud") kept.push({ ...e, pri: 2 }); continue; }   // le texte sur pancarte n'a pas besoin de son (sauf le grand chiffre)
+    if (e.beat === "usine" && /^(ps|pb|po)$/.test(e.base) && e.type !== "whoosh" && e.type !== "thud") { const ph = e.base === "ps" ? 0.9 : e.base === "pb" ? 1 : 1.15; prod.push({ ...e, type: "tchik", t: e.t + 0.03, gain: e.base === "po" ? 0.7 : 1, p: ph, pri: 1 }); continue; }
+    if (e.base === "off") { kept.push({ ...e, type: "ding", pri: 3 }); continue; }
     if (SKIP.has(e.base)) continue;
     if (e.base === "badge") { kept.push({ ...e, type: "num", n: (BADGE_N[e.beat] ?? 1) - 1, pri: 2 }); continue; }
     if (e.base === "nb") { kept.push({ ...e, type: "num", n: Number(e.id.replace(/\D/g, "")) - 1, pri: 2 }); continue; }
@@ -179,7 +187,7 @@ export function eventsFromBeats(beats) {
       else if (e.type !== "whoosh" || !hasThud.has(e.beat + e.id)) { if (!hasThud.has(e.beat + e.id) && !bed.some((b) => b.id === e.id && b.beat === e.beat)) bed.push({ ...e, type: "tum", t: e.t + 0.25, gain: 0.6 }); }
       continue;
     }
-    const pri = KEYS[e.base] ?? KEYS[e.id] ?? MOVES[e.base] ?? MOVES[e.id] ?? (e.type === "rise" || e.type === "zap" || e.type === "stamp" || e.type === "ding" ? 3 : 1);
+    const pri = KEYS[e.base] ?? KEYS[e.id] ?? MOVES[e.base] ?? MOVES[e.id] ?? (e.type === "alarm" || e.type === "rise" || e.type === "zap" || e.type === "stamp" || e.type === "ding" ? 3 : 1);
     kept.push({ ...e, pri });
   }
   if (fd.length) {
@@ -225,6 +233,7 @@ export function eventsFromBeats(beats) {
     perBeat.set(e.beat, c + 1); final.push(e);
   }
   bed.forEach((e) => final.push({ ...e, pri: 1 }));
+  prod.forEach((e, i) => { if (e.base === "po" && i % 2) return; final.push({ ...e, pri: 1 }); });
   final.sort((a, b) => a.t - b.t);
   // variation naturelle : timbre (jamais deux fois de suite le même), hauteur et force légèrement différentes à chaque occurrence
   const rnd = (() => { let x = 12345; return () => ((x = (Math.imul(x, 1664525) + 1013904223) >>> 0) / 4294967296); })();

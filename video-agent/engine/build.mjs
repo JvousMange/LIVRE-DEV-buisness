@@ -14,6 +14,7 @@ const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) || "").spl
 const at = (arg("at") || "").split(",").filter(Boolean).map(Number);
 const peek = (arg("peek") || "").split(",").filter(Boolean);
 const limit = Number(arg("frames")) || Infinity;
+const audioOnly = process.argv.includes("--audio-only");   // ne refait que le son : réutilise la vidéo déjà rendue (out/final_9x16.mp4)
 const dir = path.resolve(process.argv[2]);
 const script = JSON.parse(readFileSync(path.join(dir, "script.json")));
 const brand = JSON.parse(readFileSync(path.resolve(dir, script.brand)));
@@ -143,6 +144,7 @@ beats.forEach((b, i) => {
   if (ok) cached += z - a;
   else for (let k = a; k < z; k++) todo.push([k, i, h]);
 });
+if (audioOnly) todo.length = 0;
 console.log(`${N} images : ${cached} en cache, ${todo.length} à rendre`);
 const t0 = Date.now();
 const WORKERS = 4;
@@ -172,7 +174,10 @@ const sfxFile = path.join(out, "sfx.wav");
 renderSfx(events, T, sfxFile);
 writeFileSync(path.join(out, "sfx_events.json"), JSON.stringify(events));
 console.log(`bruitages : ${events.length} événements`);
-const args = ["-y", "-v", "error", "-framerate", String(FPS), "-i", path.join(framesDir, "f_%05d.jpg"), "-i", path.join(dir, script.voice), "-i", sfxFile];
+const mp4src = path.join(out, "video_src.mp4");
+if (audioOnly) { if (!existsSync(mp4src)) execFileSync("cp", [path.join(out, "final_9x16.mp4"), mp4src]); }
+const args = audioOnly ? ["-y", "-v", "error", "-i", mp4src, "-i", path.join(dir, script.voice), "-i", sfxFile]
+  : ["-y", "-v", "error", "-framerate", String(FPS), "-i", path.join(framesDir, "f_%05d.jpg"), "-i", path.join(dir, script.voice), "-i", sfxFile];
 const fc = [
   `[1:a]atrim=0:${T},asetpts=PTS-STARTPTS,afade=t=out:st=${T - 0.4}:d=0.4,asplit=2[v][vs]`,
   `[2:a]atrim=0:${T},asetpts=PTS-STARTPTS,highpass=f=35,lowpass=f=9500,equalizer=f=1300:t=o:w=2.2:g=-9,equalizer=f=230:t=o:w=1.6:g=8,acompressor=threshold=0.08:ratio=5:attack=4:release=140:makeup=1,volume=${script.sfxVolume ?? 0.4}[fx0]`,
@@ -181,7 +186,7 @@ const fc = [
   `[v][fx]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-14:TP=-1.5:LRA=11[a]`,
 ].join(";");
 const mp4 = path.join(out, "final_9x16.mp4");
-execFileSync("ffmpeg", [...args, "-filter_complex", fc, "-map", "0:v", "-map", "[a]", "-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "23", "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-t", String(T), mp4], { stdio: "inherit" });
+execFileSync("ffmpeg", [...args, "-filter_complex", fc, "-map", "0:v", "-map", "[a]", ...(audioOnly ? ["-c:v", "copy"] : ["-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "23", "-preset", "medium"]), "-c:a", "aac", "-b:a", "192k", "-t", String(T), mp4], { stdio: "inherit" });
 
 // 7. QA déterministe + avertissements d'allégations.
 const dur = Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", mp4]).toString());
