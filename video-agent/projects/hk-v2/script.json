@@ -1,0 +1,32 @@
+{
+ "title": "hook",
+ "brand": "../../brands/mela-skin/brand.json",
+ "voice": "voice.mp3",
+ "duration": 6.83,
+ "fps": 15,
+ "emphasis": "taches|boutons|copines",
+ "segments": [
+  {
+   "text": "Tes copines mangent des burgers \u00e0 midi, sortent sans maquillage,",
+   "t0": 0,
+   "t1": 3.22
+  },
+  {
+   "text": "et toi tes taches de boutons sont toujours l\u00e0 ?",
+   "t0": 3.33,
+   "t1": 5.36
+  },
+  {
+   "text": "\u00c9coute \u00e7a.",
+   "t0": 5.83,
+   "t1": 6.31
+  }
+ ],
+ "beats": [
+  {
+   "scene": "hookTerrasse",
+   "at": "Tes copines"
+  }
+ ],
+ "anticipation": 0.45
+}

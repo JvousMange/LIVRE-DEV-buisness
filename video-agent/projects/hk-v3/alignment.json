@@ -1,0 +1,20 @@
+{
+ "duration": 7.24,
+ "segments": [
+  {
+   "text": "Tes copines mangent n'importe quoi, sortent sans maquillage,",
+   "t0": 0,
+   "t1": 3.14
+  },
+  {
+   "text": "et toi t'as arrêté le gras, mais tes taches sont toujours là ?",
+   "t0": 3.25,
+   "t1": 6.07
+  },
+  {
+   "text": "Écoute ça.",
+   "t0": 6.61,
+   "t1": 7.04
+  }
+ ]
+}
