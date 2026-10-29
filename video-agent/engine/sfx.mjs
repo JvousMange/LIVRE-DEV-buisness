@@ -4,6 +4,9 @@
 // 3) matières crédibles (papier qui glisse, carton qui claque, bois, cloche, métal) plutôt que des bips ;
 // 4) une petite réverb commune pour coller les sons dans un même espace ; 5) le mixage final (build.mjs) les efface sous la voix.
 import { writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
 const SR = 44100;
 const TAU = Math.PI * 2;
@@ -18,6 +21,29 @@ const exp = (t, r) => Math.exp(-t * r);
 const hann = (u) => (u <= 0 || u >= 1 ? 0 : Math.sin(Math.PI * u) ** 2);
 
 // Chaque son : { d: durée (s), g: gain, make(ev, seed) → (t, i) → échantillon }
+// Vrais enregistrements CC0 (library/sfx-samples) : { fichier, durée max, gain, fondu de fin }
+const SAMPLE_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../library/sfx-samples");
+const SAMPLES = {
+  s_whoosh: { f: "whoosh.mp3", d: 0.6, g: 0.9 }, s_whoosh1: { f: "whoosh-alt1.mp3", d: 1.1, g: 0.8 }, s_whoosh2: { f: "whoosh-alt2.mp3", d: 1.5, g: 0.8 },
+  s_swoosh: { f: "swoosh.mp3", d: 1.0, g: 0.6, fade: 0.35 }, s_rev: { f: "reverse-whoosh.mp3", d: 1.4, g: 0.55, fade: 0.1 },
+  s_pop: { f: "pop.mp3", d: 0.5, g: 0.7 }, s_click: { f: "click.mp3", d: 0.4, g: 0.6 }, s_boom: { f: "boom.mp3", d: 1.1, g: 0.5, fade: 0.5 },
+  s_riser: { f: "riser.mp3", d: 2.2, g: 0.35, fade: 0.2 }, s_success: { f: "success.mp3", d: 1.4, g: 0.45, fade: 0.5 }, s_notif: { f: "notification.mp3", d: 1.2, g: 0.4, fade: 0.4 },
+  s_shutter: { f: "shutter.mp3", d: 0.7, g: 0.7, fade: 0.1 }, s_glitch: { f: "glitch.mp3", d: 0.7, g: 0.4, fade: 0.2 }, s_magic: { f: "magic-reveal.mp3", d: 1.4, g: 0.4, fade: 0.5 },
+  s_keys: { f: "keyboard.mp3", d: 1.2, g: 0.5, fade: 0.2 }, s_drone: { f: "drone.mp3", d: 3, g: 0.3, fade: 1 },
+};
+const sampleCache = {};
+function loadSample(name) {
+  if (sampleCache[name]) return sampleCache[name];
+  const S = SAMPLES[name];
+  const raw = execFileSync("ffmpeg", ["-v", "error", "-i", path.join(SAMPLE_DIR, S.f), "-t", String(S.d), "-ac", "1", "-ar", String(SR), "-f", "f32le", "-"], { maxBuffer: 1 << 28 });
+  const a = new Float32Array(raw.buffer, raw.byteOffset, Math.floor(raw.length / 4)).slice();
+  const fn = Math.round((S.fade ?? 0.03) * SR);
+  for (let i = 0; i < fn && i < a.length; i++) a[a.length - 1 - i] *= i / fn;
+  let pk = 0; for (const v of a) pk = Math.max(pk, Math.abs(v));
+  if (pk > 0) for (let i = 0; i < a.length; i++) a[i] /= pk;
+  return (sampleCache[name] = a);
+}
+
 const SOUNDS = {
   // Palette « impacts » (mesurée sur Cloudless : ~77 % de l'énergie des silences entre 30 et 150 Hz, très peu de notes) :
   // un corps grave qui chute en hauteur + une claque brillante très courte. Trois tailles : pop (petit), thud (moyen), stamp (gros).
@@ -79,12 +105,14 @@ const SOUNDS = {
     return (t) => bp(n(), 3600) * (exp(t, 45) * 1.6 + (t > 0.045 ? exp(t - 0.045, 60) : 0) * 0.8) * Math.min(1, t / 0.001); } },
   rise: { d: 1.2, g: 0.5, make: (ev, seed) => { const n = lcg(seed + 13), bp = bandpass(1.4); let ph = 0; const D = 1.2;
     return (t) => { const u = Math.min(1, t / D); ph += (TAU * (90 + 700 * u * u)) / SR; return (bp(n(), 300 + 5200 * u * u) * 1.6 + Math.sin(ph) * 0.3) * (u * u) * (u < 0.96 ? 1 : (1 - u) / 0.04); }; } },
-  // production de l'usine : petit « tchik-tchak » mécanique léger (hauteur et cadence montent avec la production)
-  tchik: { d: 0.16, g: 0.42, make: (ev, seed) => { const P = ev.p ?? 1, n = lcg(seed + 41), bp = bandpass(3), bp2 = bandpass(2); let ph = 0;
-    return (t) => { ph += (TAU * 190 * P) / SR; return bp(n(), 2300 * P) * exp(t, 95) * 1.4 + bp2(n(), 900 * P) * exp(t - 0.035, 80) * (t > 0.035 ? 0.7 : 0) + Math.sin(ph) * exp(t, 60) * 0.35; }; } },
-  // alarme douce qui s'active : deux tons montants, arrondis
-  alarm: { d: 0.5, g: 0.3, make: () => { let ph = 0; const D = 0.46;
-    return (t) => { const u = (t % 0.23) / 0.23; const f = 640 + 360 * u; ph += (TAU * f) / SR; return (Math.sin(ph) * 0.8 + Math.sin(ph * 2) * 0.12) * Math.sin(Math.PI * Math.min(1, u)) ** 0.6 * (t < D ? 1 : 0) * Math.min(1, t * 120); }; } },
+  // production de l'usine : « tchou » de locomotive à vapeur — souffle de vapeur grave et mat + petit coup de piston (plus rapide et plus haut quand ça s'emballe)
+  tchik: { d: 0.3, g: 0.55, make: (ev, seed) => { const P = ev.p ?? 1, n = lcg(seed + 41), bp = bandpass(0.8), hiss = bandpass(1.2), lp = lowpass1(0.035); let ph = 0;
+    return (t) => { ph += (TAU * (70 + 40 * exp(t, 25)) * P) / SR; const att = Math.min(1, t / 0.004);
+      return (bp(n(), 650 * P) * exp(t, 15) * 1.7 + hiss(n(), 2600) * exp(t, 28) * 0.45 + lp(n()) * exp(t, 12) * 1.1 + Math.sin(ph) * exp(t, 20) * 0.7) * att; }; } },
+  // alarme : vrai « pin-pon » d'usine, graves-médiums (≈ 450 / 600 Hz), timbre de buzzer arrondi, pas aigu
+  alarm: { d: 0.52, g: 0.34, make: () => { let ph = 0; const lp = lowpass1(0.22);
+    return (t) => { const f = t < 0.26 ? 450 : 600; ph += (TAU * f) / SR; let y = 0; for (let h = 1; h <= 5; h++) y += Math.sin(ph * h) / h; y = lp(y);
+      const u = (t % 0.26) / 0.26, env = Math.min(1, u * 28) * (u < 0.86 ? 1 : (1 - u) / 0.14); return y * env * (t < 0.52 ? 1 : 0); }; } },
   zap: { d: 1.2, g: 0.8, make: (ev, seed) => { const n = lcg(seed + 21), bp = bandpass(1.2), lp = lowpass1(0.012); let ph = 0, ph2 = 0; const r = lcg(seed + 4);
     const bursts = [0, 0.03, 0.075, 0.11, 0.17, 0.24].map((b) => b + Math.abs(r()) * 0.01);
     return (t) => { let g = 0; for (const b of bursts) if (t >= b && t < b + 0.035) g = Math.max(g, 1 - (t - b) / 0.035);
@@ -111,6 +139,11 @@ function reverb(buf, wet = 0.14) {
 export function renderSfx(events, duration, outFile) {
   let buf = new Float32Array(Math.ceil((duration + 1.5) * SR));
   events.forEach((ev, idx) => {
+    if (SAMPLES[ev.type]) {
+      const a = loadSample(ev.type), start = Math.round(ev.t * SR), g = SAMPLES[ev.type].g * (ev.gain ?? 1), r = ev.p ?? 1;
+      for (let i = 0, n = Math.floor(a.length / r); i < n; i++) { const k = i * r, k0 = Math.floor(k), fr = k - k0, v = a[k0] * (1 - fr) + (a[k0 + 1] ?? 0) * fr; if (start + i >= 0 && start + i < buf.length) buf[start + i] += v * g; }
+      return;
+    }
     const S = SOUNDS[ev.type];
     if (!S) return;
     const fn = S.make(ev, 1000 + idx * 31), start = Math.round(ev.t * SR), g = S.g * (ev.gain ?? 1);
@@ -229,7 +262,7 @@ export function eventsFromBeats(beats) {
   const perBeat = new Map(), final = [];
   for (const e of out.sort((a, b) => b.pri - a.pri || a.t - b.t)) {
     const c = perBeat.get(e.beat) || 0;
-    if (c >= 4 && e.pri < 3) { drops.push({ t: +e.t.toFixed(2), type: e.type, id: e.id, beat: e.beat, why: "budget du plan" }); continue; }
+    if (c >= 6 && e.pri < 3) { drops.push({ t: +e.t.toFixed(2), type: e.type, id: e.id, beat: e.beat, why: "budget du plan" }); continue; }
     perBeat.set(e.beat, c + 1); final.push(e);
   }
   bed.forEach((e) => final.push({ ...e, pri: 1 }));
@@ -245,6 +278,21 @@ export function eventsFromBeats(beats) {
     if (e.type === "ding" || e.type === "coin") { const k = final.filter((x) => x.type === e.type && x.beat === e.beat && x.t < e.t && e.t - x.t < 1.2).length; e.p *= Math.pow(1.09, Math.min(k, 5)); if (e.type === "coin") e.gain *= 0.7; }
     if (e.type === "tum") e.p *= 1 + 0.03 * final.filter((x) => x.type === "tum" && x.beat === e.beat && x.t < e.t).length;   // la pulsation monte très légèrement
   });
+  // échantillons réels : on remplace une partie des sons synthétisés (selon le timbre tiré au sort) et on ajoute des couches
+  const extra = [];
+  final.forEach((e) => {
+    const v = e.v ?? 0;
+    if (e.type === "whoosh" && v === 1) e.type = "s_whoosh"; else if (e.type === "whoosh" && v === 2) e.type = "s_whoosh1";
+    else if (e.type === "swish" && v === 1) { e.type = "s_whoosh2"; e.gain = (e.gain ?? 1) * 0.6; } else if (e.type === "swish" && v === 2) { e.type = "s_swoosh"; }
+    else if (e.type === "pop" && v === 1) e.type = "s_pop";
+    else if (e.type === "tick") e.type = "s_click";
+    else if (e.type === "stamp") extra.push({ t: e.t, type: "s_boom", gain: 0.55, p: 1.15, beat: e.beat, id: e.id, pri: 1 });
+    else if (e.type === "rise") extra.push({ t: Math.max(0, e.t - 0.3), type: "s_riser", gain: 0.8, beat: e.beat, id: e.id, pri: 1 });
+    else if (e.type === "zap") extra.push({ t: e.t, type: "s_glitch", gain: 0.5, beat: e.beat, id: e.id, pri: 1 });
+    else if (e.type === "ding" && e.id === "off") extra.push({ t: e.t, type: "s_success", gain: 0.7, beat: e.beat, id: e.id, pri: 1 });
+  });
+  extra.forEach((e) => final.push(e));
+  final.sort((a, b) => a.t - b.t);
   funnel.final = final.length;
   if (process.env.DEBUG_SFX) writeFileSync(process.env.DEBUG_SFX, JSON.stringify({ funnel, drops, final: final.map(({ t, type, beat, id, pri }) => ({ t: +t.toFixed(2), type, beat, id, pri })) }));
   console.log("entonnoir sons :", JSON.stringify(funnel));
