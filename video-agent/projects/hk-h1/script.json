@@ -2,29 +2,24 @@
  "title": "hook H1",
  "brand": "../../brands/mela-skin/brand.json",
  "voice": "voice.mp3",
- "duration": 6.05,
+ "duration": 5.92,
  "fps": 15,
  "emphasis": "taches|boutons|copines",
  "segments": [
   {
    "text": "Ton mec te dit que tes taches ne se voient pas mais…",
    "t0": 0.0,
-   "t1": 2.62
+   "t1": 2.68
   },
   {
-   "text": "toi tu ne vois que",
-   "t0": 2.77,
-   "t1": 3.36
-  },
-  {
-   "text": "ça sur tes joues ?",
-   "t0": 3.48,
-   "t1": 4.43
+   "text": "toi tu vois que ça sur tes joues ?",
+   "t0": 2.87,
+   "t1": 4.33
   },
   {
    "text": "Alors écoute ça.",
-   "t0": 4.71,
-   "t1": 5.53
+   "t0": 4.63,
+   "t1": 5.4
   }
  ],
  "beats": [
