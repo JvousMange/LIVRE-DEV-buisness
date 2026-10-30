@@ -21,7 +21,7 @@
    "voice": "deliverables/voix-H2-emilie.mp3",
    "lines": [
     {
-     "text": "Tu retouches tes photos parce que les taches qu'ont laissées tes boutons gâchent tout."
+     "text": "Tu retouches tes photos parce que les taches qu'ont laissées tes boutons gâchent tout ?"
     },
     {
      "text": "Alors regarde ça."
@@ -31,7 +31,7 @@
   "H3": {
    "scene": "hookPeau2",
    "at": "T'as la peau",
-   "status": "à valider",
+   "status": "VALIDÉ",
    "voice": "deliverables/voix-H3-emilie.mp3",
    "lines": [
     {

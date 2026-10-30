@@ -25,7 +25,8 @@ mkdirSync(framesDir, { recursive: true }); mkdirSync(out, { recursive: true });
 // 1. Alignement : mots répartis au prorata de leur longueur dans chaque segment de parole.
 const words = [], segFirst = [];
 script.segments.forEach((seg, si) => {
-  const ws = seg.text.split(/\s+/).filter(Boolean);
+  // la ponctuation française détachée (« tout ? ») reste collée au mot précédent : jamais de « ? » seul en sous-titre
+  const ws = seg.text.split(/\s+/).filter(Boolean).reduce((acc, w) => (/^[?!:;»]+$/.test(w) && acc.length ? (acc[acc.length - 1] += "\u202F" + w, acc) : (acc.push(w), acc)), []);
   const wt = ws.map((w) => w.replace(/[^\p{L}\p{N}]/gu, "").length + 1.5), tot = wt.reduce((a, b) => a + b, 0);
   let t = seg.t0;
   segFirst[si] = words.length;
