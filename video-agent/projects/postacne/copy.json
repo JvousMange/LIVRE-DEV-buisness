@@ -1,14 +1,16 @@
 {
  "hooks": {
   "H1": {
-   "scene": "hookMec",
+   "scene": "hookW1",
    "at": "Ton mec",
+   "status": "VALIDÉ",
+   "voice": "deliverables/voix-H1-emilie-VALIDEE.mp3",
    "lines": [
     {
      "text": "Ton mec te dit que tes taches ne se voient pas mais… toi tu ne vois que ça sur tes joues."
     },
     {
-     "text": "Alors écoute."
+     "text": "Alors écoute ça."
     }
    ]
   },

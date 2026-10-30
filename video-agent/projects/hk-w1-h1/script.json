@@ -1,8 +1,8 @@
 {
- "title": "hook H1 concept 1",
+ "title": "H1 VALIDÉ — FaceTime",
  "brand": "../../brands/mela-skin/brand.json",
  "voice": "voice.mp3",
- "duration": 6.05,
+ "duration": 6.23,
  "fps": 15,
  "emphasis": "taches|boutons|copines",
  "segments": [
@@ -17,9 +17,9 @@
    "t1": 4.61
   },
   {
-   "text": "Alors écoute.",
+   "text": "Alors écoute ça.",
    "t0": 5.04,
-   "t1": 5.58
+   "t1": 5.76
   }
  ],
  "beats": [
