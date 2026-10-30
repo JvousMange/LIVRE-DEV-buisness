@@ -17,7 +17,7 @@
   "H2": {
    "scene": "hookRetouche2",
    "at": "Tu retouches",
-   "status": "à valider",
+   "status": "VALIDÉ",
    "voice": "deliverables/voix-H2-emilie.mp3",
    "lines": [
     {
@@ -141,5 +141,11 @@
     }
    ]
   }
- ]
+ ],
+ "ads": {
+  "structure": "hook validé + corps complet (projects/corps-complet, voix Émilie, commence par « Cinq raisons… »)",
+  "H1": "deliverables/MELA-AD-H1-facetime.mp4",
+  "H2": "deliverables/MELA-AD-H2-retouche.mp4",
+  "H3": "deliverables/MELA-AD-H3-calendrier.mp4"
+ }
 }
