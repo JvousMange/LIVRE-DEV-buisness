@@ -2,7 +2,7 @@
  "title": "hook H1 concept 1",
  "brand": "../../brands/mela-skin/brand.json",
  "voice": "voice.mp3",
- "duration": 6.33,
+ "duration": 6.05,
  "fps": 15,
  "emphasis": "taches|boutons|copines",
  "segments": [
@@ -17,9 +17,9 @@
    "t1": 4.61
   },
   {
-   "text": "Alors écoute ça.",
+   "text": "Alors écoute.",
    "t0": 5.04,
-   "t1": 5.76
+   "t1": 5.58
   }
  ],
  "beats": [

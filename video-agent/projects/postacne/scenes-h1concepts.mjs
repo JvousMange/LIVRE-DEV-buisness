@@ -14,6 +14,8 @@ export function scenes(C, X) {
   const txt = (x, y, s, size, fill, anchor = "middle", w = 900) => `<g filter="url(#paper1)"><text x="${x}" y="${y}" text-anchor="${anchor}" font-family="${F}" font-weight="${w}" font-size="${size}" fill="${fill}">${s}</text></g>`;
   const spotsAt = (cx, cy, sc, idp) => `<g transform="translate(${cx} ${cy}) scale(${sc})">` + SPOTS.map((s, i) => `<g id="${idp}${i}">` + layer(blob(s.x, s.y, s.rx, s.ry, { jitter: 0.22, n: 10, seed: 500 + i }), C.dark, 6, { edge: "rgba(255,225,190,.3)" }) + `</g>`).join("") + `</g>`;
   const spotPops = (t, idp, step = 0.06) => SPOTS.map((s, i) => POP(`${idp}${i}`, t + i * step, [s.x, s.y], { sfx: false }));
+  const spotGrow = (t, idp, k = 1.5, only) => SPOTS.map((s, i) => (only && !only.includes(i)) ? null : A(`${idp}${i}`, t + i * 0.04, 0.5, { s: 1 }, { s: k }, { origin: [s.x, s.y], ease: "outBack", late: true, sfx: i === (only ? only[0] : 0) ? [{ type: "e_drop", gain: 0.8 }] : false })).filter(Boolean);
+  const spotPulse = (t, idp, only) => SPOTS.map((s, i) => (only && !only.includes(i)) ? null : { id: `${idp}${i}`, prop: "s", amp: 0.07, freq: 1.7, phase: i * 0.13, start: t, origin: [s.x, s.y] }).filter(Boolean);
   const wp = (cx, cy, sc) => SPOTS.map((s) => [cx + s.x * sc, cy + s.y * sc]);
   const ring = (id, x, y, r, w = 6) => `<g id="${id}"><g filter="url(#paper3)"><circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${C.alert}" stroke-width="${w}"/></g></g>`;
   const heart = (x, y, s, id, fill = C.alert) => `<g id="${id}"><g transform="translate(${x} ${y}) scale(${s})">` + layer("M0 34 C-70 -14 -42 -78 0 -42 C42 -78 70 -14 0 34Z", fill, 6) + `</g></g>`;
@@ -53,7 +55,9 @@ export function scenes(C, X) {
           bubble(420, 720, 470, 150, "bub", "Ça se voit pas !", 48, 1) +
           // vignette « moi » : elle ne regarde que ça
           `<g id="self"><clipPath id="selfc"><rect x="640" y="360" width="240" height="300" rx="26"/></clipPath><g clip-path="url(#selfc)"><rect x="640" y="360" width="240" height="300" fill="${C.cream}"/>` +
-          woman(C, { cx: SX, cy: SY, scale: SS, spotsOn: false, mirrorOn: false }) + spotsAt(SX, SY, SS, "sp") + `</g>` +
+          woman(C, { cx: SX, cy: SY, scale: SS, spotsOn: false, mirrorOn: false }) +
+          `<defs><radialGradient id="vg1" cx="${SX}" cy="${SY + 45}" r="175" gradientUnits="userSpaceOnUse"><stop offset=".42" stop-color="${C.dark}" stop-opacity="0"/><stop offset="1" stop-color="${C.dark}" stop-opacity=".82"/></radialGradient></defs>` +
+          `<g id="vig"><rect x="640" y="360" width="240" height="300" fill="url(#vg1)"/></g>` + spotsAt(SX, SY, SS, "sp") + `</g>` +
           `<g filter="url(#paper3)"><rect x="640" y="360" width="240" height="300" rx="26" fill="none" stroke="${C.cream}" stroke-width="7"/></g>` +
           `<g id="selfhi"><g filter="url(#paper3)"><rect x="634" y="354" width="252" height="312" rx="30" fill="none" stroke="${C.accent}" stroke-width="10"/></g></g></g>` +
           `</g></g>`,
@@ -64,10 +68,13 @@ export function scenes(C, X) {
           POP("bub", tNo - 0.1, [440, 790]),
           POP("selfhi", tToi - 0.05, [760, 510]),
           FADEOUT("bub", tQue - 0.25, 0.2), FADEOUT("selfhi", tQue - 0.2, 0.15),
-          A("self", tQue - 0.2, 0.6, { s: 1 }, { s: 3.3 }, { origin: [880, 360], ease: "outBack", late: true, sfx: "whoosh" }),
-          A("self", tQue + 0.5, 1.6, { s: 3.3 }, { s: 3.55 }, { origin: [880, 360], ease: "lin", late: true, sfx: false }),
+          // la vignette envahit l'écran et son visage se retrouve AU CENTRE
+          A("self", tQue - 0.2, 0.6, { s: 1, x: 0, y: 0 }, { s: 3.6, x: 92, y: 6 }, { origin: [880, 360], ease: "outBack", late: true, sfx: "whoosh" }),
+          A("self", tQue + 0.5, 1.8, { s: 3.6, x: 92, y: 6 }, { s: 3.85, x: 122, y: -35 }, { origin: [880, 360], ease: "lin", late: true, sfx: false }),
+          A("vig", 0, 0.01, { o: 0 }, { o: 0 }, { ease: "lin", sfx: false }), A("vig", tQue + 0.25, 0.6, { o: 0 }, { o: 1 }, { ease: "lin", late: true, sfx: false }),
+          ...spotGrow(tQue + 0.35, "sp", 1.5),
         ],
-        loops: [], cam: SLOW(1.0, 1.03, 0, 0), punches: [{ t: tQue + 0.3, amp: 0.035 }],
+        loops: spotPulse(tQue + 1.0, "sp"), cam: SLOW(1.0, 1.03, 0, 0), punches: [{ t: tQue + 0.3, amp: 0.035 }],
       };
     })(),
 
@@ -87,12 +94,14 @@ export function scenes(C, X) {
           `<g id="glow"><rect x="160" y="580" width="760" height="760" fill="url(#cg)"/></g>` +
           woman(C, { cx: WX, cy: WY, scale: WS, spotsOn: false, mirrorOn: false }) + spotsAt(WX, WY, WS, "sp") +
           man(800, 1130, 0.85, "man") + hand +
+          `<defs><radialGradient id="vg2" cx="300" cy="940" r="340" gradientUnits="userSpaceOnUse"><stop offset=".38" stop-color="${C.dark}" stop-opacity="0"/><stop offset="1" stop-color="${C.dark}" stop-opacity=".85"/></radialGradient></defs>` +
           layer(poly([[-200, 1170], [1280, 1170], [1280, 2400], [-200, 2400]], { round: false }), C.cream, 3) +
           layer(poly([[-200, 1170], [1280, 1170], [1280, 1205], [-200, 1205]], { round: false }), C.kraft, 4) +
           `<g id="cdl">${layer(poly([[522, 990], [558, 990], [558, 1180], [522, 1180]], { round: false }), C.cream, 5)}${layer(poly([[500, 1170], [580, 1170], [580, 1200], [500, 1200]], { round: false }), C.kraftDark, 5)}</g>` +
           `<g id="flame">${layer(blob(540, 955, 22, 38, { jitter: 0.06, n: 10, seed: 6202 }), C.accent, 6)}${layer(blob(540, 965, 10, 18, { jitter: 0.06, n: 8, seed: 6203 }), C.alert, 7)}</g>` +
           layer(blob(250, 1250, 120, 34, { jitter: 0.03, n: 14, seed: 6204 }), "#FFFFFF", 4) + layer(blob(830, 1250, 120, 34, { jitter: 0.03, n: 14, seed: 6205 }), "#FFFFFF", 4) +
           // cœurs au-dessus de sa tête, puis la bulle prend leur place (pointe vers lui)
+          `<g id="vig"><rect x="-600" y="-600" width="2280" height="3200" fill="url(#vg2)"/></g>` +
           heart(800, 800, 0.75, "h1") + heart(900, 740, 0.55, "h2") + heart(705, 735, 0.5, "h3") +
           bubble(760, 690, 500, 150, "bub", "Ça se voit pas !", 48, 0.4),
         anims: [
@@ -103,9 +112,12 @@ export function scenes(C, X) {
           POP("bub", tNo - 0.1, [800, 760]),
           A("hand", tToi - 0.1, 0.45, { y: 460 }, { y: 0 }, { ease: "outBack", sfx: "swish" }),
           FADEOUT("bub", tQue, 0.25),
+          A("vig", 0, 0.01, { o: 0 }, { o: 0 }, { ease: "lin", sfx: false }), A("vig", tQue + 0.1, 0.7, { o: 0 }, { o: 1 }, { ease: "lin", late: true, sfx: false }),
+          ...spotGrow(tQue + 0.45, "sp", 1.6, [4, 5, 6, 7, 8, 9, 10]),
         ],
-        loops: [{ id: "flame", prop: "s", amp: 0.07, freq: 5.5, start: 0, origin: [540, 990] }, { id: "glow", prop: "s", amp: 0.04, freq: 3.1, start: 0, origin: [540, 960] }],
-        cam: [{ t0: tQue - 0.1, t1: tQue + 0.8, from: { s: 1, x: 0, y: 0 }, to: { s: 1.75, x: 1.75 * (540 - 300), y: 1.75 * (960 - 930) }, ease: "inOut" }],
+        loops: [{ id: "flame", prop: "s", amp: 0.07, freq: 5.5, start: 0, origin: [540, 990] }, { id: "glow", prop: "s", amp: 0.04, freq: 3.1, start: 0, origin: [540, 960] }, ...spotPulse(tQue + 1.1, "sp", [4, 5, 6, 7, 8, 9, 10])],
+        // zoom final : son visage (main comprise) pile au centre de l'écran
+        cam: [{ t0: tQue - 0.1, t1: tQue + 0.8, from: { s: 1, x: 0, y: 0 }, to: { s: 2.2, x: 2.2 * (540 - 300), y: 2.2 * (960 - 925) }, ease: "inOut" }],
         punches: [{ t: tToi + 0.3, amp: 0.03 }],
       };
     })(),
