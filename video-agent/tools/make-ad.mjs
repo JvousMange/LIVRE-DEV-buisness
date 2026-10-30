@@ -14,7 +14,7 @@ const hook = copy.hooks[key];
 if (!hook) throw new Error(`hook inconnu : ${key}`);
 const dir = path.join(proj, key);
 mkdirSync(dir, { recursive: true });
-writeFileSync(path.join(dir, "scenes.mjs"), `export { scenes } from "../scenes-h1concepts.mjs";\n`);
+writeFileSync(path.join(dir, "scenes.mjs"), `export { scenes } from "../scenes-h23.mjs";\n`);
 
 const blocks = [{ scene: hook.scene, at: hook.at, lines: hook.lines }, ...copy.body];
 const lines = blocks.flatMap((b) => b.lines);

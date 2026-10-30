@@ -1,0 +1,52 @@
+{
+ "title": "H3 — calendrier",
+ "brand": "../../brands/mela-skin/brand.json",
+ "voice": "voice.mp3",
+ "duration": 6.49,
+ "fps": 15,
+ "emphasis": "taches|boutons|copines",
+ "segments": [
+  {
+   "text": "T'as la peau",
+   "t0": 0.09,
+   "t1": 0.73
+  },
+  {
+   "text": "mate ou noire,",
+   "t0": 0.79,
+   "t1": 1.82
+  },
+  {
+   "text": "tes boutons sont partis mais…",
+   "t0": 1.9,
+   "t1": 3.85
+  },
+  {
+   "text": "les taches",
+   "t0": 3.95,
+   "t1": 4.32
+  },
+  {
+   "text": "sont toujours là.",
+   "t0": 4.38,
+   "t1": 4.91
+  },
+  {
+   "text": "Alors",
+   "t0": 5.19,
+   "t1": 5.43
+  },
+  {
+   "text": "écoute ça.",
+   "t0": 5.52,
+   "t1": 5.97
+  }
+ ],
+ "beats": [
+  {
+   "scene": "hookPeau2",
+   "at": "T'as la peau"
+  }
+ ],
+ "anticipation": 0.45
+}

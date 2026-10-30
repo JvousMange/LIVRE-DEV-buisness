@@ -15,26 +15,30 @@
    ]
   },
   "H2": {
-   "scene": "hookRetouche",
+   "scene": "hookRetouche2",
    "at": "Tu retouches",
+   "status": "à valider",
+   "voice": "deliverables/voix-H2-emilie.mp3",
    "lines": [
     {
-     "text": "Tu retouches tes photos parce que les taches qu'ont laissées tes boutons gâchent tout ?"
+     "text": "Tu retouches tes photos parce que les taches qu'ont laissées tes boutons gâchent tout."
     },
     {
-     "text": "Regarde ça."
+     "text": "Alors regarde ça."
     }
    ]
   },
   "H3": {
-   "scene": "hookPeau",
+   "scene": "hookPeau2",
    "at": "T'as la peau",
+   "status": "à valider",
+   "voice": "deliverables/voix-H3-emilie.mp3",
    "lines": [
     {
-     "text": "T'as la peau mate ou noire : tes boutons sont partis, mais les taches sont toujours là ?"
+     "text": "T'as la peau mate ou noire, tes boutons sont partis mais… les taches sont toujours là."
     },
     {
-     "text": "Écoute ça."
+     "text": "Alors écoute ça."
     }
    ]
   },
